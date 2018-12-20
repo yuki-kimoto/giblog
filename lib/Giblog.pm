@@ -39,6 +39,147 @@ sub create_file {
     or croak "Can't create file \"$file\": $!";
 }
 
+sub write_to_file {
+  my ($self, $file, $content) = @_;
+  open my $fh, '>', $file
+    or croak "Can't create file \"$file\": $!";
+  
+  print $fh $content;
+}
+
+sub common_css {
+  my $common_css =<<"EOS";
+  /*
+    Default CSS settings
+  */
+  * {
+    margin:0;
+    padding:0;
+    
+    /* box-sizing: border-box */
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing:border-box;
+    box-sizing: border-box;
+    
+    /* text-size-adjust: 100% */
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -o-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  /* http://meyerweb.com/eric/tools/css/reset/ v2.0 | 20110126 License: none (public domain) */
+  html, body, div, span, applet, object, iframe,
+  h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+  a, abbr, acronym, address, big, cite, code,
+  del, dfn, em, img, ins, kbd, q, s, samp,
+  small, strike, strong, sub, sup, tt, var,
+  b, u, i, center,
+  dl, dt, dd, ol, ul, li,
+  fieldset, form, label, legend,
+  table, caption, tbody, tfoot, thead, tr, th, td,
+  article, aside, canvas, details, embed, 
+  figure, figcaption, footer, header, hgroup, 
+  menu, nav, output, ruby, section, summary,
+  time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+  }
+  /* HTML5 display-role reset for older browsers */
+  article, aside, details, figcaption, figure, 
+  footer, header, hgroup, menu, nav, section {
+    display: block;
+  }
+  body {
+    line-height: 1;
+  }
+  ol, ul {
+    list-style: none;
+  }
+  blockquote, q {
+    quotes: none;
+  }
+  blockquote:before, blockquote:after,
+  q:before, q:after {
+    content: '';
+    content: none;
+  }
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+  
+  /*
+    User CSS settings in PC
+  */
+  
+  h1 {
+    
+  }
+  h2 {
+    
+  }
+  h3 {
+    
+  }
+  h4 {
+    
+  }
+  h5 {
+    
+  }
+  h6 {
+    
+  }
+  p {
+    
+  }
+  pre {
+    
+  }
+  blockquote, q {
+    
+  }
+  table {
+    
+  }
+  tr {
+    
+  }
+  th {
+    
+  }
+  td {
+    
+  }
+  a {
+    
+  }
+  a:visited {
+    
+  }
+  
+/* Under 959px - SmartPhone and Tablet */
+\@media screen and (max-width:959px) {
+
+  /*
+    User CSS settings in SmartPhone and Tablet
+  */
+  
+  
+  
+  
+  
+}
+EOS
+
+  return $common_css;
+}
+
 =head1 SYNOPSIS
 
 Quick summary of what the module does.

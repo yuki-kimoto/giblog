@@ -53,6 +53,8 @@ if ($command eq 'new_website') {
   # Create public/common.css file
   my $public_css_common_file = "$public_css_dir/common.css";
   $giblog->create_file($public_css_common_file);
+  my $common_css = $giblog->common_css;
+  $giblog->write_to_file($public_css_common_file, $common_css);
 
   # Create public/images directory
   my $public_images_dir = "$public_dir/images";
