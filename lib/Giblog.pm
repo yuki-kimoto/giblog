@@ -62,6 +62,18 @@ sub new_entry {
   $self->create_file($entry_file);
 }
 
+sub config {
+  my ($self, $website_name) = @_;
+  
+  my $config = <<"EOS";
+{
+  website_title => '$website_name',
+}
+EOS
+  
+  return $config;
+}
+
 sub new_website {
   my ($self, $website_name) = @_;
   
@@ -78,6 +90,12 @@ sub new_website {
   
   # Create website directory
   $self->create_dir($website_name);
+  
+  # Create giblog.conf
+  my $config_file = "$website_name/giblog.conf";
+  $self->create_file($config_file);
+  my $config = $self->config($website_name);
+  $self->write_to_file($config_file, $config);
   
   # Create public directory
   my $public_dir = "$website_name/public";
