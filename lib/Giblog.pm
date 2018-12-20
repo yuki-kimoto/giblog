@@ -3,7 +3,7 @@ package Giblog;
 use 5.008007;
 use strict;
 use warnings;
-use Carp 'croak';
+use Carp 'confess';
 use File::Find 'find';
 use File::Basename 'basename', 'dirname';
 use File::Path 'mkpath';
@@ -52,19 +52,19 @@ sub rel_file {
 sub create_dir {
   my ($self, $dir) = @_;
   mkdir $dir
-    or croak "Can't create directory \"$dir\": $!";
+    or confess "Can't create directory \"$dir\": $!";
 }
 
 sub create_file {
   my ($self, $file) = @_;
   open my $fh, '>', $file
-    or croak "Can't create file \"$file\": $!";
+    or confess "Can't create file \"$file\": $!";
 }
 
 sub write_to_file {
   my ($self, $file, $content) = @_;
   open my $fh, '>', $file
-    or croak "Can't create file \"$file\": $!";
+    or confess "Can't create file \"$file\": $!";
   
   print $fh $content;
 }
@@ -73,7 +73,7 @@ sub slurp_file {
   my ($self, $file) = @_;
 
   open my $fh, '<', $file
-    or croak "Can't create file \"$file\": $!";
+    or confess "Can't read file \"$file\": $!";
   
   my $content = do { local $/; <$fh> };
   
@@ -99,7 +99,11 @@ sub build {
       wanted => sub {
         my $template_file = $File::Find::name;
         
+        # Skip directory
         return unless -f $template_file;
+        
+        # Skip common files
+        return if $template_file =~ /^$templates_dir\/common/;
         
         push @template_files, $template_file;
       },
@@ -118,14 +122,14 @@ sub build {
     my $public_dir = dirname $public_file;
     mkpath $public_dir;
     
-    my $common_html_head_file = $self->rel_file('common/html-head.tmpl.html');
-    my $common_html_head_content = $self->slurp_file($common_html_head_file);
+    my $templates_common_html_head_file = $self->rel_file('templates/common/html-head.tmpl.html');
+    my $templates_common_html_head_content = $self->slurp_file($templates_common_html_head_file);
     
     my $html = <<"EOS";
 <!DOCTYPE html>
 <html>
   <head>
-    $common_html_head_content
+    $templates_common_html_head_content
   </head>
   <body>
     <div class="container">
@@ -225,8 +229,8 @@ sub new_website {
   # Create public/common.css file
   my $public_css_common_file = "$public_css_dir/common.css";
   $self->create_file($public_css_common_file);
-  my $common_css = $self->common_css;
-  $self->write_to_file($public_css_common_file, $common_css);
+  my $templates_common_css = $self->common_css;
+  $self->write_to_file($public_css_common_file, $templates_common_css);
 
   # Create public/images directory
   my $public_images_dir = "$public_dir/images";
@@ -243,46 +247,6 @@ sub new_website {
   # Create public/js/.gitkeep file
   my $public_js_gitkeep_file = "$website_name/public/js/.gitkeep";
   $self->create_file($public_js_gitkeep_file);
-
-  # Create common directory
-  my $common_dir = "$website_name/common";
-  $self->create_dir($common_dir);
-
-  # Create common/html-head.tmpl.html file
-  my $common_html_head_file = "$common_dir/html-head.tmpl.html";
-  $self->create_file($common_html_head_file);
-  my $common_html_head = $self->common_html_head;
-  $self->write_to_file($common_html_head_file, $common_html_head);
-  
-  # Create common/header.tmpl.html file
-  my $common_header_file = "$common_dir/header.tmpl.html";
-  $self->create_file($common_header_file);
-  my $common_header = $self->common_header;
-  $self->write_to_file($common_header_file, $common_header);
-
-  # Create common/side.tmpl.html file
-  my $common_side_file = "$common_dir/side.tmpl.html";
-  $self->create_file($common_side_file);
-  my $common_side = $self->common_side;
-  $self->write_to_file($common_side_file, $common_side);
-  
-  # Create common/footer.tmpl.html file
-  my $common_footer_file = "$common_dir/footer.tmpl.html";
-  $self->create_file($common_footer_file);
-  my $common_footer = $self->common_footer;
-  $self->write_to_file($common_footer_file, $common_footer);
-  
-  # Create common/entry-top.tmpl.html file
-  my $common_entry_top_file = "$common_dir/entry-top.tmpl.html";
-  $self->create_file($common_entry_top_file);
-  my $common_entry_top = $self->common_entry_top;
-  $self->write_to_file($common_entry_top_file, $common_entry_top);
-  
-  # Create common/entry-bottom.tmpl.html file
-  my $common_entry_bottom_file = "$common_dir/entry-bottom.tmpl.html";
-  $self->create_file($common_entry_bottom_file);
-  my $common_entry_bottom = $self->common_entry_bottom;
-  $self->write_to_file($common_entry_bottom_file, $common_entry_bottom);
 
   # Create templates directory
   my $templates_dir = "$website_name/templates";
@@ -303,10 +267,49 @@ EOS
   my $templates_blog_gitkeep_file = "$templates_blog_dir/.gitkeep";
   $self->create_file($templates_blog_gitkeep_file);
 
+  # Create templates/common directory
+  my $templates_common_dir = "$website_name/templates/common";
+  $self->create_dir($templates_common_dir);
+
+  # Create templates/common/html-head.tmpl.html file
+  my $templates_common_html_head_file = "$templates_common_dir/html-head.tmpl.html";
+  $self->create_file($templates_common_html_head_file);
+  my $templates_common_html_head = $self->common_html_head;
+  $self->write_to_file($templates_common_html_head_file, $templates_common_html_head);
+  
+  # Create templates/common/header.tmpl.html file
+  my $templates_common_header_file = "$templates_common_dir/header.tmpl.html";
+  $self->create_file($templates_common_header_file);
+  my $templates_common_header = $self->common_header;
+  $self->write_to_file($templates_common_header_file, $templates_common_header);
+
+  # Create templates/common/side.tmpl.html file
+  my $templates_common_side_file = "$templates_common_dir/side.tmpl.html";
+  $self->create_file($templates_common_side_file);
+  my $templates_common_side = $self->common_side;
+  $self->write_to_file($templates_common_side_file, $templates_common_side);
+  
+  # Create templates/common/footer.tmpl.html file
+  my $templates_common_footer_file = "$templates_common_dir/footer.tmpl.html";
+  $self->create_file($templates_common_footer_file);
+  my $templates_common_footer = $self->common_footer;
+  $self->write_to_file($templates_common_footer_file, $templates_common_footer);
+  
+  # Create templates/common/entry-top.tmpl.html file
+  my $templates_common_entry_top_file = "$templates_common_dir/entry-top.tmpl.html";
+  $self->create_file($templates_common_entry_top_file);
+  my $templates_common_entry_top = $self->common_entry_top;
+  $self->write_to_file($templates_common_entry_top_file, $templates_common_entry_top);
+  
+  # Create templates/common/entry-bottom.tmpl.html file
+  my $templates_common_entry_bottom_file = "$templates_common_dir/entry-bottom.tmpl.html";
+  $self->create_file($templates_common_entry_bottom_file);
+  my $templates_common_entry_bottom = $self->common_entry_bottom;
+  $self->write_to_file($templates_common_entry_bottom_file, $templates_common_entry_bottom);
 }
 
 sub common_css {
-  my $common_css =<<"EOS";
+  my $templates_common_css =<<"EOS";
   /*
     Default CSS settings
   */
@@ -435,7 +438,7 @@ sub common_css {
 }
 EOS
 
-  return $common_css;
+  return $templates_common_css;
 }
 
 sub common_html_head {

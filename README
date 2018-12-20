@@ -83,3 +83,16 @@ CONTRIBUTOR WILL BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, OR
 CONSEQUENTIAL DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THE PACKAGE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+
+  my $serve_pl = <<'EOS'
+use Mojolicious::Lite;
+
+my $cmd = "giblog build";
+system($cmd) or die "Can't execute command \"$cmd\"";
+
+get '/' => sub {
+  my $c = shift;
+  $c->reply->static('index.html');
+};
+
+app->start;
