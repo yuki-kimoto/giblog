@@ -92,25 +92,32 @@ sub build {
   my $templates_dir = $self->rel_file('templates');
   my $public_dir = $self->rel_file('public');
   
+  my @template_files;
   find(
     {
       wanted => sub {
-        my $file = $File::Find::name;
-
-        my $is_file = -f $file ? 1 : 0;
+        my $template_file = $File::Find::name;
         
-        return unless -f $file;
+        return unless -f $template_file;
         
-        my $rel_file = $file;
-        $file =~ s/^$templates_dir//;
-        $file =~ s/^\///;
-        $file =~ s/\.tmpl\.html$/.html/;
-        
-        my $public_file = $self->rel_file("public/$file");
-        my $public_dir = dirname $public_file;
-        mkpath $public_dir;
-        
-      my $html = <<"EOS";
+        push @template_files, $template_file;
+      },
+      no_chdir => 1,
+    },
+    $templates_dir
+  );
+  
+  for my $template_file (@template_files) {
+    my $public_rel_file = $template_file;
+    $public_rel_file =~ s/^$templates_dir//;
+    $public_rel_file =~ s/^\///;
+    $public_rel_file =~ s/\.tmpl\.html$/.html/;
+    
+    my $public_file = $self->rel_file("public/$public_rel_file");
+    my $public_dir = dirname $public_file;
+    mkpath $public_dir;
+      
+    my $html = <<"EOS";
 <!DOCTYPE html>
 <html>
   <head>
@@ -121,13 +128,9 @@ sub build {
   </body>
 </html>
 EOS
-        
-        $self->write_to_file($public_file, $html);
-      },
-      no_chdir => 1,
-    },
-    $templates_dir
-  );
+    
+    $self->write_to_file($public_file, $html);
+  }
 }
 
 sub new_entry {
