@@ -5,6 +5,8 @@ use strict;
 use warnings;
 use Carp 'croak';
 use File::Find 'find';
+use File::Basename 'basename', 'dirname';
+use File::Path 'mkpath';
 
 =head1 NAME
 
@@ -90,13 +92,25 @@ sub build {
   my $templates_dir = $self->rel_file('templates');
   my $public_dir = $self->rel_file('public');
   
-  
-  find(sub {
-    my $file = $File::Find::name;
-    
-    warn $file;
+  find(
+    {
+      wanted => sub {
+        my $file = $File::Find::name;
 
-  my $html = <<"EOS";
+        my $is_file = -f $file ? 1 : 0;
+        
+        return unless -f $file;
+        
+        my $rel_file = $file;
+        $file =~ s/^$templates_dir//;
+        $file =~ s/^\///;
+        $file =~ s/\.tmpl\.html$/.html/;
+        
+        my $public_file = $self->rel_file("public/$file");
+        my $public_dir = dirname $public_file;
+        mkpath $public_dir;
+        
+      my $html = <<"EOS";
 <!DOCTYPE html>
 <html>
   <head>
@@ -107,9 +121,13 @@ sub build {
   </body>
 </html>
 EOS
-    
-  }, $templates_dir);
-
+        
+        $self->write_to_file($public_file, $html);
+      },
+      no_chdir => 1,
+    },
+    $templates_dir
+  );
 }
 
 sub new_entry {
