@@ -1,6 +1,6 @@
 package Giblog;
 
-use 5.006;
+use 5.008007;
 use strict;
 use warnings;
 use Carp 'croak';
@@ -45,6 +45,21 @@ sub write_to_file {
     or croak "Can't create file \"$file\": $!";
   
   print $fh $content;
+}
+
+sub new_entry {
+  my $self = shift;
+  
+  my $entry_dir = 'templates/blog';
+  
+  # Data and time
+  my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime;
+  $year += 1900;
+  $mon++;
+  my $datetime = sprintf("%04d%02d%02d%02d%02d%02d", $year, $mon, $mday, $hour, $min, $sec);
+  
+  my $entry_file = "$entry_dir/$datetime.tmpl";
+  $self->create_file($entry_file);
 }
 
 sub new_website {

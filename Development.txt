@@ -1,0 +1,9 @@
+
+
+# Create new website
+rm -rf mysite && make && perl -Mblib script/giblog new_website mysite
+
+# Create new entry
+cd mysite
+perl -Mblib ../script/giblog new_entry
+cd ..

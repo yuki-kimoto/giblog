@@ -22,6 +22,9 @@ if ($command eq 'new_website') {
   
   $giblog->new_website($website_name);
 }
+elsif ($command eq 'new_entry') {
+  $giblog->new_entry;
+}
 else {
   die "Command \"$command\" is not found\n";
 }
