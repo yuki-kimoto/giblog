@@ -59,6 +59,9 @@ sub slurp_file {
 }
 
 sub build {
+  my $self = shift;
+  
+  
   
   my $html = <<"EOS";
 <!DOCTYPE html>
@@ -162,6 +165,36 @@ sub new_website {
   my $public_js_gitkeep_file = "$website_name/public/js/.gitkeep";
   $self->create_file($public_js_gitkeep_file);
 
+  # Create common directory
+  my $common_dir = "$website_name/common";
+  $self->create_dir($common_dir);
+
+  # Create common/html-head.tmpl.html file
+  my $common_html_head_file = "$common_dir/html-head.tmpl.html";
+  $self->create_file($common_html_head_file);
+  my $html_head = $self->html_head;
+  $self->write_to_file($common_html_head_file, $html_head);
+  
+  # Create common/header.tmpl.html file
+  my $common_header_file = "$common_dir/header.tmpl.html";
+  $self->create_file($common_header_file);
+
+  # Create common/side.tmpl.html file
+  my $common_side_file = "$common_dir/side.tmpl.html";
+  $self->create_file($common_side_file);
+  
+  # Create common/footer.tmpl.html file
+  my $common_footer_file = "$common_dir/footer.tmpl.html";
+  $self->create_file($common_footer_file);
+  
+  # Create common/entry-top.tmpl.html file
+  my $common_entyr_top_file = "$common_dir/entry-top.tmpl.html";
+  $self->create_file($common_entyr_top_file);
+  
+  # Create common/entry-bottom.tmpl.html file
+  my $common_entry_bottom_file = "$common_dir/entry-bottom.tmpl.html";
+  $self->create_file($common_entry_bottom_file);
+
   # Create templates directory
   my $templates_dir = "$website_name/templates";
   $self->create_dir($templates_dir);
@@ -178,31 +211,6 @@ sub new_website {
   my $templates_blog_gitkeep_file = "$templates_blog_dir/.gitkeep";
   $self->create_file($templates_blog_gitkeep_file);
 
-  # Create templates/html-head.tmpl.html file
-  my $templates_html_head_file = "$templates_dir/html-head.tmpl.html";
-  $self->create_file($templates_html_head_file);
-  my $html_head = $self->html_head;
-  $self->write_to_file($templates_html_head_file, $html_head);
-  
-  # Create templates/header.tmpl.html file
-  my $templates_header_file = "$templates_dir/header.tmpl.html";
-  $self->create_file($templates_header_file);
-
-  # Create template/side.tmpl.html file
-  my $templates_side_file = "$templates_dir/side.tmpl.html";
-  $self->create_file($templates_side_file);
-  
-  # Create templates/footer.tmpl.html file
-  my $templates_footer_file = "$templates_dir/footer.tmpl.html";
-  $self->create_file($templates_footer_file);
-  
-  # Create templates/entry-top.tmpl.html file
-  my $templates_entyr_top_file = "$templates_dir/entry-top.tmpl.html";
-  $self->create_file($templates_entyr_top_file);
-  
-  # Create templates/entry-bottom.tmpl.html file
-  my $templates_entry_bottom_file = "$templates_dir/entry-bottom.tmpl.html";
-  $self->create_file($templates_entry_bottom_file);
 }
 
 sub common_css {
