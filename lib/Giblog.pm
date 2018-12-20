@@ -197,7 +197,7 @@ sub new_website {
   $self->create_file($templates_footer_file);
   
   # Create templates/entry-top.tmpl.html file
-  my $templates_entyr_top_file = "$templates_dir/entyr-top.tmpl.html";
+  my $templates_entyr_top_file = "$templates_dir/entry-top.tmpl.html";
   $self->create_file($templates_entyr_top_file);
   
   # Create templates/entry-bottom.tmpl.html file
