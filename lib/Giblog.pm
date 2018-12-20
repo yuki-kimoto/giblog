@@ -4,6 +4,7 @@ use 5.008007;
 use strict;
 use warnings;
 use Carp 'croak';
+use File::Find 'find';
 
 =head1 NAME
 
@@ -25,6 +26,25 @@ sub new {
   };
   
   return bless $self, $class;
+}
+
+sub giblog_dir {
+  my $self = shift;
+  
+  return $self->{'giblog-dir'};
+}
+
+sub rel_file {
+  my ($self, $file) = @_;
+  
+  my $giblog_dir = $self->giblog_dir;
+  
+  if (defined $giblog_dir) {
+    return "$giblog_dir/$file";
+  }
+  else {
+    return $file;
+  }
 }
 
 sub create_dir {
@@ -60,9 +80,22 @@ sub slurp_file {
 
 sub build {
   my $self = shift;
+
+=pod
+現在のカレントディレクトリ	$File::Find::dir
+現在のファイル名( ベース名 )	$_
+現在のファイル名( 絶対パス )	$File::Find::name
+=cut
+
+  my $templates_dir = $self->rel_file('templates');
+  my $public_dir = $self->rel_file('public');
   
   
-  
+  find(sub {
+    my $file = $File::Find::name;
+    
+    warn $file;
+
   my $html = <<"EOS";
 <!DOCTYPE html>
 <html>
@@ -74,13 +107,15 @@ sub build {
   </body>
 </html>
 EOS
-  
+    
+  }, $templates_dir);
+
 }
 
 sub new_entry {
   my $self = shift;
   
-  my $entry_dir = 'templates/blog';
+  my $entry_dir = $self->rel_file('templates/blog');
   
   # Data and time
   my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime;
@@ -117,6 +152,8 @@ sub new_website {
   if (-f $website_name) {
     die "Website \"$website_name\" is already exists\n";
   }
+  
+  my $website_dir = $self->rel_file($website_name);
   
   # Create website directory
   $self->create_dir($website_name);

@@ -4,17 +4,39 @@ use strict;
 use warnings;
 
 use Giblog;
+use Getopt::Long 'GetOptions';
+use List::Util 'first';
 
-my $giblog = Giblog->new;
+# Reorder command line args -x --xxx is after command
+my @ordered_argv;
+for my $arg (@ARGV) {
+  if ($arg !~ /^-/) {
+    push @ordered_argv, $arg;
+  }
+}
+for my $arg (@ARGV) {
+  if ($arg =~ /^-/) {
+    push @ordered_argv, $arg;
+  }
+}
+@ARGV = @ordered_argv;
 
 # Command
-my $command = shift;
+my $command = shift @ARGV;
 unless (defined $command) {
   die "Command must be specifed\n";
 }
 if ($command =~ /^-/) {
   die "Command \"$command\" is not found\n";
 }
+
+GetOptions(
+  "giblog-dir=s" => \my $giblog_dir
+);
+
+my $giblog = Giblog->new(
+  'giblog-dir' => $giblog_dir
+);
 
 # Create new website
 if ($command eq 'new_website') {
@@ -24,6 +46,9 @@ if ($command eq 'new_website') {
 }
 elsif ($command eq 'new_entry') {
   $giblog->new_entry;
+}
+elsif ($command eq 'build') {
+  $giblog->build;
 }
 else {
   die "Command \"$command\" is not found\n";
