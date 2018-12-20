@@ -91,6 +91,8 @@ if ($command eq 'new_website') {
   # Create templates/html-head.tmpl file
   my $templates_html_head_file = "$templates_dir/html-head.tmpl";
   $giblog->create_file($templates_html_head_file);
+  my $html_head = $giblog->html_head;
+  $giblog->write_to_file($templates_html_head_file, $html_head);
   
   # Create templates/header.tmpl file
   my $templates_header_file = "$templates_dir/header.tmpl";

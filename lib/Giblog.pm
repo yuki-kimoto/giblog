@@ -180,6 +180,14 @@ EOS
   return $common_css;
 }
 
+sub html_head {
+  my $html_head =<<"EOS";
+<meta charset="UTF-8">
+EOS
+  
+  return $html_head;
+}
+
 =head1 SYNOPSIS
 
 Quick summary of what the module does.
