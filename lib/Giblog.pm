@@ -47,6 +47,33 @@ sub write_to_file {
   print $fh $content;
 }
 
+sub slurp_file {
+  my ($self, $file) = @_;
+
+  open my $fh, '<', $file
+    or croak "Can't create file \"$file\": $!";
+  
+  my $content = do { local $/; <$fh> };
+  
+  return $content;
+}
+
+sub build {
+  
+  my $html = <<"EOS";
+<!DOCTYPE html>
+<html>
+  <head>
+    
+  </head>
+  <body>
+    
+  </body>
+</html>
+EOS
+  
+}
+
 sub new_entry {
   my $self = shift;
   
@@ -58,7 +85,7 @@ sub new_entry {
   $mon++;
   my $datetime = sprintf("%04d%02d%02d%02d%02d%02d", $year, $mon, $mday, $hour, $min, $sec);
   
-  my $entry_file = "$entry_dir/$datetime.tmpl";
+  my $entry_file = "$entry_dir/$datetime.tmpl.html";
   $self->create_file($entry_file);
 }
 
@@ -140,7 +167,7 @@ sub new_website {
   $self->create_dir($templates_dir);
 
   # Create templates/index.html file
-  my $templates_index_file = "$templates_dir/index.html";
+  my $templates_index_file = "$templates_dir/index.tmpl.html";
   $self->create_file($templates_index_file);
 
   # Create templates/blog directory
@@ -151,30 +178,30 @@ sub new_website {
   my $templates_blog_gitkeep_file = "$templates_blog_dir/.gitkeep";
   $self->create_file($templates_blog_gitkeep_file);
 
-  # Create templates/html-head.tmpl file
-  my $templates_html_head_file = "$templates_dir/html-head.tmpl";
+  # Create templates/html-head.tmpl.html file
+  my $templates_html_head_file = "$templates_dir/html-head.tmpl.html";
   $self->create_file($templates_html_head_file);
   my $html_head = $self->html_head;
   $self->write_to_file($templates_html_head_file, $html_head);
   
-  # Create templates/header.tmpl file
-  my $templates_header_file = "$templates_dir/header.tmpl";
+  # Create templates/header.tmpl.html file
+  my $templates_header_file = "$templates_dir/header.tmpl.html";
   $self->create_file($templates_header_file);
 
-  # Create template/side.tmpl file
-  my $templates_side_file = "$templates_dir/side.tmpl";
+  # Create template/side.tmpl.html file
+  my $templates_side_file = "$templates_dir/side.tmpl.html";
   $self->create_file($templates_side_file);
   
-  # Create templates/footer.tmpl file
-  my $templates_footer_file = "$templates_dir/footer.tmpl";
+  # Create templates/footer.tmpl.html file
+  my $templates_footer_file = "$templates_dir/footer.tmpl.html";
   $self->create_file($templates_footer_file);
   
-  # Create templates/entry-top.tmpl file
-  my $templates_entyr_top_file = "$templates_dir/entyr-top.tmpl";
+  # Create templates/entry-top.tmpl.html file
+  my $templates_entyr_top_file = "$templates_dir/entyr-top.tmpl.html";
   $self->create_file($templates_entyr_top_file);
   
-  # Create templates/entry-bottom.tmpl file
-  my $templates_entry_bottom_file = "$templates_dir/entry-bottom.tmpl";
+  # Create templates/entry-bottom.tmpl.html file
+  my $templates_entry_bottom_file = "$templates_dir/entry-bottom.tmpl.html";
   $self->create_file($templates_entry_bottom_file);
 }
 
