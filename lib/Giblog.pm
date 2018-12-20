@@ -128,7 +128,21 @@ sub build {
     $common_html_head_content
   </head>
   <body>
-    
+    <div class="container">
+      <div class="main">
+        <h1>Title</h1>
+        <div class="entry-top">
+        
+        </div>
+        
+        <div class="entry-bottom">
+        
+        </div>
+      </div>
+      <div class="side">
+        
+      </div>
+    </div>
   </body>
 </html>
 EOS
@@ -149,7 +163,10 @@ sub new_entry {
   my $datetime = sprintf("%04d%02d%02d%02d%02d%02d", $year, $mon, $mday, $hour, $min, $sec);
   
   my $entry_file = "$entry_dir/$datetime.tmpl.html";
-  $self->create_file($entry_file);
+  my $entry = <<"EOS";
+<!-- templates/blog/$datetime.tmpl.html -->
+EOS
+  $self->write_to_file($entry_file, $entry);
 }
 
 sub config {
@@ -273,7 +290,10 @@ sub new_website {
 
   # Create templates/index.html file
   my $templates_index_file = "$templates_dir/index.tmpl.html";
-  $self->create_file($templates_index_file);
+  my $templates_index = <<"EOS";
+<!-- templates/index.tmpl.html -->
+EOS
+  $self->write_to_file($templates_index_file, $templates_index);
 
   # Create templates/blog directory
   my $templates_blog_dir = "$website_name/templates/blog";
@@ -420,7 +440,7 @@ EOS
 
 sub common_html_head {
   my $html_head =<<"EOS";
-<!-- html-head -->
+<!-- common/html-head.tmpl.html -->
 <meta charset="UTF-8">
 EOS
   
@@ -429,7 +449,7 @@ EOS
 
 sub common_header {
   my $header =<<"EOS";
-<!-- header -->
+<!-- common/header.tmpl.html -->
 EOS
   
   return $header;
@@ -437,7 +457,7 @@ EOS
 
 sub common_footer {
   my $header =<<"EOS";
-<!-- footer -->
+<!-- common/footer.tmpl.html -->
 EOS
   
   return $header;
@@ -445,7 +465,7 @@ EOS
 
 sub common_entry_top {
   my $entry_top =<<"EOS";
-<!-- entry-top -->
+<!-- common/entry-top.tmpl.html -->
 EOS
   
   return $entry_top;
@@ -453,7 +473,7 @@ EOS
 
 sub common_entry_bottom {
   my $entry_bottom =<<"EOS";
-<!-- entry-bottom -->
+<!-- common/entry-bottom.tmpl.html -->
 EOS
   
   return $entry_bottom;
@@ -461,7 +481,7 @@ EOS
 
 sub common_side {
   my $side =<<"EOS";
-<!-- side -->
+<!-- common/side.tmpl.html -->
 EOS
   
   return $side;
