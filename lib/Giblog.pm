@@ -92,6 +92,7 @@ sub build {
   my $templates_dir = $self->rel_file('templates');
   my $public_dir = $self->rel_file('public');
   
+  # Get template files
   my @template_files;
   find(
     {
@@ -116,12 +117,15 @@ sub build {
     my $public_file = $self->rel_file("public/$public_rel_file");
     my $public_dir = dirname $public_file;
     mkpath $public_dir;
-      
+    
+    my $common_html_head_file = $self->rel_file('common/html-head.tmpl.html');
+    my $common_html_head_content = $self->slurp_file($common_html_head_file);
+    
     my $html = <<"EOS";
 <!DOCTYPE html>
 <html>
   <head>
-    
+    $common_html_head_content
   </head>
   <body>
     
@@ -230,28 +234,38 @@ sub new_website {
   # Create common/html-head.tmpl.html file
   my $common_html_head_file = "$common_dir/html-head.tmpl.html";
   $self->create_file($common_html_head_file);
-  my $html_head = $self->html_head;
-  $self->write_to_file($common_html_head_file, $html_head);
+  my $common_html_head = $self->common_html_head;
+  $self->write_to_file($common_html_head_file, $common_html_head);
   
   # Create common/header.tmpl.html file
   my $common_header_file = "$common_dir/header.tmpl.html";
   $self->create_file($common_header_file);
+  my $common_header = $self->common_header;
+  $self->write_to_file($common_header_file, $common_header);
 
   # Create common/side.tmpl.html file
   my $common_side_file = "$common_dir/side.tmpl.html";
   $self->create_file($common_side_file);
+  my $common_side = $self->common_side;
+  $self->write_to_file($common_side_file, $common_side);
   
   # Create common/footer.tmpl.html file
   my $common_footer_file = "$common_dir/footer.tmpl.html";
   $self->create_file($common_footer_file);
+  my $common_footer = $self->common_footer;
+  $self->write_to_file($common_footer_file, $common_footer);
   
   # Create common/entry-top.tmpl.html file
-  my $common_entyr_top_file = "$common_dir/entry-top.tmpl.html";
-  $self->create_file($common_entyr_top_file);
+  my $common_entry_top_file = "$common_dir/entry-top.tmpl.html";
+  $self->create_file($common_entry_top_file);
+  my $common_entry_top = $self->common_entry_top;
+  $self->write_to_file($common_entry_top_file, $common_entry_top);
   
   # Create common/entry-bottom.tmpl.html file
   my $common_entry_bottom_file = "$common_dir/entry-bottom.tmpl.html";
   $self->create_file($common_entry_bottom_file);
+  my $common_entry_bottom = $self->common_entry_bottom;
+  $self->write_to_file($common_entry_bottom_file, $common_entry_bottom);
 
   # Create templates directory
   my $templates_dir = "$website_name/templates";
@@ -404,12 +418,53 @@ EOS
   return $common_css;
 }
 
-sub html_head {
+sub common_html_head {
   my $html_head =<<"EOS";
+<!-- html-head -->
 <meta charset="UTF-8">
 EOS
   
   return $html_head;
+}
+
+sub common_header {
+  my $header =<<"EOS";
+<!-- header -->
+EOS
+  
+  return $header;
+}
+
+sub common_footer {
+  my $header =<<"EOS";
+<!-- footer -->
+EOS
+  
+  return $header;
+}
+
+sub common_entry_top {
+  my $entry_top =<<"EOS";
+<!-- entry-top -->
+EOS
+  
+  return $entry_top;
+}
+
+sub common_entry_bottom {
+  my $entry_bottom =<<"EOS";
+<!-- entry-bottom -->
+EOS
+  
+  return $entry_bottom;
+}
+
+sub common_side {
+  my $side =<<"EOS";
+<!-- side -->
+EOS
+  
+  return $side;
 }
 
 =head1 SYNOPSIS
