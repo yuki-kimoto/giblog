@@ -83,12 +83,6 @@ sub slurp_file {
 sub build {
   my $self = shift;
 
-=pod
-現在のカレントディレクトリ	$File::Find::dir
-現在のファイル名( ベース名 )	$_
-現在のファイル名( 絶対パス )	$File::Find::name
-=cut
-
   my $templates_dir = $self->rel_file('templates');
   my $public_dir = $self->rel_file('public');
   
@@ -122,8 +116,25 @@ sub build {
     my $public_dir = dirname $public_file;
     mkpath $public_dir;
     
+    my $entry_content = $self->slurp_file($template_file);
+    
     my $templates_common_html_head_file = $self->rel_file('templates/common/html-head.tmpl.html');
     my $templates_common_html_head_content = $self->slurp_file($templates_common_html_head_file);
+
+    my $templates_common_header_file = $self->rel_file('templates/common/header.tmpl.html');
+    my $templates_common_header_content = $self->slurp_file($templates_common_header_file);
+
+    my $templates_common_footer_file = $self->rel_file('templates/common/footer.tmpl.html');
+    my $templates_common_footer_content = $self->slurp_file($templates_common_footer_file);
+
+    my $templates_common_side_file = $self->rel_file('templates/common/side.tmpl.html');
+    my $templates_common_side_content = $self->slurp_file($templates_common_side_file);
+
+    my $templates_common_entry_top_file = $self->rel_file('templates/common/entry-top.tmpl.html');
+    my $templates_common_entry_top_content = $self->slurp_file($templates_common_entry_top_file);
+
+    my $templates_common_entry_bottom_file = $self->rel_file('templates/common/entry-bottom.tmpl.html');
+    my $templates_common_entry_bottom_content = $self->slurp_file($templates_common_entry_bottom_file);
     
     my $html = <<"EOS";
 <!DOCTYPE html>
@@ -136,15 +147,17 @@ sub build {
       <div class="main">
         <h1>Title</h1>
         <div class="entry-top">
-        
+          $templates_common_entry_bottom_content
         </div>
-        
+        <div class="entry">
+          $entry_content
+        </div>
         <div class="entry-bottom">
-        
+          $templates_common_entry_bottom_content
         </div>
       </div>
       <div class="side">
-        
+        $templates_common_side_content
       </div>
     </div>
   </body>

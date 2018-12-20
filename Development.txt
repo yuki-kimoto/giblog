@@ -1,4 +1,4 @@
-
+# Development
 
 # Create new website
 rm -rf mysite && make && perl -Mblib script/giblog new_website mysite
@@ -8,9 +8,3 @@ make && perl -Mblib script/giblog --giblog-dir=mysite new_entry
 
 # Build
 make && perl -Mblib script/giblog --giblog-dir=mysite build
-
-# Serve
-export PATH="$PATH":blib/script
-export GIBLOG_DIR=mysite
-morbo mysite/serve.pl
-
