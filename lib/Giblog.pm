@@ -225,11 +225,23 @@ sub build_public_file {
   my $templates_common_html_head_file = $self->rel_file('templates/common/html-head.tmpl.html');
   my $templates_common_html_head_content = $self->slurp_file($templates_common_html_head_file);
 
-  my $templates_common_header_file = $self->rel_file('templates/common/header.tmpl.html');
-  my $templates_common_header_content = $self->slurp_file($templates_common_header_file);
+  my $templates_common_header_top_file = $self->rel_file('templates/common/header-top.tmpl.html');
+  my $templates_common_header_top_content = $self->slurp_file($templates_common_header_top_file);
 
-  my $templates_common_footer_file = $self->rel_file('templates/common/footer.tmpl.html');
-  my $templates_common_footer_content = $self->slurp_file($templates_common_footer_file);
+  my $templates_common_header_middle_file = $self->rel_file('templates/common/header-middle.tmpl.html');
+  my $templates_common_header_middle_content = $self->slurp_file($templates_common_header_middle_file);
+
+  my $templates_common_header_bottom_file = $self->rel_file('templates/common/header-bottom.tmpl.html');
+  my $templates_common_header_bottom_content = $self->slurp_file($templates_common_header_bottom_file);
+
+  my $templates_common_footer_top_file = $self->rel_file('templates/common/footer-top.tmpl.html');
+  my $templates_common_footer_top_content = $self->slurp_file($templates_common_footer_top_file);
+
+  my $templates_common_footer_middle_file = $self->rel_file('templates/common/footer-middle.tmpl.html');
+  my $templates_common_footer_middle_content = $self->slurp_file($templates_common_footer_middle_file);
+
+  my $templates_common_footer_bottom_file = $self->rel_file('templates/common/footer-bottom.tmpl.html');
+  my $templates_common_footer_bottom_content = $self->slurp_file($templates_common_footer_bottom_file);
 
   my $templates_common_side_file = $self->rel_file('templates/common/side.tmpl.html');
   my $templates_common_side_content = $self->slurp_file($templates_common_side_file);
@@ -249,19 +261,25 @@ sub build_public_file {
   </head>
   <body>
     <div class="container">
-      <div class="header">
-        $templates_common_header_content
+      <div class="header-top">
+        $templates_common_header_top_content
       </div>
-      <div class="middle">
-        <div class="main">
-          <div class="bread">
-            $bread_content
-          </div>
+      <div class="header-middle">
+        $templates_common_header_middle_content
+      </div>
+      <div class="header-bottom">
+        $templates_common_header_bottom_content
+      </div>
+      <div class="bread">
+        $bread_content
+      </div>
+      <div class="main">
+        <div class="entry">
           <h1>$page_title</h1>
           <div class="entry-top">
             $templates_common_entry_bottom_content
           </div>
-          <div class="entry">
+          <div class="entry-body">
             $entry_content
           </div>
           <div class="entry-bottom">
@@ -272,8 +290,14 @@ sub build_public_file {
           $templates_common_side_content
         </div>
       </div>
-      <div class="footer">
-        $templates_common_footer_content
+      <div class="footer-top">
+        $templates_common_footer_top_content
+      </div>
+      <div class="footer-top">
+        $templates_common_footer_middle_content
+      </div>
+      <div class="footer-bottom">
+        $templates_common_footer_bottom_content
       </div>
     </div>
   </body>
@@ -429,10 +453,22 @@ EOS
   $self->write_to_file($templates_common_html_head_file, $templates_common_html_head);
   
   # Create templates/common/header.tmpl.html file
-  my $templates_common_header_file = "$templates_common_dir/header.tmpl.html";
-  $self->create_file($templates_common_header_file);
-  my $templates_common_header = $self->common_header;
-  $self->write_to_file($templates_common_header_file, $templates_common_header);
+  my $templates_common_header_top_file = "$templates_common_dir/header-top.tmpl.html";
+  $self->create_file($templates_common_header_top_file);
+  my $templates_common_header_top = $self->common_header_top;
+  $self->write_to_file($templates_common_header_top_file, $templates_common_header_top);
+
+  # Create templates/common/header.tmpl.html file
+  my $templates_common_header_middle_file = "$templates_common_dir/header-middle.tmpl.html";
+  $self->create_file($templates_common_header_middle_file);
+  my $templates_common_header_middle = $self->common_header_middle;
+  $self->write_to_file($templates_common_header_middle_file, $templates_common_header_middle);
+
+  # Create templates/common/header.tmpl.html file
+  my $templates_common_header_bottom_file = "$templates_common_dir/header-bottom.tmpl.html";
+  $self->create_file($templates_common_header_bottom_file);
+  my $templates_common_header_bottom = $self->common_header_bottom;
+  $self->write_to_file($templates_common_header_bottom_file, $templates_common_header_bottom);
 
   # Create templates/common/side.tmpl.html file
   my $templates_common_side_file = "$templates_common_dir/side.tmpl.html";
@@ -440,11 +476,23 @@ EOS
   my $templates_common_side = $self->common_side;
   $self->write_to_file($templates_common_side_file, $templates_common_side);
   
-  # Create templates/common/footer.tmpl.html file
-  my $templates_common_footer_file = "$templates_common_dir/footer.tmpl.html";
-  $self->create_file($templates_common_footer_file);
-  my $templates_common_footer = $self->common_footer;
-  $self->write_to_file($templates_common_footer_file, $templates_common_footer);
+  # Create templates/common/footer-top.tmpl.html file
+  my $templates_common_footer_top_file = "$templates_common_dir/footer-top.tmpl.html";
+  $self->create_file($templates_common_footer_top_file);
+  my $templates_common_footer_top = $self->common_footer_top;
+  $self->write_to_file($templates_common_footer_top_file, $templates_common_footer_top);
+
+  # Create templates/common/footer-top.tmpl.html file
+  my $templates_common_footer_middle_file = "$templates_common_dir/footer-middle.tmpl.html";
+  $self->create_file($templates_common_footer_middle_file);
+  my $templates_common_footer_middle = $self->common_footer_middle;
+  $self->write_to_file($templates_common_footer_middle_file, $templates_common_footer_middle);
+
+  # Create templates/common/footer-bottom.tmpl.html file
+  my $templates_common_footer_bottom_file = "$templates_common_dir/footer-bottom.tmpl.html";
+  $self->create_file($templates_common_footer_bottom_file);
+  my $templates_common_footer_bottom = $self->common_footer_bottom;
+  $self->write_to_file($templates_common_footer_bottom_file, $templates_common_footer_bottom);
   
   # Create templates/common/entry-top.tmpl.html file
   my $templates_common_entry_top_file = "$templates_common_dir/entry-top.tmpl.html";
@@ -480,6 +528,8 @@ sub common_css {
     -o-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
+  
+  
   /* http://meyerweb.com/eric/tools/css/reset/ v2.0 | 20110126 License: none (public domain) */
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -530,7 +580,7 @@ sub common_css {
   */
   
   h1 {
-    
+    border-bottom:3px solid #EF9C99;
   }
   h2 {
     
@@ -704,20 +754,53 @@ EOS
   return $html_head;
 }
 
-sub common_header {
-  my $header =<<"EOS";
-<!-- common/header.tmpl.html -->
+sub common_header_top {
+  my $header_top =<<"EOS";
+<!-- common/header-top.tmpl.html -->
 EOS
   
-  return $header;
+  return $header_top;
 }
 
-sub common_footer {
-  my $header =<<"EOS";
-<!-- common/footer.tmpl.html -->
+sub common_header_middle {
+  my $header_middle =<<"EOS";
+<!-- common/header-middle.tmpl.html -->
 EOS
   
-  return $header;
+  return $header_middle;
+}
+
+sub common_header_bottom {
+  my $header_bottom =<<"EOS";
+<!-- common/header-bottom.tmpl.html -->
+EOS
+  
+  return $header_bottom;
+}
+
+
+sub common_footer_top {
+  my $fotter_top =<<"EOS";
+<!-- common/footer-top.tmpl.html -->
+EOS
+  
+  return $fotter_top;
+}
+
+sub common_footer_middle {
+  my $fotter_middle =<<"EOS";
+<!-- common/footer-middle.tmpl.html -->
+EOS
+  
+  return $fotter_middle;
+}
+
+sub common_footer_bottom {
+  my $fotter_bottom =<<"EOS";
+<!-- common/footer-bottom.tmpl.html -->
+EOS
+  
+  return $fotter_bottom;
 }
 
 sub common_entry_top {
