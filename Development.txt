@@ -6,5 +6,7 @@ rm -rf mysite && make && perl -Mblib script/giblog new_website mysite
 # Create new entry
 make && perl -Mblib script/giblog --giblog-dir=mysite new_entry
 
+# Add index content
+
 # Build
 make && perl -Mblib script/giblog --giblog-dir=mysite build

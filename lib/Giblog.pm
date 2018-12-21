@@ -7,6 +7,7 @@ use Carp 'confess';
 use File::Find 'find';
 use File::Basename 'basename', 'dirname';
 use File::Path 'mkpath';
+use Encode 'encode', 'decode';
 
 =head1 NAME
 
@@ -111,6 +112,66 @@ sub build {
   }
 }
 
+sub parse_entry_file {
+  my ($self, $template_file) = @_;
+  
+  open my $fh, '<', $template_file
+    or confess "Can't open file \"$template_file\": $!";
+  
+  my $bread_content = '';
+  my $entry_content = '';
+  my $bread_end;
+  my $opt = {};
+  while (my $line = <$fh>) {
+    $line = decode('UTF-8', $line);
+    
+    $line =~ tr/\x0D\x0A//d;
+    
+    my $content;
+    
+    # Option
+    if ($line =~ /^:([a-zA-Z0-9_]+)(?:=(.*))?/) {
+      my $key = $1;
+      my $value = $2;
+
+      $opt->{$key} = $value;
+      if ($key eq 'bread_end') {
+        $bread_end = 1;
+      }
+    }
+    # Raw
+    elsif ($line =~ /^[ \t\<]/) {
+      $content = "$line\n";
+    }
+    # Automatical p
+    else {
+      if (length $line) {
+        $content = "<p>\n  $line\n</p>\n";
+      }
+    }
+    
+    if (defined $content) {
+      if ($bread_end) {
+        $entry_content .= $content;
+      }
+      else {
+        $bread_content .= $content;
+      }
+    }
+  }
+  
+  if ($bread_end) {
+    $opt->{'giblog.bread'} = $bread_content;
+    $opt->{'giblog.entry'} = $entry_content;
+  }
+  else {
+    $opt->{'giblog.bread'} = '';
+    $opt->{'giblog.entry'} = $bread_content;
+  }
+  
+  return $opt;
+}
+
 sub build_public_file {
   my ($self, $templates_dir, $template_file) = @_;
   my $public_rel_file = $template_file;
@@ -122,7 +183,23 @@ sub build_public_file {
   my $public_dir = dirname $public_file;
   mkpath $public_dir;
   
-  my $entry_content = $self->slurp_file($template_file);
+  my $parse_result = $self->parse_entry_file($template_file);
+  my $title = $parse_result->{title};
+  my $site_title = 'site_title';
+  my $page_title;
+  if (length $title) {
+    $page_title = "$title - $site_title";
+  }
+  else {
+    if (length $site_title) {
+      $page_title = $site_title;
+    }
+    else {
+      $page_title = '';
+    }
+  }
+  my $bread_content = delete $parse_result->{'giblog.bread'};
+  my $entry_content = delete $parse_result->{'giblog.entry'};
   
   my $templates_common_html_head_file = $self->rel_file('templates/common/html-head.tmpl.html');
   my $templates_common_html_head_content = $self->slurp_file($templates_common_html_head_file);
@@ -151,7 +228,10 @@ sub build_public_file {
   <body>
     <div class="container">
       <div class="main">
-        <h1>Title</h1>
+        <div class="bread">
+          $bread_content
+        </div>
+        <h1>$page_title</h1>
         <div class="entry-top">
           $templates_common_entry_bottom_content
         </div>
@@ -188,6 +268,15 @@ sub new_entry {
   my $entry_file = "$entry_dir/$datetime.tmpl.html";
   my $entry = <<"EOS";
 <!-- templates/blog/$datetime.tmpl.html -->
+
+
+
+:bread_end
+
+:title=
+
+
+
 EOS
   $self->write_to_file($entry_file, $entry);
 }
@@ -274,7 +363,20 @@ sub new_website {
   # Create templates/index.html file
   my $templates_index_file = "$templates_dir/index.tmpl.html";
   my $templates_index = <<"EOS";
-<!-- templates/index.tmpl.html -->
+<!-- templates/index.tmpl.html bread -->
+
+aiueo
+
+:bread_end
+
+:title=
+
+<!-- templates/index.tmpl.html entry -->
+  <div>
+    ppp
+  </div>
+aiueo
+
 EOS
   $self->write_to_file($templates_index_file, $templates_index);
 
