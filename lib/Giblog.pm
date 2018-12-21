@@ -11,7 +11,7 @@ use Encode 'encode', 'decode';
 
 =head1 NAME
 
-Giblog - The great new Giblog!
+Giblog - Static HTML Generator in Git and SmartPhone age
 
 =head1 VERSION
 
@@ -20,6 +20,20 @@ Version 0.01
 =cut
 
 our $VERSION = '0.01';
+
+sub read_config {
+  my $self = shift;
+  
+  my $config_file = $self->rel_file('giblog.conf');
+  
+  my $config_content = $self->slurp_file($config_file);
+  $config_content = decode('UTF-8', $config_content);
+  
+  my $config = eval $config_content
+    or confess "Can't parse config file \"$config_file\"";
+  
+  return $config;
+}
 
 sub new {
   my $class = shift;
@@ -67,7 +81,7 @@ sub write_to_file {
   open my $fh, '>', $file
     or confess "Can't create file \"$file\": $!";
   
-  print $fh $content;
+  print $fh encode('UTF-8', $content);
 }
 
 sub slurp_file {
@@ -185,10 +199,16 @@ sub build_public_file {
   
   my $parse_result = $self->parse_entry_file($template_file);
   my $title = $parse_result->{title};
-  my $site_title = 'site_title';
+  my $config = $self->read_config;
+  my $site_title = $config->{site_title};
   my $page_title;
   if (length $title) {
-    $page_title = "$title - $site_title";
+    if (length $site_title) {
+      $page_title = "$title - $site_title";
+    }
+    else {
+      $page_title = $title;
+    }
   }
   else {
     if (length $site_title) {
@@ -198,6 +218,7 @@ sub build_public_file {
       $page_title = '';
     }
   }
+  
   my $bread_content = delete $parse_result->{'giblog.bread'};
   my $entry_content = delete $parse_result->{'giblog.entry'};
   
@@ -224,6 +245,7 @@ sub build_public_file {
 <html>
   <head>
     $templates_common_html_head_content
+    <title>$page_title</title>
   </head>
   <body>
     <div class="container">
@@ -282,11 +304,11 @@ EOS
 }
 
 sub config {
-  my ($self, $website_name) = @_;
+  my ($self, $site_name) = @_;
   
   my $config = <<"EOS";
 {
-  website_title => '$website_name',
+  site_title => '$site_name',
 }
 EOS
   
