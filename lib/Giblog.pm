@@ -107,36 +107,42 @@ sub build {
   );
   
   for my $template_file (@template_files) {
-    my $public_rel_file = $template_file;
-    $public_rel_file =~ s/^$templates_dir//;
-    $public_rel_file =~ s/^\///;
-    $public_rel_file =~ s/\.tmpl\.html$/.html/;
-    
-    my $public_file = $self->rel_file("public/$public_rel_file");
-    my $public_dir = dirname $public_file;
-    mkpath $public_dir;
-    
-    my $entry_content = $self->slurp_file($template_file);
-    
-    my $templates_common_html_head_file = $self->rel_file('templates/common/html-head.tmpl.html');
-    my $templates_common_html_head_content = $self->slurp_file($templates_common_html_head_file);
+    $self->build_public_file($templates_dir, $template_file);
+  }
+}
 
-    my $templates_common_header_file = $self->rel_file('templates/common/header.tmpl.html');
-    my $templates_common_header_content = $self->slurp_file($templates_common_header_file);
+sub build_public_file {
+  my ($self, $templates_dir, $template_file) = @_;
+  my $public_rel_file = $template_file;
+  $public_rel_file =~ s/^$templates_dir//;
+  $public_rel_file =~ s/^\///;
+  $public_rel_file =~ s/\.tmpl\.html$/.html/;
+  
+  my $public_file = $self->rel_file("public/$public_rel_file");
+  my $public_dir = dirname $public_file;
+  mkpath $public_dir;
+  
+  my $entry_content = $self->slurp_file($template_file);
+  
+  my $templates_common_html_head_file = $self->rel_file('templates/common/html-head.tmpl.html');
+  my $templates_common_html_head_content = $self->slurp_file($templates_common_html_head_file);
 
-    my $templates_common_footer_file = $self->rel_file('templates/common/footer.tmpl.html');
-    my $templates_common_footer_content = $self->slurp_file($templates_common_footer_file);
+  my $templates_common_header_file = $self->rel_file('templates/common/header.tmpl.html');
+  my $templates_common_header_content = $self->slurp_file($templates_common_header_file);
 
-    my $templates_common_side_file = $self->rel_file('templates/common/side.tmpl.html');
-    my $templates_common_side_content = $self->slurp_file($templates_common_side_file);
+  my $templates_common_footer_file = $self->rel_file('templates/common/footer.tmpl.html');
+  my $templates_common_footer_content = $self->slurp_file($templates_common_footer_file);
 
-    my $templates_common_entry_top_file = $self->rel_file('templates/common/entry-top.tmpl.html');
-    my $templates_common_entry_top_content = $self->slurp_file($templates_common_entry_top_file);
+  my $templates_common_side_file = $self->rel_file('templates/common/side.tmpl.html');
+  my $templates_common_side_content = $self->slurp_file($templates_common_side_file);
 
-    my $templates_common_entry_bottom_file = $self->rel_file('templates/common/entry-bottom.tmpl.html');
-    my $templates_common_entry_bottom_content = $self->slurp_file($templates_common_entry_bottom_file);
-    
-    my $html = <<"EOS";
+  my $templates_common_entry_top_file = $self->rel_file('templates/common/entry-top.tmpl.html');
+  my $templates_common_entry_top_content = $self->slurp_file($templates_common_entry_top_file);
+
+  my $templates_common_entry_bottom_file = $self->rel_file('templates/common/entry-bottom.tmpl.html');
+  my $templates_common_entry_bottom_content = $self->slurp_file($templates_common_entry_bottom_file);
+  
+  my $html = <<"EOS";
 <!DOCTYPE html>
 <html>
   <head>
@@ -164,8 +170,8 @@ sub build {
 </html>
 EOS
     
-    $self->write_to_file($public_file, $html);
-  }
+  $self->write_to_file($public_file, $html);
+
 }
 
 sub new_entry {
