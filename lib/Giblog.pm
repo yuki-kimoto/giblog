@@ -249,9 +249,6 @@ sub build_public_file {
   </head>
   <body>
     <div class="container">
-      <div class="title">
-        $site_title
-      </div>
       <div class="header">
         $templates_common_header_content
       </div>
