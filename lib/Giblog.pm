@@ -249,23 +249,34 @@ sub build_public_file {
   </head>
   <body>
     <div class="container">
-      <div class="main">
-        <div class="bread">
-          $bread_content
+      <div class="title">
+        $site_title
+      </div>
+      <div class="header">
+        $templates_common_header_content
+      </div>
+      <div class="middle">
+        <div class="main">
+          <div class="bread">
+            $bread_content
+          </div>
+          <h1>$page_title</h1>
+          <div class="entry-top">
+            $templates_common_entry_bottom_content
+          </div>
+          <div class="entry">
+            $entry_content
+          </div>
+          <div class="entry-bottom">
+            $templates_common_entry_bottom_content
+          </div>
         </div>
-        <h1>$page_title</h1>
-        <div class="entry-top">
-          $templates_common_entry_bottom_content
-        </div>
-        <div class="entry">
-          $entry_content
-        </div>
-        <div class="entry-bottom">
-          $templates_common_entry_bottom_content
+        <div class="side">
+          $templates_common_side_content
         </div>
       </div>
-      <div class="side">
-        $templates_common_side_content
+      <div class="footer">
+        $templates_common_footer_content
       </div>
     </div>
   </body>
@@ -567,6 +578,37 @@ sub common_css {
     
   }
   
+  .container {
+    
+  }
+  .header {
+    
+  }
+  .middle {
+    
+  }
+  .main {
+    
+  }
+  .bread {
+    
+  }
+  .entry-top {
+    
+  }
+  .entry {
+    
+  }
+  .entry-bottom {
+    
+  }
+  .side {
+    
+  }
+  .footer {
+    
+  }
+  
 /* Under 959px - SmartPhone and Tablet */
 \@media screen and (max-width:959px) {
 
@@ -574,10 +616,82 @@ sub common_css {
     User CSS settings in SmartPhone and Tablet
   */
   
+  h1 {
+    
+  }
+  h2 {
+    
+  }
+  h3 {
+    
+  }
+  h4 {
+    
+  }
+  h5 {
+    
+  }
+  h6 {
+    
+  }
+  p {
+    
+  }
+  pre {
+    
+  }
+  blockquote, q {
+    
+  }
+  table {
+    
+  }
+  tr {
+    
+  }
+  th {
+    
+  }
+  td {
+    
+  }
+  a {
+    
+  }
+  a:visited {
+    
+  }
   
-  
-  
-  
+  .container {
+    
+  }
+  .header {
+    
+  }
+  .middle {
+    
+  }
+  .main {
+    
+  }
+  .bread {
+    
+  }
+  .entry-top {
+    
+  }
+  .entry {
+    
+  }
+  .entry-bottom {
+    
+  }
+  .side {
+    
+  }
+  .footer {
+    
+  }
 }
 EOS
 
