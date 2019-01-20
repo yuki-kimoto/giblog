@@ -143,21 +143,17 @@ sub parse_entry_file {
     
     my $content;
     
-    # Option
-    if ($line =~ /^:([a-zA-Z0-9_]+)(?:=(.*))?/) {
-      my $key = $1;
-      my $value = $2;
-
-      $opt->{$key} = $value;
-      if ($key eq 'bread_end') {
-        $bread_end = 1;
+    # title
+    if ($line =~ /class="title"[^>]*?>([^<]*?)</) {
+      unless (defined $opt->{'giblog.title'}) {
+        $opt->{'giblog.title'} = $1;
       }
     }
-    # Raw
+    # Row line
     elsif ($line =~ /^[ \t\<]/) {
       $content = "$line\n";
     }
-    # Automatical p
+    # Wrap p
     else {
       if (length $line) {
         $content = "<p>\n  $line\n</p>\n";
@@ -198,7 +194,7 @@ sub build_public_file {
   mkpath $public_dir;
   
   my $parse_result = $self->parse_entry_file($template_file);
-  my $title = $parse_result->{title};
+  my $title = $parse_result->{'giblog.title'};
   my $config = $self->read_config;
   my $site_title = $config->{site_title};
   my $page_title;
@@ -294,15 +290,7 @@ sub new_entry {
   
   my $entry_file = "$entry_dir/$datetime.tmpl.html";
   my $entry = <<"EOS";
-<!-- templates/blog/$datetime.tmpl.html -->
-
-
-
-:bread_end
-
-:title=
-
-
+<!-- /blog/$datetime -->
 
 EOS
   $self->write_to_file($entry_file, $entry);
@@ -393,10 +381,6 @@ sub new_website {
 <!-- templates/index.tmpl.html bread -->
 
 aiueo
-
-:bread_end
-
-:title=
 
 <!-- templates/index.tmpl.html entry -->
   <div>
