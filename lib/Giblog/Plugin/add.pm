@@ -1,5 +1,7 @@
 package Giblog::Plugin::add;
 
+use base 'Giblog::Plugin';
+
 use strict;
 use warnings;
 
