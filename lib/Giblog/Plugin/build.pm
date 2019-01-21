@@ -36,7 +36,7 @@ sub plugin {
   );
   
   for my $template_file (@template_files) {
-    $self->build_public_file($templates_dir, $template_file);
+    $self->build_html($templates_dir, $template_file);
   }
 }
 
@@ -76,7 +76,7 @@ sub parse_template {
   return $opt;
 }
 
-sub build_public_file {
+sub build_html {
   my ($self, $templates_dir, $template_file) = @_;
   
   my $giblog = $self->giblog;
