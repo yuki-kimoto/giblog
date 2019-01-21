@@ -60,26 +60,47 @@ sub parse_template {
   
   my @template_lines = split /\n/, $template_content;
   
+  my $pre_start;
   my $entry_content = '';
   my $bread_end;
   my $opt = {};
   for my $line (@template_lines) {
-    # title
-    if ($line =~ /class="title"[^>]*?>([^<]*?)</) {
-      unless (defined $opt->{'giblog.title'}) {
-        $opt->{'giblog.title'} = $1;
-      }
+    my $original_line = $line;
+    
+    # Pre end
+    if ($line =~ m|^</pre\b|) {
+      $pre_start = 0;
     }
     
-    # Row line if first charcter is not space or tab
-    if ($line =~ /^[ \t\<]/) {
+    # Escape >, < in pre tag
+    if ($pre_start) {
+      $line =~ s/>/&gt;/g;
+      $line =~ s/</&lt;/g;
       $entry_content .= "$line\n";
     }
-    # Wrap p if line have length
     else {
-      if (length $line) {
-        $entry_content .= "<p>\n  $line\n</p>\n";
+      # title
+      if ($line =~ /class="title"[^>]*?>([^<]*?)</) {
+        unless (defined $opt->{'giblog.title'}) {
+          $opt->{'giblog.title'} = $1;
+        }
       }
+      
+      # Row line if first charcter is not space or tab
+      if ($line =~ /^[ \t\<]/) {
+        $entry_content .= "$line\n";
+      }
+      # Wrap p if line have length
+      else {
+        if (length $line) {
+          $entry_content .= "<p>\n  $line\n</p>\n";
+        }
+      }
+    }
+
+    # Pre start
+    if ($original_line =~ m|^<pre\b|) {
+      $pre_start = 1
     }
   }
   
