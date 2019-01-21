@@ -39,33 +39,10 @@ my $giblog = Giblog->new(
   'giblog-dir' => $giblog_dir
 );
 
-# Create new website
+# Command is implemented in plugin
 my $plugin = "Giblog::Plugin::$command";
-if ($command eq 'new_website') {
-  
-  eval "use $plugin;";
-  if ($@) {
-    confess "Can't find plugin $plugin";
-  }
-  
-  $plugin->plugin($giblog, @ARGV);
+eval "use $plugin;";
+if ($@) {
+  confess "Can't find plugin $plugin";
 }
-elsif ($command eq 'new_entry') {
-  eval "use $plugin;";
-  if ($@) {
-    confess "Can't find plugin $plugin";
-  }
-  
-  $plugin->plugin($giblog, @ARGV);
-}
-elsif ($command eq 'build') {
-  eval "use $plugin;";
-  if ($@) {
-    confess "Can't find plugin $plugin";
-  }
-  
-  $plugin->plugin($giblog, @ARGV);
-}
-else {
-  die "Command \"$command\" is not found\n";
-}
+$plugin->plugin($giblog, @ARGV);
