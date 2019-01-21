@@ -1,9 +1,10 @@
 # Development
 
 # Create new website
-make && perl -Mblib script/giblog new_website mysite1
-make && perl -Mblib script/giblog new_website mysite2
-make && perl -Mblib script/giblog new_website mysite3
+make && perl -Mblib script/giblog new mysite1
+make && perl -Mblib script/giblog new mysite2
+make && perl -Mblib script/giblog new mysite3
+make && perl -Mblib script/giblog new mysite5
 
 # Create new entry
 make && perl -Mblib script/giblog --giblog-dir=mysite add
