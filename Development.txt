@@ -1,7 +1,9 @@
 # Development
 
 # Create new website
-rm -rf mysite && make && perl -Mblib script/giblog new_website mysite
+make && perl -Mblib script/giblog new_website mysite1
+make && perl -Mblib script/giblog new_website mysite2
+make && perl -Mblib script/giblog new_website mysite3
 
 # Create new entry
 make && perl -Mblib script/giblog --giblog-dir=mysite new_entry

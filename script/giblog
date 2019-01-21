@@ -6,6 +6,7 @@ use warnings;
 use Giblog;
 use Getopt::Long 'GetOptions';
 use List::Util 'first';
+use Carp 'confess';
 
 # Reorder command line args -x --xxx is after command
 my @ordered_argv;
@@ -39,10 +40,15 @@ my $giblog = Giblog->new(
 );
 
 # Create new website
+my $plugin = "Giblog::Plugin::$command";
 if ($command eq 'new_website') {
-  my $website_name = shift;
   
-  $giblog->new_website($website_name);
+  eval "use $plugin;";
+  if ($@) {
+    confess "Can't find plugin $plugin";
+  }
+  
+  $plugin->plugin($giblog, @ARGV);
 }
 elsif ($command eq 'new_entry') {
   $giblog->new_entry;
