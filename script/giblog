@@ -32,8 +32,10 @@ if ($command =~ /^-/) {
 }
 
 GetOptions(
-  "giblog-dir=s" => \my $giblog_dir
+  "d|giblog-dir=s" => \my $giblog_dir,
+  'I|include=s'  => \my @include,
 );
+unshift @INC, @include;
 
 my $giblog = Giblog->new(
   'giblog-dir' => $giblog_dir
