@@ -93,41 +93,41 @@ EOS
   my $templates_blog_gitkeep_file = "$templates_blog_dir/.gitkeep";
   $giblog->create_file($templates_blog_gitkeep_file);
 
-  # Create templates/common directory
-  my $templates_common_dir = "$website_name/templates/common";
+  # Create common directory
+  my $templates_common_dir = "$website_name/common";
   $giblog->create_dir($templates_common_dir);
 
-  # Create templates/common/meta.tmpl.html file
+  # Create common/meta.tmpl.html file
   my $templates_common_meta_file = "$templates_common_dir/meta.tmpl.html";
   $giblog->create_file($templates_common_meta_file);
   my $templates_common_meta = $giblog->common_meta;
   $giblog->write_to_file($templates_common_meta_file, $templates_common_meta);
   
-  # Create templates/common/header.tmpl.html file
+  # Create common/header.tmpl.html file
   my $templates_common_header_file = "$templates_common_dir/header.tmpl.html";
   $giblog->create_file($templates_common_header_file);
   my $templates_common_header = $giblog->common_header;
   $giblog->write_to_file($templates_common_header_file, $templates_common_header);
 
-  # Create templates/common/side.tmpl.html file
+  # Create common/side.tmpl.html file
   my $templates_common_side_file = "$templates_common_dir/side.tmpl.html";
   $giblog->create_file($templates_common_side_file);
   my $templates_common_side = $giblog->common_side;
   $giblog->write_to_file($templates_common_side_file, $templates_common_side);
   
-  # Create templates/common/footer-top.tmpl.html file
+  # Create common/footer-top.tmpl.html file
   my $templates_common_footer_file = "$templates_common_dir/footer.tmpl.html";
   $giblog->create_file($templates_common_footer_file);
   my $templates_common_footer = $giblog->common_footer;
   $giblog->write_to_file($templates_common_footer_file, $templates_common_footer);
   
-  # Create templates/common/entry-top.tmpl.html file
+  # Create common/entry-top.tmpl.html file
   my $templates_common_entry_top_file = "$templates_common_dir/entry-top.tmpl.html";
   $giblog->create_file($templates_common_entry_top_file);
   my $templates_common_entry_top = $giblog->common_entry_top;
   $giblog->write_to_file($templates_common_entry_top_file, $templates_common_entry_top);
   
-  # Create templates/common/entry-bottom.tmpl.html file
+  # Create common/entry-bottom.tmpl.html file
   my $templates_common_entry_bottom_file = "$templates_common_dir/entry-bottom.tmpl.html";
   $giblog->create_file($templates_common_entry_bottom_file);
   my $templates_common_entry_bottom = $giblog->common_entry_bottom;

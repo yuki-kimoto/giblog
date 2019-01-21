@@ -111,9 +111,6 @@ sub build {
         # Skip directory
         return unless -f $template_file;
         
-        # Skip common files
-        return if $template_file =~ /^$templates_dir\/common/;
-        
         push @template_files, $template_file;
       },
       no_chdir => 1,
@@ -207,55 +204,55 @@ sub build_public_file {
   
   my $entry_content = delete $parse_result->{'giblog.entry'};
   
-  my $templates_common_meta_file = $self->rel_file('templates/common/meta.tmpl.html');
-  my $templates_common_meta_content = $self->slurp_file($templates_common_meta_file);
+  my $common_meta_file = $self->rel_file('common/meta.tmpl.html');
+  my $common_meta_content = $self->slurp_file($common_meta_file);
 
-  my $templates_common_header_file = $self->rel_file('templates/common/header.tmpl.html');
-  my $templates_common_header_content = $self->slurp_file($templates_common_header_file);
+  my $common_header_file = $self->rel_file('common/header.tmpl.html');
+  my $common_header_content = $self->slurp_file($common_header_file);
 
-  my $templates_common_footer_file = $self->rel_file('templates/common/footer.tmpl.html');
-  my $templates_common_footer_content = $self->slurp_file($templates_common_footer_file);
+  my $common_footer_file = $self->rel_file('common/footer.tmpl.html');
+  my $common_footer_content = $self->slurp_file($common_footer_file);
 
-  my $templates_common_side_file = $self->rel_file('templates/common/side.tmpl.html');
-  my $templates_common_side_content = $self->slurp_file($templates_common_side_file);
+  my $common_side_file = $self->rel_file('common/side.tmpl.html');
+  my $common_side_content = $self->slurp_file($common_side_file);
 
-  my $templates_common_entry_top_file = $self->rel_file('templates/common/entry-top.tmpl.html');
-  my $templates_common_entry_top_content = $self->slurp_file($templates_common_entry_top_file);
+  my $common_entry_top_file = $self->rel_file('common/entry-top.tmpl.html');
+  my $common_entry_top_content = $self->slurp_file($common_entry_top_file);
 
-  my $templates_common_entry_bottom_file = $self->rel_file('templates/common/entry-bottom.tmpl.html');
-  my $templates_common_entry_bottom_content = $self->slurp_file($templates_common_entry_bottom_file);
+  my $common_entry_bottom_file = $self->rel_file('common/entry-bottom.tmpl.html');
+  my $common_entry_bottom_content = $self->slurp_file($common_entry_bottom_file);
   
   my $html = <<"EOS";
 <!DOCTYPE html>
 <html>
   <head>
-    $templates_common_meta_content
+    $common_meta_content
     <title>$title</title>
   </head>
   <body>
     <div class="container">
       <div class="header">
-        $templates_common_header_content
+        $common_header_content
       </div>
       <div class="main">
         <div class="entry">
           <h1>$h1_text</h1>
           <div class="entry-top">
-            $templates_common_entry_bottom_content
+            $common_entry_bottom_content
           </div>
           <div class="entry-body">
             $entry_content
           </div>
           <div class="entry-bottom">
-            $templates_common_entry_bottom_content
+            $common_entry_bottom_content
           </div>
         </div>
         <div class="side">
-          $templates_common_side_content
+          $common_side_content
         </div>
       </div>
       <div class="footer">
-        $templates_common_footer_content
+        $common_footer_content
       </div>
     </div>
   </body>
@@ -298,7 +295,7 @@ EOS
 }
 
 sub common_css {
-  my $templates_common_css =<<"EOS";
+  my $common_css =<<"EOS";
   /*
     Default CSS settings
   */
@@ -520,7 +517,7 @@ sub common_css {
 }
 EOS
 
-  return $templates_common_css;
+  return $common_css;
 }
 
 sub common_meta {
