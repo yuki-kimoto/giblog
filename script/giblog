@@ -43,7 +43,7 @@ my $giblog = Giblog->new(
 my $plugin_class = "Giblog::Plugin::$command";
 eval "use $plugin_class;";
 if ($@) {
-  confess "Can't find plugin $plugin_class";
+  confess "Can't load plugin $plugin_class:\n$!\n$@";
 }
 my $plugin = $plugin_class->new(giblog => $giblog);
 

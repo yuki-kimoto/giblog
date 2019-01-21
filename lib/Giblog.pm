@@ -251,18 +251,6 @@ EOS
 
 }
 
-sub config {
-  my ($self, $site_name) = @_;
-  
-  my $config = <<"EOS";
-{
-  site_title => '$site_name',
-}
-EOS
-  
-  return $config;
-}
-
 sub common_css {
   my $common_css =<<"EOS";
   /*

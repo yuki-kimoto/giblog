@@ -24,6 +24,7 @@ sub plugin {
   
   my $website_dir = $giblog->rel_file($website_name);
   
+  my $plugin_class = ref $self;
   my $plugin_templates_dir = $giblog->plugin_rel_file($self, 'templates');
   my $plugin_common_dir = $giblog->plugin_rel_file($self, 'common');
   my $plugin_public_dir = $giblog->plugin_rel_file($self, 'public');
@@ -34,7 +35,12 @@ sub plugin {
   # Create giblog.conf
   my $config_file = "$website_name/giblog.conf";
   $giblog->create_file($config_file);
-  my $config = $giblog->config($website_name);
+  my $config = <<"EOS";
+{
+  site_title => "$website_name",
+  proto => "$plugin_class",
+}
+EOS
   $giblog->write_to_file($config_file, $config);
   
   # Create public directory
