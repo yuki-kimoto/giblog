@@ -43,7 +43,6 @@ sub read_config {
   my $config_file = $self->rel_file('giblog.conf');
   
   my $config_content = $self->slurp_file($config_file);
-  $config_content = decode('UTF-8', $config_content);
   
   my $config = eval $config_content
     or confess "Can't parse config file \"$config_file\"";
@@ -107,6 +106,7 @@ sub slurp_file {
     or confess "Can't read file \"$file\": $!";
   
   my $content = do { local $/; <$fh> };
+  $content = decode('UTF-8', $content);
   
   return $content;
 }

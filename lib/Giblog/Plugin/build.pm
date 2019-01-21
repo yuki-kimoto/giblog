@@ -115,7 +115,8 @@ sub build_html {
   
   open my $tempalte_fh, '<', $template_file
       or confess "Can't open file \"$template_file\": $!";
-  my $template_content = decode('UTF-8', do { local $/; <$tempalte_fh> });
+  my $template_content = do { local $/; <$tempalte_fh> };
+  $template_content = decode('UTF-8', $template_content);
   
   my $parse_result = $self->parse_template($template_content);
   my $page_title = $parse_result->{'giblog.title'};

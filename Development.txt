@@ -8,3 +8,7 @@ make && perl -Mblib script/giblog --giblog-dir=mysite add
 
 # Build
 make && perl -Mblib script/giblog --giblog-dir=mysite build
+
+make && perl -Mblib script/giblog new mysitezemi
+
+make && perl -Mblib script/giblog --giblog-dir=mysitezemi build
