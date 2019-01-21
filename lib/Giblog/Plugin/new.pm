@@ -50,6 +50,10 @@ EOS
   my $devapp = <<"EOS";
 #!/usr/bin/env perl
 
+my \$build_cmd = 'giblog build';
+system(\$build_cmd) == 0
+  or warn("Can't execute build command \$build_cmd:\$!");
+
 use Mojolicious::Lite;
 
 get '/' => sub {
@@ -61,7 +65,7 @@ get '/' => sub {
 app->start;
 EOS
   $giblog->write_to_file($devapp_file, $devapp);
-  
+
   # Copy plugin proto files to user directory
   my @files;
   find(
