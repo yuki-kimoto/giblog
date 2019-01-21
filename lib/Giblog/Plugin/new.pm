@@ -5,6 +5,12 @@ use base 'Giblog::Plugin';
 use strict;
 use warnings;
 
+use Carp 'confess';
+
+use File::Path 'mkpath';
+use File::Copy 'copy';
+use File::Basename 'dirname';
+use File::Find 'find';
 
 sub plugin {
   my ($self, $website_name) = @_;
@@ -44,108 +50,62 @@ EOS
   $giblog->write_to_file($config_file, $config);
   
   # Create public directory
-  my $public_dir = "$website_name/public";
-  $giblog->create_dir($public_dir);
-
-  # Create public/blog directory
-  my $public_blog_dir = "$website_name/public/blog";
-  $giblog->create_dir($public_blog_dir);
-
-  # Create public/blog/.gitkeep file
-  my $public_blog_gitkeep_file = "$website_name/public/blog/.gitkeep";
-  $giblog->create_file($public_blog_gitkeep_file);
-
-  # Create public/css directory
-  my $public_css_dir = "$public_dir/css";
-  $giblog->create_dir($public_css_dir);
-
-  # Create public/common.css file
-  my $public_css_common_file = "$public_css_dir/common.css";
-  $giblog->create_file($public_css_common_file);
-  my $templates_common_css = $giblog->common_css;
-  $giblog->write_to_file($public_css_common_file, $templates_common_css);
-
-  # Create public/images directory
-  my $public_images_dir = "$public_dir/images";
-  $giblog->create_dir($public_images_dir);
-
-  # Create public/images/.gitkeep file
-  my $public_images_gitkeep_file = "$website_name/public/images/.gitkeep";
-  $giblog->create_file($public_images_gitkeep_file);
-
-  # Create public/js directory
-  my $public_js_dir = "$public_dir/js";
-  $giblog->create_dir($public_js_dir);
-
-  # Create public/js/.gitkeep file
-  my $public_js_gitkeep_file = "$website_name/public/js/.gitkeep";
-  $giblog->create_file($public_js_gitkeep_file);
+  my $user_public_dir = "$website_name/public";
+  $giblog->create_dir($user_public_dir);
 
   # Create templates directory
-  my $templates_dir = "$website_name/templates";
-  $giblog->create_dir($templates_dir);
+  my $user_templates_dir = "$website_name/templates";
+  $giblog->create_dir($user_templates_dir);
 
-  # Create templates/index.html file
-  my $templates_index_file = "$templates_dir/index.tmpl.html";
-  my $templates_index = <<"EOS";
-aiueo
+  # Copy plugin templates files to user templates file
+  my @template_files;
+  find(
+    {
+      wanted => sub {
+        my $plugin_template_file = $File::Find::name;
+        
+        # Skip directory
+        return unless -f $plugin_template_file;
+        
+        my $template_rel_file = $plugin_template_file;
+        $template_rel_file =~ s/^\Q$plugin_templates_dir\E[\/|\\]//;
+        
+        my $user_template_file = "$user_templates_dir/$template_rel_file";
+        my $user_templates_dir = dirname $user_template_file;
+        mkpath $user_templates_dir;
+        
+        copy $plugin_template_file, $user_template_file
+          or confess "Can't copy $plugin_template_file to $user_template_file: $!";
+      },
+      no_chdir => 1,
+    },
+    $plugin_templates_dir
+  );
 
-<!-- index -->
-  <div>
-    ppp
-  </div>
-aiueo
-
-EOS
-  $giblog->write_to_file($templates_index_file, $templates_index);
-
-  # Create templates/blog directory
-  my $templates_blog_dir = "$website_name/templates/blog";
-  $giblog->create_dir($templates_blog_dir);
-
-  # Create templates/blog/.gitkeep file
-  my $templates_blog_gitkeep_file = "$templates_blog_dir/.gitkeep";
-  $giblog->create_file($templates_blog_gitkeep_file);
-
-  # Create common directory
-  my $templates_common_dir = "$website_name/common";
-  $giblog->create_dir($templates_common_dir);
-
-  # Create common/meta.tmpl.html file
-  my $templates_common_meta_file = "$templates_common_dir/meta.tmpl.html";
-  $giblog->create_file($templates_common_meta_file);
-  my $templates_common_meta = $giblog->common_meta;
-  $giblog->write_to_file($templates_common_meta_file, $templates_common_meta);
-  
-  # Create common/header.tmpl.html file
-  my $templates_common_header_file = "$templates_common_dir/header.tmpl.html";
-  $giblog->create_file($templates_common_header_file);
-  my $templates_common_header = $giblog->common_header;
-  $giblog->write_to_file($templates_common_header_file, $templates_common_header);
-
-  # Create common/side.tmpl.html file
-  my $templates_common_side_file = "$templates_common_dir/side.tmpl.html";
-  $giblog->create_file($templates_common_side_file);
-  my $templates_common_side = $giblog->common_side;
-  $giblog->write_to_file($templates_common_side_file, $templates_common_side);
-  
-  # Create common/footer-top.tmpl.html file
-  my $templates_common_footer_file = "$templates_common_dir/footer.tmpl.html";
-  $giblog->create_file($templates_common_footer_file);
-  my $templates_common_footer = $giblog->common_footer;
-  $giblog->write_to_file($templates_common_footer_file, $templates_common_footer);
-  
-  # Create common/entry-top.tmpl.html file
-  my $templates_common_entry_top_file = "$templates_common_dir/entry-top.tmpl.html";
-  $giblog->create_file($templates_common_entry_top_file);
-  my $templates_common_entry_top = $giblog->common_entry_top;
-  $giblog->write_to_file($templates_common_entry_top_file, $templates_common_entry_top);
-  
-  # Create common/entry-bottom.tmpl.html file
-  my $templates_common_entry_bottom_file = "$templates_common_dir/entry-bottom.tmpl.html";
-  $giblog->create_file($templates_common_entry_bottom_file);
-  my $templates_common_entry_bottom = $giblog->common_entry_bottom;
-  $giblog->write_to_file($templates_common_entry_bottom_file, $templates_common_entry_bottom);
+  # Copy plugin publics files to user publics file
+  my @public_files;
+  find(
+    {
+      wanted => sub {
+        my $plugin_public_file = $File::Find::name;
+        
+        # Skip directory
+        return unless -f $plugin_public_file;
+        
+        my $public_rel_file = $plugin_public_file;
+        $public_rel_file =~ s/^\Q$plugin_public_dir\E[\/|\\]//;
+        
+        my $user_public_file = "$user_public_dir/$public_rel_file";
+        my $user_public_dir = dirname $user_public_file;
+        mkpath $user_public_dir;
+        
+        copy $plugin_public_file, $user_public_file
+          or confess "Can't copy $plugin_public_file to $user_public_file: $!";
+      },
+      no_chdir => 1,
+    },
+    $plugin_public_dir
+  );
 }
 
 1;
