@@ -21,6 +21,22 @@ Version 0.01
 
 our $VERSION = '0.01';
 
+sub plugin_rel_file {
+  my ($self, $plugin, $rel_file) = @_;
+  
+  my $plugin_rel_path = ref $plugin;
+  $plugin_rel_path =~ s/::/\//g;
+  $plugin_rel_path .= '.pm';
+  
+  my $plugin_path = $INC{$plugin_rel_path};
+  my $plugin_dir = $plugin_path;
+  $plugin_dir =~ s/\.pm$//;
+  
+  my $file = "$plugin_dir/$rel_file";
+  
+  return $file;
+}
+
 sub read_config {
   my $self = shift;
   

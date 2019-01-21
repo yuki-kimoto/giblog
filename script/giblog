@@ -40,9 +40,11 @@ my $giblog = Giblog->new(
 );
 
 # Command is implemented in plugin
-my $plugin = "Giblog::Plugin::$command";
-eval "use $plugin;";
+my $plugin_class = "Giblog::Plugin::$command";
+eval "use $plugin_class;";
 if ($@) {
-  confess "Can't find plugin $plugin";
+  confess "Can't find plugin $plugin_class";
 }
+my $plugin = $plugin_class->new(giblog => $giblog);
+
 $plugin->plugin($giblog, @ARGV);

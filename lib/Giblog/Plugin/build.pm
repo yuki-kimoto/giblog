@@ -1,5 +1,7 @@
 package Giblog::Plugin::build;
 
+use base 'Giblog::Plugin';
+
 use strict;
 use warnings;
 use File::Find 'find';

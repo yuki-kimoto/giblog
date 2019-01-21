@@ -1,5 +1,7 @@
 package Giblog::Plugin::new;
 
+use base 'Giblog::Plugin';
+
 use strict;
 use warnings;
 
@@ -20,6 +22,10 @@ sub plugin {
   
   my $website_dir = $giblog->rel_file($website_name);
   
+  my $plugin_templates_dir = $giblog->plugin_rel_file($self, 'templates');
+  my $plugin_common_dir = $giblog->plugin_rel_file($self, 'common');
+  my $plugin_public_dir = $giblog->plugin_rel_file($self, 'public');
+
   # Create website directory
   $giblog->create_dir($website_name);
   
