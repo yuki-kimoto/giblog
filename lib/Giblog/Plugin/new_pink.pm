@@ -1,5 +1,5 @@
 package Giblog::Plugin::new_pink;
 
-use base 'Giblog::Plugin';
+use base 'Giblog::Plugin::new';
 
 1;
