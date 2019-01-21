@@ -41,19 +41,17 @@ sub plugin {
 }
 
 sub parse_entry_file {
-  my ($self, $template_file) = @_;
+  my ($self, $template_content) = @_;
+ 
+  # Normalize line break;
+  $template_content =~ s/\x0D\x0A|\x0D|\x0A/\n/g;
   
-  open my $fh, '<', $template_file
-    or confess "Can't open file \"$template_file\": $!";
+  my @template_lines = split /\n/, $template_content;
   
   my $entry_content = '';
   my $bread_end;
   my $opt = {};
-  while (my $line = <$fh>) {
-    $line = decode('UTF-8', $line);
-    
-    $line =~ tr/\x0D\x0A//d;
-    
+  for my $line (@template_lines) {
     # title
     if ($line =~ /class="title"[^>]*?>([^<]*?)</) {
       unless (defined $opt->{'giblog.title'}) {
@@ -92,7 +90,11 @@ sub build_public_file {
   my $public_dir = dirname $public_file;
   mkpath $public_dir;
   
-  my $parse_result = $self->parse_entry_file($template_file);
+  open my $tempalte_fh, '<', $template_file
+      or confess "Can't open file \"$template_file\": $!";
+  my $template_content = decode('UTF-8', do { local $/; <$tempalte_fh> });
+  
+  my $parse_result = $self->parse_entry_file($template_content);
   my $page_title = $parse_result->{'giblog.title'};
   my $config = $giblog->read_config;
   my $site_title = $config->{site_title};

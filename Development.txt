@@ -1,10 +1,10 @@
 # Development
 
 # Create new website
-make && perl -Mblib script/giblog new mysite1
+rm -rf mysite && make && perl -Mblib script/giblog new mysite
 
 # Create new entry
-make && perl -Mblib script/giblog --giblog-dir=mysite1 add
+make && perl -Mblib script/giblog --giblog-dir=mysite add
 
 # Build
-make && perl -Mblib script/giblog --giblog-dir=mysite1 build
+make && perl -Mblib script/giblog --giblog-dir=mysite build
