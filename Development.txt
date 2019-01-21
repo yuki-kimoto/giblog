@@ -2,18 +2,9 @@
 
 # Create new website
 make && perl -Mblib script/giblog new mysite1
-make && perl -Mblib script/giblog new mysite2
-make && perl -Mblib script/giblog new mysite3
-make && perl -Mblib script/giblog new mysite5
-make && perl -Mblib script/giblog new mysite6
 
 # Create new entry
-make && perl -Mblib script/giblog --giblog-dir=mysite add
-make && perl -Mblib script/giblog --giblog-dir=mysite4 add
-make && perl -Mblib script/giblog --giblog-dir=mysite15 add
-
-# Add index content
+make && perl -Mblib script/giblog --giblog-dir=mysite1 add
 
 # Build
-make && perl -Mblib script/giblog --giblog-dir=mysite build
-make && perl -Mblib script/giblog --giblog-dir=mysite4 build
+make && perl -Mblib script/giblog --giblog-dir=mysite1 build
