@@ -1,6 +1,6 @@
 use FindBin;
 BEGIN {
-  $ENV{MOJO_HOME} = "$FindBin::Bin/mysite";
+  $ENV{MOJO_HOME} = "$FindBin::Bin/mysitezemi";
 }
 
 use Mojolicious::Lite;

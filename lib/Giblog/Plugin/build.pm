@@ -140,14 +140,6 @@ sub build_html {
     }
   }
   
-  my $h1_text;
-  if (defined $page_title) {
-    $h1_text = $page_title;
-  }
-  else {
-    $h1_text = '';
-  }
-  
   my $entry_content = delete $parse_result->{'giblog.entry'};
   
   my $common_meta_file = $giblog->rel_file('common/meta.html');
@@ -182,7 +174,6 @@ sub build_html {
       </div>
       <div class="main">
         <div class="entry">
-          <h1>$h1_text</h1>
           <div class="entry-top">
             $common_entry_bottom_content
           </div>
