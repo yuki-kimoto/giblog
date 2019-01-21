@@ -43,6 +43,24 @@ sub plugin {
 }
 EOS
   $giblog->write_to_file($config_file, $config);
+
+  # Create development application
+  my $devapp_file = "$website_name/devapp";
+  $giblog->create_file($devapp_file);
+  my $devapp = <<"EOS";
+#!/usr/bin/env perl
+
+use Mojolicious::Lite;
+
+get '/' => sub {
+  my \$c = shift;
+  
+  \$c->reply->static('index.html');
+};
+
+app->start;
+EOS
+  $giblog->write_to_file($devapp_file, $devapp);
   
   # Copy plugin proto files to user directory
   my @files;
