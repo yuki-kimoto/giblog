@@ -13,3 +13,4 @@ make && perl -Mblib script/giblog --giblog-dir=mysite4 new_entry
 
 # Build
 make && perl -Mblib script/giblog --giblog-dir=mysite build
+make && perl -Mblib script/giblog --giblog-dir=mysite4 build

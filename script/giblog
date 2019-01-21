@@ -54,7 +54,12 @@ elsif ($command eq 'new_entry') {
   $giblog->new_entry;
 }
 elsif ($command eq 'build') {
-  $giblog->build;
+  eval "use $plugin;";
+  if ($@) {
+    confess "Can't find plugin $plugin";
+  }
+  
+  $plugin->plugin($giblog, @ARGV);
 }
 else {
   die "Command \"$command\" is not found\n";

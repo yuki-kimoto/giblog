@@ -95,34 +95,6 @@ sub slurp_file {
   return $content;
 }
 
-sub build {
-  my $self = shift;
-
-  my $templates_dir = $self->rel_file('templates');
-  my $public_dir = $self->rel_file('public');
-  
-  # Get template files
-  my @template_files;
-  find(
-    {
-      wanted => sub {
-        my $template_file = $File::Find::name;
-        
-        # Skip directory
-        return unless -f $template_file;
-        
-        push @template_files, $template_file;
-      },
-      no_chdir => 1,
-    },
-    $templates_dir
-  );
-  
-  for my $template_file (@template_files) {
-    $self->build_public_file($templates_dir, $template_file);
-  }
-}
-
 sub parse_entry_file {
   my ($self, $template_file) = @_;
   
