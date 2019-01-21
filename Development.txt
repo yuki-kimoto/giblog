@@ -6,8 +6,8 @@ make && perl -Mblib script/giblog new_website mysite2
 make && perl -Mblib script/giblog new_website mysite3
 
 # Create new entry
-make && perl -Mblib script/giblog --giblog-dir=mysite new_entry
-make && perl -Mblib script/giblog --giblog-dir=mysite4 new_entry
+make && perl -Mblib script/giblog --giblog-dir=mysite add
+make && perl -Mblib script/giblog --giblog-dir=mysite4 add
 
 # Add index content
 

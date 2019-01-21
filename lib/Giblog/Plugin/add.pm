@@ -1,4 +1,4 @@
-package Giblog::Plugin::new_entry;
+package Giblog::Plugin::add;
 
 use strict;
 use warnings;
