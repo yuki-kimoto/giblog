@@ -142,22 +142,22 @@ sub build_html {
   
   my $entry_content = delete $parse_result->{'giblog.entry'};
   
-  my $common_meta_file = $giblog->rel_file('common/meta.html');
+  my $common_meta_file = $giblog->rel_file('templates/common/meta.html');
   my $common_meta_content = $giblog->slurp_file($common_meta_file);
 
-  my $common_header_file = $giblog->rel_file('common/header.html');
+  my $common_header_file = $giblog->rel_file('templates/common/header.html');
   my $common_header_content = $giblog->slurp_file($common_header_file);
 
-  my $common_footer_file = $giblog->rel_file('common/footer.html');
+  my $common_footer_file = $giblog->rel_file('templates/common/footer.html');
   my $common_footer_content = $giblog->slurp_file($common_footer_file);
 
-  my $common_side_file = $giblog->rel_file('common/side.html');
+  my $common_side_file = $giblog->rel_file('templates/common/side.html');
   my $common_side_content = $giblog->slurp_file($common_side_file);
 
-  my $common_entry_top_file = $giblog->rel_file('common/entry-top.html');
+  my $common_entry_top_file = $giblog->rel_file('templates/common/entry-top.html');
   my $common_entry_top_content = $giblog->slurp_file($common_entry_top_file);
 
-  my $common_entry_bottom_file = $giblog->rel_file('common/entry-bottom.html');
+  my $common_entry_bottom_file = $giblog->rel_file('templates/common/entry-bottom.html');
   my $common_entry_bottom_content = $giblog->slurp_file($common_entry_bottom_file);
   
   my $html = <<"EOS";
