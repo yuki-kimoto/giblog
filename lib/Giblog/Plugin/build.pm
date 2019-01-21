@@ -7,7 +7,9 @@ use warnings;
 use File::Find 'find';
 
 sub plugin {
-  my ($self, $giblog) = @_;
+  my ($self) = @_;
+  
+  my $giblog = $self->giblog;
 
   my $templates_dir = $giblog->rel_file('templates');
   my $public_dir = $giblog->rel_file('public');

@@ -7,7 +7,9 @@ use warnings;
 
 
 sub plugin {
-  my ($self, $giblog, $website_name) = @_;
+  my ($self, $website_name) = @_;
+  
+  my $giblog = $self->giblog;
   
   unless (defined $website_name) {
     die "Website name must be specifed\n";

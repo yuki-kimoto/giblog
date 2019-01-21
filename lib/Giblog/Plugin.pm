@@ -8,8 +8,6 @@ sub new {
   return bless $self, $class;
 }
 
-sub giblog {
-  return $self->{giblog};
-}
+sub giblog { shift->{giblog} }
 
 1;

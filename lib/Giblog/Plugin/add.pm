@@ -4,7 +4,9 @@ use strict;
 use warnings;
 
 sub plugin {
-  my ($self, $giblog) = @_;
+  my ($self) = @_;
+  
+  my $giblog = $self->giblog;
   
   my $entry_dir = $giblog->rel_file('templates/blog');
   
