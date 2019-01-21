@@ -36,7 +36,19 @@ sub plugin {
   );
   
   for my $template_file (@template_files) {
-    $self->build_html($templates_dir, $template_file);
+    # Build html
+    my $html = $self->build_html($templates_dir, $template_file);
+    
+    # public file
+    my $public_rel_file = $template_file;
+    $public_rel_file =~ s/^$templates_dir//;
+    $public_rel_file =~ s/^\///;
+    $public_rel_file =~ s/\.tmpl\.html$/.html/;
+    my $public_file = $giblog->rel_file("public/$public_rel_file");
+    my $public_dir = dirname $public_file;
+    mkpath $public_dir;
+    
+    $giblog->write_to_file($public_file, $html);
   }
 }
 
@@ -80,15 +92,6 @@ sub build_html {
   my ($self, $templates_dir, $template_file) = @_;
   
   my $giblog = $self->giblog;
-  
-  my $public_rel_file = $template_file;
-  $public_rel_file =~ s/^$templates_dir//;
-  $public_rel_file =~ s/^\///;
-  $public_rel_file =~ s/\.tmpl\.html$/.html/;
-  
-  my $public_file = $giblog->rel_file("public/$public_rel_file");
-  my $public_dir = dirname $public_file;
-  mkpath $public_dir;
   
   open my $tempalte_fh, '<', $template_file
       or confess "Can't open file \"$template_file\": $!";
@@ -181,8 +184,7 @@ sub build_html {
 </html>
 EOS
     
-  $giblog->write_to_file($public_file, $html);
-
+  return $html;
 }
 
 1;
