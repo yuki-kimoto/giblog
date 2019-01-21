@@ -40,7 +40,7 @@ sub plugin {
   }
 }
 
-sub parse_entry_file {
+sub parse_template {
   my ($self, $template_content) = @_;
  
   # Normalize line break;
@@ -94,7 +94,7 @@ sub build_public_file {
       or confess "Can't open file \"$template_file\": $!";
   my $template_content = decode('UTF-8', do { local $/; <$tempalte_fh> });
   
-  my $parse_result = $self->parse_entry_file($template_content);
+  my $parse_result = $self->parse_template($template_content);
   my $page_title = $parse_result->{'giblog.title'};
   my $config = $giblog->read_config;
   my $site_title = $config->{site_title};
