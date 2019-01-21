@@ -28,12 +28,8 @@ sub plugin {
     die "Website \"$website_name\" is already exists\n";
   }
   
-  my $website_dir = $giblog->rel_file($website_name);
-  
   my $plugin_class = ref $self;
-  my $plugin_templates_dir = $giblog->plugin_rel_file($self, 'templates');
-  my $plugin_common_dir = $giblog->plugin_rel_file($self, 'common');
-  my $plugin_public_dir = $giblog->plugin_rel_file($self, 'public');
+  my $plugin_proto_dir = $giblog->plugin_rel_file($self, 'proto');
 
   # Create website directory
   $giblog->create_dir($website_name);
@@ -44,67 +40,33 @@ sub plugin {
   my $config = <<"EOS";
 {
   site_title => "$website_name",
-  proto => "$plugin_class",
 }
 EOS
   $giblog->write_to_file($config_file, $config);
   
-  # Create public directory
-  my $user_public_dir = "$website_name/public";
-  $giblog->create_dir($user_public_dir);
-
-  # Create templates directory
-  my $user_templates_dir = "$website_name/templates";
-  $giblog->create_dir($user_templates_dir);
-
-  # Copy plugin templates files to user templates file
-  my @template_files;
+  # Copy plugin proto files to user directory
+  my @files;
   find(
     {
       wanted => sub {
-        my $plugin_template_file = $File::Find::name;
+        my $plugin_proto_file = $File::Find::name;
         
         # Skip directory
-        return unless -f $plugin_template_file;
+        return unless -f $plugin_proto_file;
         
-        my $template_rel_file = $plugin_template_file;
-        $template_rel_file =~ s/^\Q$plugin_templates_dir\E[\/|\\]//;
+        my $rel_file = $plugin_proto_file;
+        $rel_file =~ s/^\Q$plugin_proto_dir\E[\/|\\]//;
         
-        my $user_template_file = "$user_templates_dir/$template_rel_file";
-        my $user_templates_dir = dirname $user_template_file;
-        mkpath $user_templates_dir;
+        my $user_file = "$website_name/$rel_file";
+        my $user_dir = dirname $user_file;
+        mkpath $user_dir;
         
-        copy $plugin_template_file, $user_template_file
-          or confess "Can't copy $plugin_template_file to $user_template_file: $!";
+        copy $plugin_proto_file, $user_file
+          or confess "Can't copy $plugin_proto_file to $user_file: $!";
       },
       no_chdir => 1,
     },
-    $plugin_templates_dir
-  );
-
-  # Copy plugin publics files to user publics file
-  my @public_files;
-  find(
-    {
-      wanted => sub {
-        my $plugin_public_file = $File::Find::name;
-        
-        # Skip directory
-        return unless -f $plugin_public_file;
-        
-        my $public_rel_file = $plugin_public_file;
-        $public_rel_file =~ s/^\Q$plugin_public_dir\E[\/|\\]//;
-        
-        my $user_public_file = "$user_public_dir/$public_rel_file";
-        my $user_public_dir = dirname $user_public_file;
-        mkpath $user_public_dir;
-        
-        copy $plugin_public_file, $user_public_file
-          or confess "Can't copy $plugin_public_file to $user_public_file: $!";
-      },
-      no_chdir => 1,
-    },
-    $plugin_public_dir
+    $plugin_proto_dir
   );
 }
 
