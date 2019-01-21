@@ -34,4 +34,4 @@ SPVM-.*
 ^t/precompile
 ^spvmcc_build/[^\.]
 .idea/.*
-^mysite/
+^mysite
