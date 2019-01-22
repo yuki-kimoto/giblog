@@ -51,6 +51,8 @@ sub plugin {
   }
 }
 
+my $inline_elements_re = qr/^<(span|em|strong|abbr|acronym|dfn|q|cite|sup|sub|code|var|kbd|samp|bdo|font|big|small|b|i|s|strike|u|tt|a|label|object|applet|iframe|button|textarea|select|basefont|img|br|input|script|map)\b/;
+
 sub parse_template {
   my ($self, $template_content) = @_;
  
@@ -85,11 +87,15 @@ sub parse_template {
         }
       }
       
-      # Row line if first charcter is not space or tab
-      if ($line =~ /^[ \t\<]/) {
+      # If start with inline tag, wrap p
+      if ($line =~ $inline_elements_re) {
+        $entry_content .= "<p>\n  $line\n</p>\n";
+      }
+      # If start with space or tab or not inline tag, it is raw line
+      elsif ($line =~ /^[ \t\<]/) {
         $entry_content .= "$line\n";
       }
-      # Wrap p if line have length
+      # If line have length, wrap p
       else {
         if (length $line) {
           $entry_content .= "<p>\n  $line\n</p>\n";
