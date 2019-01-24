@@ -1,4 +1,4 @@
-package Giblog::Plugin::new_pink;
+package Giblog::Plugin::new_test;
 
 use base 'Giblog::Plugin::new';
 
