@@ -33,7 +33,10 @@ sub build {
         
         # Skip directory
         return unless -f $template_file;
-        
+
+        # Skip common files
+        return if $template_file =~ /^\Q$templates_dir\/common/;
+                
         push @template_files, $template_file;
       },
       no_chdir => 1,
