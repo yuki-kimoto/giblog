@@ -31,11 +31,14 @@ if ($command =~ /^-/) {
   die "Command \"$command\" is not found\n";
 }
 
+my $getopt_option_save = Getopt::Long::Configure(qw(default no_auto_abbrev no_ignore_case));
 GetOptions(
   "d|giblog-dir=s" => \my $giblog_dir,
   'I|include=s'  => \my @include,
 );
-unshift @INC, @include;
+Getopt::Long::Configure($getopt_option_save);
+
+unshift @INC, @include, 'lib';
 
 my $giblog = Giblog->new(
   'giblog-dir' => $giblog_dir
