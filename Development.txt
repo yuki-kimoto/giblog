@@ -11,7 +11,7 @@ make && perl -Mblib script/giblog --giblog-dir=mysite add
 make && perl -Mblib script/giblog --giblog-dir=mysite build
 
 # Serve
-morbo devapp
+export PERL5LIB=blib/lib morbo mysite/webapp
 
 make && perl -Mblib script/giblog --giblog-dir=mysitezemi build
 

@@ -44,7 +44,7 @@ sub plugin {
 EOS
   $giblog->write_to_file($config_file, $config);
 
-  # Create application
+  # Create web application
   my $webapp_file = "$website_name/webapp";
   $giblog->create_file($webapp_file);
   my $webapp = <<'EOS';
@@ -77,6 +77,32 @@ get '/' => sub {
 app->start;
 EOS
   $giblog->write_to_file($webapp_file, $webapp);
+
+  # Create build plugin
+  mkpath "$website_name/lib/Giblog/Plugin";
+  my $build_plugin_file = "$website_name/lib/Giblog/Plugin/build.pm";
+  $giblog->create_file($build_plugin_file);
+  my $build_plugin = <<'EOS';
+package Giblog::Plugin::build;
+
+use base 'Giblog::Plugin::base_build';
+
+use strict;
+use warnings;
+
+sub plugin {
+  my ($self, @args) = @_;
+  
+  # Write pre process
+  
+  $self->SUPER::plugin(@args);
+  
+  # Write post porsess
+}
+
+1;
+EOS
+  $giblog->write_to_file($build_plugin_file, $build_plugin);
 
   # Copy plugin proto files to user directory
   my @files;
