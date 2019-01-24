@@ -39,32 +39,44 @@ sub plugin {
   $giblog->create_file($config_file);
   my $config = <<"EOS";
 {
-  site_title => "$website_name",
+  site_title => "Web Site Name",
 }
 EOS
   $giblog->write_to_file($config_file, $config);
 
-  # Create development application
-  my $devapp_file = "$website_name/devapp";
-  $giblog->create_file($devapp_file);
-  my $devapp = <<"EOS";
+  # Create application
+  my $webapp_file = "$website_name/webapp";
+  $giblog->create_file($webapp_file);
+  my $webapp = <<'EOS';
 #!/usr/bin/env perl
 
-my \$build_cmd = 'giblog build';
-system(\$build_cmd) == 0
-  or warn("Can't execute build command \$build_cmd:\$!");
+use strict;
+use warnings;
+
+use File::Basename 'dirname';
+my $giblog_dir;
+BEGIN {
+  $giblog_dir = dirname __FILE__;
+}
+use lib "$giblog_dir/lib";
+use Giblog;
+use Giblog::Plugin::build;
+
+my $giblog = Giblog->new('giblog-dir' => $giblog_dir);
+my $build_plugin = Giblog::Plugin::build->new(giblog => $giblog);
+$build_plugin->plugin;
 
 use Mojolicious::Lite;
 
 get '/' => sub {
-  my \$c = shift;
+  my $c = shift;
   
-  \$c->reply->static('index.html');
+  $c->reply->static('index.html');
 };
 
 app->start;
 EOS
-  $giblog->write_to_file($devapp_file, $devapp);
+  $giblog->write_to_file($webapp_file, $webapp);
 
   # Copy plugin proto files to user directory
   my @files;
