@@ -68,7 +68,9 @@ sub build {
     $data = $self->parse_template($data);
     
     # Build html
-    my $html = $self->build_html($data);
+    $data = $self->build_html($data);
+    
+    my $html = $data->{content};
     
     # public file
     my $public_rel_file = $template_rel_file;
@@ -85,12 +87,12 @@ sub build {
 my $inline_elements_re = qr/^<(span|em|strong|abbr|acronym|dfn|q|cite|sup|sub|code|var|kbd|samp|bdo|font|big|small|b|i|s|strike|u|tt|a|label|object|applet|iframe|button|textarea|select|basefont|img|br|input|script|map)\b/;
 
 sub parse_template {
-  my ($self, $opt) = @_;
+  my ($self, $data) = @_;
   
-  $opt ||= {};
+  $data ||= {};
   
-  my $template_content = $opt->{content};
-  my $url = $opt->{url};
+  my $template_content = $data->{content};
+  my $url = $data->{url};
   
   # Normalize line break;
   $template_content =~ s/\x0D\x0A|\x0D|\x0A/\n/g;
@@ -118,8 +120,8 @@ sub parse_template {
       # title
       if ($line =~ s|class="title"[^>]*?>([^<]*?)<|class="title"><a href="$url">$1</a><|) {
         my $title = $1;
-        unless (defined $opt->{'title'}) {
-          $opt->{'title'} = $1;
+        unless (defined $data->{'title'}) {
+          $data->{'title'} = $1;
         }
       }
       
@@ -145,9 +147,9 @@ sub parse_template {
     }
   }
   
-  $opt->{'content'} = $entry_content;
+  $data->{'content'} = $entry_content;
   
-  return $opt;
+  return $data;
 }
 
 sub build_html {
@@ -231,8 +233,10 @@ sub build_html {
   </body>
 </html>
 EOS
+  
+  $data->{content} = $html;
     
-  return $html;
+  return $data;
 }
 
 1;
