@@ -102,9 +102,7 @@ sub parse_template {
       if ($line =~ s|class="title"[^>]*?>([^<]*?)<|class="title"><a href="$url">$1</a><|) {
         my $title = $1;
         unless (defined $opt->{'title'}) {
-          unless (defined $opt->{'title'}) {
-            $opt->{'title'} = $1;
-          }
+          $opt->{'title'} = $1;
         }
       }
       
