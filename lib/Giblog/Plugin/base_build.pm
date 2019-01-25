@@ -63,8 +63,12 @@ sub build {
 my $inline_elements_re = qr/^<(span|em|strong|abbr|acronym|dfn|q|cite|sup|sub|code|var|kbd|samp|bdo|font|big|small|b|i|s|strike|u|tt|a|label|object|applet|iframe|button|textarea|select|basefont|img|br|input|script|map)\b/;
 
 sub parse_template {
-  my ($self, $template_content) = @_;
- 
+  my ($self, $opt) = @_;
+  
+  $opt ||= {};
+  
+  my $template_content = $opt->{content};
+  
   # Normalize line break;
   $template_content =~ s/\x0D\x0A|\x0D|\x0A/\n/g;
   
@@ -73,7 +77,6 @@ sub parse_template {
   my $pre_start;
   my $entry_content = '';
   my $bread_end;
-  my $opt = {};
   for my $line (@template_lines) {
     my $original_line = $line;
     
@@ -91,8 +94,10 @@ sub parse_template {
     else {
       # title
       if ($line =~ /class="title"[^>]*?>([^<]*?)</) {
-        unless (defined $opt->{'giblog.title'}) {
-          $opt->{'giblog.title'} = $1;
+        unless (defined $opt->{'title'}) {
+          unless (defined $opt->{'title'}) {
+            $opt->{'title'} = $1;
+          }
         }
       }
       
@@ -118,7 +123,7 @@ sub parse_template {
     }
   }
   
-  $opt->{'giblog.entry'} = $entry_content;
+  $opt->{'content'} = $entry_content;
   
   return $opt;
 }
@@ -133,8 +138,8 @@ sub build_html {
   my $template_content = do { local $/; <$tempalte_fh> };
   $template_content = decode('UTF-8', $template_content);
   
-  my $parse_result = $self->parse_template($template_content);
-  my $page_title = $parse_result->{'giblog.title'};
+  my $parse_result = $self->parse_template({content => $template_content});
+  my $page_title = $parse_result->{'title'};
   my $config = $giblog->read_config;
   my $site_title = $config->{site_title};
   my $title;
@@ -155,7 +160,7 @@ sub build_html {
     }
   }
   
-  my $entry_content = delete $parse_result->{'giblog.entry'};
+  my $entry_content = delete $parse_result->{'content'};
   
   my $common_meta_file = $giblog->rel_file('templates/common/meta.html');
   my $common_meta_content = $giblog->slurp_file($common_meta_file);
