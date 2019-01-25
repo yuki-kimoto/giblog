@@ -25,7 +25,7 @@ sub build {
   my $public_dir = $giblog->rel_file('public');
   
   # Get template files
-  my @template_files;
+  my @template_rel_files;
   find(
     {
       wanted => sub {
@@ -36,22 +36,22 @@ sub build {
 
         # Skip common files
         return if $template_file =~ /^\Q$templates_dir\/common/;
-                
-        push @template_files, $template_file;
+        
+        my $template_rel_file = $template_file;
+        $template_rel_file =~ s/^$templates_dir//;
+        $template_rel_file =~ s/^[\\\/]//;
+        $template_rel_file = "templates/$template_rel_file";
+        
+        push @template_rel_files, $template_rel_file;
       },
       no_chdir => 1,
     },
     $templates_dir
   );
   
-  for my $template_file (@template_files) {
-    my $template_rel_file = $template_file;
-    $template_rel_file =~ s/^$templates_dir//;
-    $template_rel_file =~ s/^[\\\/]//;
-    $template_rel_file = "templates/$template_rel_file";
-
-    my $template_abs_file = $giblog->rel_file($template_rel_file);
-    my $content = $giblog->slurp_file($template_abs_file);
+  for my $template_rel_file (@template_rel_files) {
+    my $template_file = $giblog->rel_file($template_rel_file);
+    my $content = $giblog->slurp_file($template_file);
     
     my $url = $template_rel_file;
     $url =~ s|^templates||;
@@ -71,13 +71,13 @@ sub build {
     my $html = $self->build_html($data);
     
     # public file
-    my $public_rel_file = $template_file;
-    $public_rel_file =~ s/^$templates_dir//;
-    $public_rel_file =~ s/^\///;
-    my $public_file = $giblog->rel_file("public/$public_rel_file");
+    my $public_rel_file = $template_rel_file;
+    $public_rel_file =~ s/^templates/public/;
+    my $public_file = $giblog->rel_file("$public_rel_file");
     my $public_dir = dirname $public_file;
     mkpath $public_dir;
     
+    # Write to public file
     $giblog->write_to_file($public_file, $html);
   }
 }
