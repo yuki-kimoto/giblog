@@ -62,6 +62,8 @@ use lib "$giblog_dir/lib";
 use Giblog;
 use Giblog::Plugin::build;
 
+print "Server start\n";
+
 my $giblog = Giblog->new('giblog-dir' => $giblog_dir);
 my $build_plugin = Giblog::Plugin::build->new(giblog => $giblog);
 $build_plugin->plugin;
