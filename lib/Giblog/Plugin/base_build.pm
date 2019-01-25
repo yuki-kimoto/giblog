@@ -48,10 +48,27 @@ sub build {
     my $template_rel_file = $template_file;
     $template_rel_file =~ s/^$templates_dir//;
     $template_rel_file =~ s/^[\\\/]//;
-    $template_rel_file = "/templates/$template_rel_file";
+    $template_rel_file = "templates/$template_rel_file";
+
+    my $template_abs_file = $giblog->rel_file($template_rel_file);
+    my $content = $giblog->slurp_file($template_abs_file);
+    
+    my $url = $template_rel_file;
+    $url =~ s|^templates||;
+    if ($url eq '/index.html') {
+      $url = '/';
+    }
+    
+    my $data = {
+      content => $content,
+      url => $url,
+    };
+    
+    # Parse template
+    $data = $self->parse_template($data);
     
     # Build html
-    my $html = $self->build_html($template_rel_file);
+    my $html = $self->build_html($data);
     
     # public file
     my $public_rel_file = $template_file;
@@ -134,21 +151,11 @@ sub parse_template {
 }
 
 sub build_html {
-  my ($self, $template_rel_file) = @_;
+  my ($self, $data) = @_;
   
   my $giblog = $self->giblog;
   
-  my $template_file = $giblog->rel_file($template_rel_file);
-  my $content = $giblog->slurp_file($template_file);
-  
-  my $url = $template_rel_file;
-  $url =~ s|^/templates||;
-  if ($url eq '/index.html') {
-    $url = '/';
-  }
-  
-  my $parse_result = $self->parse_template({content => $content, url => $url});
-  my $page_title = $parse_result->{'title'};
+  my $page_title = $data->{'title'};
   my $config = $giblog->read_config;
   my $site_title = $config->{site_title};
   my $title;
@@ -169,7 +176,7 @@ sub build_html {
     }
   }
   
-  my $entry_content = delete $parse_result->{'content'};
+  my $entry_content = $data->{content};
   
   my $common_meta_file = $giblog->rel_file('templates/common/meta.html');
   my $common_meta_content = $giblog->slurp_file($common_meta_file);
