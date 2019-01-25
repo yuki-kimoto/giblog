@@ -45,8 +45,13 @@ sub build {
   );
   
   for my $template_file (@template_files) {
+    my $template_rel_file = $template_file;
+    $template_rel_file =~ s/^$templates_dir//;
+    $template_rel_file =~ s/^[\\\/]//;
+    $template_rel_file = "/templates/$template_rel_file";
+    
     # Build html
-    my $html = $self->build_html($templates_dir, $template_file);
+    my $html = $self->build_html($template_rel_file);
     
     # public file
     my $public_rel_file = $template_file;
@@ -68,6 +73,7 @@ sub parse_template {
   $opt ||= {};
   
   my $template_content = $opt->{content};
+  my $url = $opt->{url};
   
   # Normalize line break;
   $template_content =~ s/\x0D\x0A|\x0D|\x0A/\n/g;
@@ -93,7 +99,8 @@ sub parse_template {
     }
     else {
       # title
-      if ($line =~ /class="title"[^>]*?>([^<]*?)</) {
+      if ($line =~ s|class="title"[^>]*?>([^<]*?)<|class="title"><a href="$url">$1</a><|) {
+        my $title = $1;
         unless (defined $opt->{'title'}) {
           unless (defined $opt->{'title'}) {
             $opt->{'title'} = $1;
@@ -129,16 +136,20 @@ sub parse_template {
 }
 
 sub build_html {
-  my ($self, $templates_dir, $template_file) = @_;
+  my ($self, $template_rel_file) = @_;
   
   my $giblog = $self->giblog;
   
-  open my $tempalte_fh, '<', $template_file
-      or confess "Can't open file \"$template_file\": $!";
-  my $template_content = do { local $/; <$tempalte_fh> };
-  $template_content = decode('UTF-8', $template_content);
+  my $template_file = $giblog->rel_file($template_rel_file);
+  my $content = $giblog->slurp_file($template_file);
   
-  my $parse_result = $self->parse_template({content => $template_content});
+  my $url = $template_rel_file;
+  $url =~ s|^/templates||;
+  if ($url eq '/index.html') {
+    $url = '/';
+  }
+  
+  my $parse_result = $self->parse_template({content => $content, url => $url});
   my $page_title = $parse_result->{'title'};
   my $config = $giblog->read_config;
   my $site_title = $config->{site_title};

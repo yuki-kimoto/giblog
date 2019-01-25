@@ -4,6 +4,10 @@
 rm -rf mysite && make && perl -Mblib script/giblog new mysite
 rm -rf mysite2 && make && perl -Mblib script/giblog new mysite2
 
+rm -rf mysite_smart && make && perl -Mblib script/giblog new_smart mysite_smart
+
+make && perl -Mblib script/giblog --giblog-dir=mysite_smart build
+
 # Create new entry
 make && perl -Mblib script/giblog --giblog-dir=mysite add
 
