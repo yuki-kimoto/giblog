@@ -1,16 +1,16 @@
-package Giblog::Plugin::build;
+package Giblog::Command::build;
 
-use base 'Giblog::Plugin::base_build';
+use base 'Giblog::Command::base_build';
 
 use strict;
 use warnings;
 
-sub plugin {
+sub run {
   my ($self, @args) = @_;
   
   # Write pre process
   
-  $self->SUPER::plugin(@args);
+  $self->SUPER::run(@args);
   
   # Write post porsess
 }

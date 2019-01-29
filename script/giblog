@@ -23,12 +23,12 @@ for my $arg (@ARGV) {
 @ARGV = @ordered_argv;
 
 # Command
-my $command = shift @ARGV;
-unless (defined $command) {
+my $command_name = shift @ARGV;
+unless (defined $command_name) {
   die "Command must be specifed\n";
 }
-if ($command =~ /^-/) {
-  die "Command \"$command\" is not found\n";
+if ($command_name =~ /^-/) {
+  die "Command \"$command_name\" is not found\n";
 }
 
 my $getopt_option_save = Getopt::Long::Configure(qw(default no_auto_abbrev no_ignore_case));
@@ -44,12 +44,12 @@ my $giblog = Giblog->new(
   'giblog-dir' => $giblog_dir
 );
 
-# Command is implemented in plugin
-my $plugin_class = "Giblog::Plugin::$command";
-eval "use $plugin_class;";
+# Command is implemented in command
+my $command_class = "Giblog::Command::$command_name";
+eval "use $command_class;";
 if ($@) {
-  confess "Can't load plugin $plugin_class:\n$!\n$@";
+  confess "Can't load command $command_class:\n$!\n$@";
 }
-my $plugin = $plugin_class->new(giblog => $giblog);
+my $command = $command_class->new(giblog => $giblog);
 
-$plugin->plugin(@ARGV);
+$command->run(@ARGV);

@@ -1,11 +1,11 @@
-package Giblog::Plugin::add;
+package Giblog::Command::add;
 
-use base 'Giblog::Plugin';
+use base 'Giblog::Command';
 
 use strict;
 use warnings;
 
-sub plugin {
+sub run {
   my ($self) = @_;
   
   my $giblog = $self->giblog;

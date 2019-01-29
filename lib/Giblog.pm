@@ -21,18 +21,18 @@ Version 0.01
 
 our $VERSION = '0.01';
 
-sub plugin_rel_file {
-  my ($self, $plugin, $rel_file) = @_;
+sub command_rel_file {
+  my ($self, $command, $rel_file) = @_;
   
-  my $plugin_rel_path = ref $plugin;
-  $plugin_rel_path =~ s/::/\//g;
-  $plugin_rel_path .= '.pm';
+  my $command_rel_path = ref $command;
+  $command_rel_path =~ s/::/\//g;
+  $command_rel_path .= '.pm';
   
-  my $plugin_path = $INC{$plugin_rel_path};
-  my $plugin_dir = $plugin_path;
-  $plugin_dir =~ s/\.pm$//;
+  my $command_path = $INC{$command_rel_path};
+  my $command_dir = $command_path;
+  $command_dir =~ s/\.pm$//;
   
-  my $file = "$plugin_dir/$rel_file";
+  my $file = "$command_dir/$rel_file";
   
   return $file;
 }

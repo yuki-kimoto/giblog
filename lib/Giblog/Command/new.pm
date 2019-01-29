@@ -1,6 +1,6 @@
-package Giblog::Plugin::new;
+package Giblog::Command::new;
 
-use base 'Giblog::Plugin';
+use base 'Giblog::Command';
 
 use strict;
 use warnings;
@@ -12,7 +12,7 @@ use File::Copy 'copy';
 use File::Basename 'dirname';
 use File::Find 'find';
 
-sub plugin {
+sub run {
   my ($self, $website_name) = @_;
   
   my $giblog = $self->giblog;
@@ -28,8 +28,8 @@ sub plugin {
     die "Website \"$website_name\" is already exists\n";
   }
   
-  my $plugin_class = ref $self;
-  my $plugin_proto_dir = $giblog->plugin_rel_file($self, 'proto');
+  my $command_class = ref $self;
+  my $command_proto_dir = $giblog->command_rel_file($self, 'proto');
 
   # Create website directory
   $giblog->create_dir($website_name);
@@ -60,13 +60,13 @@ BEGIN {
 }
 use lib "$giblog_dir/lib";
 use Giblog;
-use Giblog::Plugin::build;
+use Giblog::Command::build;
 
 print "Server start\n";
 
 my $giblog = Giblog->new('giblog-dir' => $giblog_dir);
-my $build_plugin = Giblog::Plugin::build->new(giblog => $giblog);
-$build_plugin->plugin;
+my $build_command = Giblog::Command::build->new(giblog => $giblog);
+$build_command->command;
 
 use Mojolicious::Lite;
 
@@ -80,55 +80,55 @@ app->start;
 EOS
   $giblog->write_to_file($webapp_file, $webapp);
 
-  # Create build plugin
-  mkpath "$website_name/lib/Giblog/Plugin";
-  my $build_plugin_file = "$website_name/lib/Giblog/Plugin/build.pm";
-  $giblog->create_file($build_plugin_file);
-  my $build_plugin = <<'EOS';
-package Giblog::Plugin::build;
+  # Create build command
+  mkpath "$website_name/lib/Giblog/Command";
+  my $build_command_file = "$website_name/lib/Giblog/Command/build.pm";
+  $giblog->create_file($build_command_file);
+  my $build_command = <<'EOS';
+package Giblog::Command::build;
 
-use base 'Giblog::Plugin::base_build';
+use base 'Giblog::Command::base_build';
 
 use strict;
 use warnings;
 
-sub plugin {
+sub run {
   my ($self, @args) = @_;
   
   # Write pre process
   
-  $self->SUPER::plugin(@args);
+  $self->SUPER::command(@args);
   
   # Write post porsess
 }
 
 1;
 EOS
-  $giblog->write_to_file($build_plugin_file, $build_plugin);
+  $giblog->write_to_file($build_command_file, $build_command);
 
-  # Copy plugin proto files to user directory
+  # Copy command proto files to user directory
   my @files;
   find(
     {
       wanted => sub {
-        my $plugin_proto_file = $File::Find::name;
+        my $command_proto_file = $File::Find::name;
         
         # Skip directory
-        return unless -f $plugin_proto_file;
+        return unless -f $command_proto_file;
         
-        my $rel_file = $plugin_proto_file;
-        $rel_file =~ s/^\Q$plugin_proto_dir\E[\/|\\]//;
+        my $rel_file = $command_proto_file;
+        $rel_file =~ s/^\Q$command_proto_dir\E[\/|\\]//;
         
         my $user_file = "$website_name/$rel_file";
         my $user_dir = dirname $user_file;
         mkpath $user_dir;
         
-        copy $plugin_proto_file, $user_file
-          or confess "Can't copy $plugin_proto_file to $user_file: $!";
+        copy $command_proto_file, $user_file
+          or confess "Can't copy $command_proto_file to $user_file: $!";
       },
       no_chdir => 1,
     },
-    $plugin_proto_dir
+    $command_proto_dir
   );
 }
 

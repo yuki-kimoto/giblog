@@ -1,6 +1,6 @@
-package Giblog::Plugin::base_build;
+package Giblog::Command::base_build;
 
-use base 'Giblog::Plugin';
+use base 'Giblog::Command';
 
 use strict;
 use warnings;
@@ -10,7 +10,7 @@ use File::Basename 'dirname';
 use File::Path 'mkpath';
 use Encode 'encode', 'decode';
 
-sub plugin {
+sub run {
   my $self = shift;
   
   $self->build;

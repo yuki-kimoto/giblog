@@ -1,4 +1,4 @@
-package Giblog::Plugin;
+package Giblog::Command;
 
 sub new {
   my $class = shift;
