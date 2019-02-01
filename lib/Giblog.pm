@@ -37,6 +37,8 @@ sub command_rel_file {
   return $file;
 }
 
+sub config { shift->{config} }
+
 sub read_config {
   my $self = shift;
   
@@ -47,7 +49,7 @@ sub read_config {
   my $config = eval $config_content
     or confess "Can't parse config file \"$config_file\"";
   
-  return $config;
+  $self->{config} = $config;
 }
 
 sub new {

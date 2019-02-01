@@ -13,6 +13,10 @@ use Encode 'encode', 'decode';
 sub run {
   my $self = shift;
   
+  my $giblog = $self->giblog;
+  
+  $giblog->read_config;
+  
   $self->build;
 }
 
@@ -65,7 +69,7 @@ sub build {
     };
     
     # Parse template
-    $data = $self->parse_template($data);
+    $data = $self->parse_content($data);
     
     # Build html
     $data = $self->build_html($data);
@@ -86,7 +90,7 @@ sub build {
 
 my $inline_elements_re = qr/^<(span|em|strong|abbr|acronym|dfn|q|cite|sup|sub|code|var|kbd|samp|bdo|font|big|small|b|i|s|strike|u|tt|a|label|object|applet|iframe|button|textarea|select|basefont|img|br|input|script|map)\b/;
 
-sub parse_template {
+sub parse_content {
   my ($self, $data) = @_;
   
   $data ||= {};
@@ -100,7 +104,7 @@ sub parse_template {
   my @template_lines = split /\n/, $template_content;
   
   my $pre_start;
-  my $entry_content = '';
+  my $content_content = '';
   my $bread_end;
   for my $line (@template_lines) {
     my $original_line = $line;
@@ -114,7 +118,7 @@ sub parse_template {
     if ($pre_start) {
       $line =~ s/>/&gt;/g;
       $line =~ s/</&lt;/g;
-      $entry_content .= "$line\n";
+      $content_content .= "$line\n";
     }
     else {
       # title
@@ -127,16 +131,16 @@ sub parse_template {
       
       # If start with inline tag, wrap p
       if ($line =~ $inline_elements_re) {
-        $entry_content .= "<p>\n  $line\n</p>\n";
+        $content_content .= "<p>\n  $line\n</p>\n";
       }
       # If start with space or tab or not inline tag, it is raw line
       elsif ($line =~ /^[ \t\<]/) {
-        $entry_content .= "$line\n";
+        $content_content .= "$line\n";
       }
       # If line have length, wrap p
       else {
         if (length $line) {
-          $entry_content .= "<p>\n  $line\n</p>\n";
+          $content_content .= "<p>\n  $line\n</p>\n";
         }
       }
     }
@@ -147,7 +151,7 @@ sub parse_template {
     }
   }
   
-  $data->{'content'} = $entry_content;
+  $data->{'content'} = $content_content;
   
   return $data;
 }
@@ -157,8 +161,85 @@ sub build_html {
   
   my $giblog = $self->giblog;
   
+  my $content_content = $data->{content};
+  
+  my $common_meta_file = $giblog->rel_file('templates/common/meta.html');
+  my $common_meta_content = $giblog->slurp_file($common_meta_file);
+  $data->{meta} = $common_meta_content;
+
+  my $common_header_file = $giblog->rel_file('templates/common/header.html');
+  my $common_header_content = $giblog->slurp_file($common_header_file);
+  $data->{header} = $common_header_content;
+
+  my $common_footer_file = $giblog->rel_file('templates/common/footer.html');
+  my $common_footer_content = $giblog->slurp_file($common_footer_file);
+  $data->{footer} = $common_footer_content;
+
+  my $common_side_file = $giblog->rel_file('templates/common/side.html');
+  my $common_side_content = $giblog->slurp_file($common_side_file);
+  $data->{side} = $common_footer_content;
+
+  my $common_top_file = $giblog->rel_file('templates/common/top.html');
+  my $common_top_content = $giblog->slurp_file($common_top_file);
+  $data->{top} = $common_top_content;
+
+  my $common_bottom_file = $giblog->rel_file('templates/common/bottom.html');
+  my $common_bottom_content = $giblog->slurp_file($common_bottom_file);
+  $data->{bottom} = $common_bottom_content;
+  
+  $self->parse_common($data);
+  
+  my $html = <<"EOS";
+<!DOCTYPE html>
+<html>
+  <head>
+    $data->{meta}
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        $data->{header}
+      </div>
+      <div class="main">
+        <div class="content">
+          <div class="top">
+            $data->{top}
+          </div>
+          <div class="content">
+            $data->{content}
+          </div>
+          <div class="bottom">
+            $data->{bottom}
+          </div>
+        </div>
+        <div class="side">
+          $data->{side}
+        </div>
+      </div>
+      <div class="footer">
+        $data->{footer}
+      </div>
+    </div>
+  </body>
+</html>
+EOS
+  
+  $data->{content} = $html;
+    
+  return $data;
+}
+
+sub parse_common {
+  my ($self, $data) = @_;
+  
+  # Giblog
+  my $giblog = $self->giblog;
+  
+  # Config
+  my $config = $giblog->config;
+  
+  # title tag
   my $page_title = $data->{'title'};
-  my $config = $giblog->read_config;
   my $site_title = $config->{site_title};
   my $title;
   if (length $page_title) {
@@ -177,65 +258,10 @@ sub build_html {
       $title = '';
     }
   }
+  my $meta = $data->{meta};
+  $meta .= "\n<title>$title</title>\n";
+  $data->{meta} = $meta;
   
-  my $entry_content = $data->{content};
-  
-  my $common_meta_file = $giblog->rel_file('templates/common/meta.html');
-  my $common_meta_content = $giblog->slurp_file($common_meta_file);
-
-  my $common_header_file = $giblog->rel_file('templates/common/header.html');
-  my $common_header_content = $giblog->slurp_file($common_header_file);
-
-  my $common_footer_file = $giblog->rel_file('templates/common/footer.html');
-  my $common_footer_content = $giblog->slurp_file($common_footer_file);
-
-  my $common_side_file = $giblog->rel_file('templates/common/side.html');
-  my $common_side_content = $giblog->slurp_file($common_side_file);
-
-  my $common_entry_top_file = $giblog->rel_file('templates/common/entry-top.html');
-  my $common_entry_top_content = $giblog->slurp_file($common_entry_top_file);
-
-  my $common_entry_bottom_file = $giblog->rel_file('templates/common/entry-bottom.html');
-  my $common_entry_bottom_content = $giblog->slurp_file($common_entry_bottom_file);
-  
-  my $html = <<"EOS";
-<!DOCTYPE html>
-<html>
-  <head>
-    $common_meta_content
-    <title>$title</title>
-  </head>
-  <body>
-    <div class="container">
-      <div class="header">
-        $common_header_content
-      </div>
-      <div class="main">
-        <div class="entry">
-          <div class="entry-top">
-            $common_entry_bottom_content
-          </div>
-          <div class="entry-body">
-            $entry_content
-          </div>
-          <div class="entry-bottom">
-            $common_entry_bottom_content
-          </div>
-        </div>
-        <div class="side">
-          $common_side_content
-        </div>
-      </div>
-      <div class="footer">
-        $common_footer_content
-      </div>
-    </div>
-  </body>
-</html>
-EOS
-  
-  $data->{content} = $html;
-    
   return $data;
 }
 
