@@ -41,6 +41,11 @@ sub build {
         # Skip common files
         return if $template_file =~ /^\Q$templates_dir\/common/;
         
+        my $template_file_base = $_;
+        
+        # Skip hidden file
+        return if $template_file_base =~ /^\./;
+        
         my $template_rel_file = $template_file;
         $template_rel_file =~ s/^$templates_dir//;
         $template_rel_file =~ s/^[\\\/]//;
