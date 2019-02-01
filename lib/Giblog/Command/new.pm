@@ -66,7 +66,7 @@ print "Server start\n";
 
 my $giblog = Giblog->new('giblog-dir' => $giblog_dir);
 my $build_command = Giblog::Command::build->new(giblog => $giblog);
-$build_command->command;
+$build_command->run;
 
 use Mojolicious::Lite;
 

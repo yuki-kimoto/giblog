@@ -182,7 +182,7 @@ sub build_html {
 
   my $common_side_file = $giblog->rel_file('templates/common/side.html');
   my $common_side_content = $giblog->slurp_file($common_side_file);
-  $data->{side} = $common_footer_content;
+  $data->{side} = $common_side_content;
 
   my $common_top_file = $giblog->rel_file('templates/common/top.html');
   my $common_top_content = $giblog->slurp_file($common_top_file);

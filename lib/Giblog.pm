@@ -19,7 +19,7 @@ Version 0.01
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub command_rel_file {
   my ($self, $command, $rel_file) = @_;
