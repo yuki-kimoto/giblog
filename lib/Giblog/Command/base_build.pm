@@ -206,7 +206,7 @@ sub build_html {
         $data->{header}
       </div>
       <div class="main">
-        <div class="content">
+        <div class="entry">
           <div class="top">
             $data->{top}
           </div>
