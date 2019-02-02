@@ -33,22 +33,50 @@ sub run {
 
   # Create website directory
   $giblog->create_dir($website_name);
+
+  # Copy command proto files to user directory
+  my @files;
+  find(
+    {
+      wanted => sub {
+        my $command_proto_file = $File::Find::name;
+        
+        # Skip directory
+        return unless -f $command_proto_file;
+        
+        my $rel_file = $command_proto_file;
+        $rel_file =~ s/^\Q$command_proto_dir\E[\/|\\]//;
+        
+        my $user_file = "$website_name/$rel_file";
+        my $user_dir = dirname $user_file;
+        mkpath $user_dir;
+        
+        copy $command_proto_file, $user_file
+          or confess "Can't copy $command_proto_file to $user_file: $!";
+      },
+      no_chdir => 1,
+    },
+    $command_proto_dir
+  );
   
   # Create giblog.conf
   my $config_file = "$website_name/giblog.conf";
-  $giblog->create_file($config_file);
-  my $config = <<"EOS";
+  unless (-f $config_file) {
+    $giblog->create_file($config_file);
+    my $config = <<"EOS";
 {
   site_title => 'Web Site Name',
   site_url => 'http://somesite.example',
 }
 EOS
-  $giblog->write_to_file($config_file, $config);
-
+    $giblog->write_to_file($config_file, $config);
+  }
+  
   # Create web application
   my $webapp_file = "$website_name/webapp";
-  $giblog->create_file($webapp_file);
-  my $webapp = <<'EOS';
+  unless (-f $webapp_file) {
+    $giblog->create_file($webapp_file);
+    my $webapp = <<'EOS';
 #!/usr/bin/env perl
 
 use strict;
@@ -79,13 +107,15 @@ get '/' => sub {
 
 app->start;
 EOS
-  $giblog->write_to_file($webapp_file, $webapp);
-
+    $giblog->write_to_file($webapp_file, $webapp);
+  }
+  
   # Create build command
   mkpath "$website_name/lib/Giblog/Command";
   my $build_command_file = "$website_name/lib/Giblog/Command/build.pm";
-  $giblog->create_file($build_command_file);
-  my $build_command = <<'EOS';
+  unless (-f $build_command_file) {
+    $giblog->create_file($build_command_file);
+    my $build_command = <<'EOS';
 package Giblog::Command::build;
 
 use base 'Giblog::Command::base_build';
@@ -105,32 +135,8 @@ sub run {
 
 1;
 EOS
-  $giblog->write_to_file($build_command_file, $build_command);
-
-  # Copy command proto files to user directory
-  my @files;
-  find(
-    {
-      wanted => sub {
-        my $command_proto_file = $File::Find::name;
-        
-        # Skip directory
-        return unless -f $command_proto_file;
-        
-        my $rel_file = $command_proto_file;
-        $rel_file =~ s/^\Q$command_proto_dir\E[\/|\\]//;
-        
-        my $user_file = "$website_name/$rel_file";
-        my $user_dir = dirname $user_file;
-        mkpath $user_dir;
-        
-        copy $command_proto_file, $user_file
-          or confess "Can't copy $command_proto_file to $user_file: $!";
-      },
-      no_chdir => 1,
-    },
-    $command_proto_dir
-  );
+    $giblog->write_to_file($build_command_file, $build_command);
+  }
 }
 
 1;
