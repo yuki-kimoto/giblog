@@ -74,10 +74,10 @@ sub build {
     };
     
     # Parse template
-    $data = $self->parse_content($data);
+    $self->parse_content($data);
     
     # Build html
-    $data = $self->build_html($data);
+    $self->build_html($data);
     
     my $html = $data->{content};
     
@@ -171,8 +171,6 @@ EOS
 sub parse_content {
   my ($self, $data) = @_;
   
-  $data ||= {};
-  
   my $template_content = $data->{content};
   my $path = $data->{path};
   
@@ -258,8 +256,6 @@ sub parse_content {
   }
   
   $data->{'content'} = $content_content;
-  
-  return $data;
 }
 
 sub parse_common {
@@ -294,8 +290,6 @@ sub parse_common {
   my $meta = $data->{meta};
   $meta .= "\n<title>$title</title>\n";
   $data->{meta} = $meta;
-  
-  return $data;
 }
 
 1;

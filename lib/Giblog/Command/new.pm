@@ -141,8 +141,6 @@ sub parse_content {
   $self->SUPER::parse_content($data);
   
   # Write post parse_content
-  
-  return $data;
 }
 
 sub parse_common {
@@ -153,8 +151,6 @@ sub parse_common {
   $self->SUPER::parse_common($data);
   
   # Write post parse_common
-  
-  return $data;
 }
 
 sub build_html {
@@ -165,8 +161,6 @@ sub build_html {
   $self->SUPER::build_html($data);
   
   # Write post build_html
-  
-  return $data;
 }
 
 1;
