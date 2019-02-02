@@ -62,15 +62,15 @@ sub build {
     my $template_file = $giblog->rel_file($template_rel_file);
     my $content = $giblog->slurp_file($template_file);
     
-    my $url = $template_rel_file;
-    $url =~ s|^templates||;
-    if ($url eq '/index.html') {
-      $url = '/';
+    my $path = $template_rel_file;
+    $path =~ s|^templates||;
+    if ($path eq '/index.html') {
+      $path = '/';
     }
     
     my $data = {
       content => $content,
-      url => $url,
+      path => $path,
     };
     
     # Parse template
@@ -101,7 +101,7 @@ sub parse_content {
   $data ||= {};
   
   my $template_content = $data->{content};
-  my $url = $data->{url};
+  my $path = $data->{path};
   
   # Normalize line break;
   $template_content =~ s/\x0D\x0A|\x0D|\x0A/\n/g;
@@ -127,10 +127,38 @@ sub parse_content {
     }
     else {
       # title
-      if ($line =~ s|class="title"[^>]*?>([^<]*?)<|class="title"><a href="$url">$1</a><|) {
+      my $path_tmp = $path;
+      unless (defined $path_tmp) {
+        $path_tmp = '';
+      }
+      if ($line =~ s|class="title"[^>]*?>([^<]*?)<|class="title"><a href="$path_tmp">$1</a><|) {
         my $title = $1;
         unless (defined $data->{'title'}) {
           $data->{'title'} = $1;
+        }
+      }
+
+      # description
+      if ($line =~ m|class="description"[^>]*?>([^<]*?)<|) {
+        my $description = $1;
+        unless (defined $data->{'description'}) {
+          $data->{'description'} = $1;
+        }
+      }
+
+      # keywords
+      if ($line =~ m|class="keywords"[^>]*?>([^<]*?)<|) {
+        my $keywords = $1;
+        unless (defined $data->{'keywords'}) {
+          $data->{'keywords'} = $1;
+        }
+      }
+
+      # src
+      if ($line =~ /src="[^"]*?"/) {
+        my $src = $1;
+        unless (defined $data->{'src'}) {
+          $data->{'src'} = $1;
         }
       }
       
