@@ -100,7 +100,7 @@ sub build_html {
   
   my $giblog = $self->giblog;
   
-  my $content_content = $data->{content};
+  my $content = $data->{content};
   
   my $common_meta_file = $giblog->rel_file('templates/common/meta.html');
   my $common_meta_content = $giblog->slurp_file($common_meta_file);
@@ -171,18 +171,20 @@ EOS
 sub parse_content {
   my ($self, $data) = @_;
   
-  my $template_content = $data->{content};
-  my $path = $data->{path};
+  my $giblog = $self->giblog;
+  my $config = $giblog->config;
+  
+  my $content = $data->{content};
   
   # Normalize line break;
-  $template_content =~ s/\x0D\x0A|\x0D|\x0A/\n/g;
+  $content =~ s/\x0D\x0A|\x0D|\x0A/\n/g;
   
-  my @template_lines = split /\n/, $template_content;
-  
+  # Parse Giblog syntax
+  my @lines = split /\n/, $content;
   my $pre_start;
-  my $content_content = '';
+  $content = '';
   my $bread_end;
-  for my $line (@template_lines) {
+  for my $line (@lines) {
     my $original_line = $line;
     
     # Pre end
@@ -194,57 +196,21 @@ sub parse_content {
     if ($pre_start) {
       $line =~ s/>/&gt;/g;
       $line =~ s/</&lt;/g;
-      $content_content .= "$line\n";
+      $content .= "$line\n";
     }
     else {
-      # title
-      my $path_tmp = $path;
-      unless (defined $path_tmp) {
-        $path_tmp = '';
-      }
-      if ($line =~ s|class="title"[^>]*?>([^<]*?)<|class="title"><a href="$path_tmp">$1</a><|) {
-        my $title = $1;
-        unless (defined $data->{'title'}) {
-          $data->{'title'} = $1;
-        }
-      }
-
-      # description
-      if ($line =~ m|class="description"[^>]*?>([^<]*?)<|) {
-        my $description = $1;
-        unless (defined $data->{'description'}) {
-          $data->{'description'} = $1;
-        }
-      }
-
-      # keywords
-      if ($line =~ m|class="keywords"[^>]*?>([^<]*?)<|) {
-        my $keywords = $1;
-        unless (defined $data->{'keywords'}) {
-          $data->{'keywords'} = $1;
-        }
-      }
-
-      # src
-      if ($line =~ /src="[^"]*?"/) {
-        my $src = $1;
-        unless (defined $data->{'src'}) {
-          $data->{'src'} = $1;
-        }
-      }
-      
       # If start with inline tag, wrap p
       if ($line =~ $inline_elements_re) {
-        $content_content .= "<p>\n  $line\n</p>\n";
+        $content .= "<p>\n  $line\n</p>\n";
       }
       # If start with space or tab or not inline tag, it is raw line
       elsif ($line =~ /^[ \t\<]/) {
-        $content_content .= "$line\n";
+        $content .= "$line\n";
       }
       # If line have length, wrap p
       else {
         if (length $line) {
-          $content_content .= "<p>\n  $line\n</p>\n";
+          $content .= "<p>\n  $line\n</p>\n";
         }
       }
     }
@@ -254,8 +220,78 @@ sub parse_content {
       $pre_start = 1
     }
   }
+
+  # title
+  my $path = $data->{path};
+  my $path_tmp = $path;
+  unless (defined $path_tmp) {
+    $path_tmp = '';
+  }
+  if ($content =~ s|class="title"[^>]*?>([^<]*?)<|class="title"><a href="$path_tmp">$1</a><|) {
+    my $page_title = $1;
+    unless (defined $data->{'title_original'}) {
+      $data->{'title_original'} = $page_title;
+    }
+    unless (defined $data->{'title'}) {
+      # Add site title after title
+      my $site_title = $config->{site_title};
+      my $title;
+      if (length $page_title) {
+        if (length $site_title) {
+          $title = "$page_title - $site_title";
+        }
+        else {
+          $title = $page_title;
+        }
+      }
+      else {
+        if (length $site_title) {
+          $title = $site_title;
+        }
+        else {
+          $title = '';
+        }
+      }
+      $data->{title} = $title;
+    }
+  }
+
+  # description
+  if ($content =~ m|class="description"[^>]*?>([^<]*?)<|) {
+    my $description = $1;
+    unless (defined $data->{'description_original'}) {
+      $data->{'description_original'} = $description;
+    }
+    unless (defined $data->{'description'}) {
+      $data->{'description'} = $description;
+    }
+  }
   
-  $data->{'content'} = $content_content;
+  # Create description from first p tag
+  unless (defined $data->{'description'}) {
+    if ($content =~ m|<\s?p\b[^>]*?>\s*([^<]*?)\s*<\s?/\s?p\s?>|as) {
+      $data->{'description'} = $1;
+    }
+  }
+
+  # keywords
+  if ($content =~ m|class="keywords"[^>]*?>([^<]*?)<|) {
+    my $keywords = $1;
+    unless (defined $data->{'keywords'}) {
+      $data->{'keywords'} = $1;
+    }
+  }
+
+  # src
+  if ($content =~ /src="[^"]*?"/) {
+    my $src = $1;
+    unless (defined $data->{'src'}) {
+      $data->{'src'} = $1;
+    }
+  }
+      
+  
+  $data->{'content'} = $content;
 }
 
 sub parse_common {
@@ -267,29 +303,24 @@ sub parse_common {
   # Config
   my $config = $giblog->config;
   
-  # title tag
-  my $page_title = $data->{'title'};
-  my $site_title = $config->{site_title};
-  my $title;
-  if (length $page_title) {
-    if (length $site_title) {
-      $title = "$page_title - $site_title";
+  # meta
+  {
+    my $meta = $data->{meta};
+    
+    # Title
+    my $title = $data->{title};
+    if (defined $title) {
+      $meta .= "\n<title>$title</title>\n";
     }
-    else {
-      $title = $page_title;
+    
+    # Decription
+    my $description = $data->{description};
+    if (defined $description) {
+      $meta .= qq(\n<meta name="description" content="$description">\n);
     }
+    
+    $data->{meta} = $meta;
   }
-  else {
-    if (length $site_title) {
-      $title = $site_title;
-    }
-    else {
-      $title = '';
-    }
-  }
-  my $meta = $data->{meta};
-  $meta .= "\n<title>$title</title>\n";
-  $data->{meta} = $meta;
 }
 
 1;
