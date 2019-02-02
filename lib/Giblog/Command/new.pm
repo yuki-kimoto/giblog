@@ -39,7 +39,8 @@ sub run {
   $giblog->create_file($config_file);
   my $config = <<"EOS";
 {
-  site_title => "Web Site Name",
+  site_title => 'Web Site Name',
+  site_url => 'http://somesite.example',
 }
 EOS
   $giblog->write_to_file($config_file, $config);
