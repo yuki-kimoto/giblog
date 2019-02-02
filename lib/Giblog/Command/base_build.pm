@@ -269,7 +269,7 @@ sub parse_content {
   
   # Create description from first p tag
   unless (defined $data->{'description'}) {
-    if ($content =~ m|<\s?p\b[^>]*?>\s*([^<]*?)\s*<\s?/\s?p\s?>|as) {
+    if ($content =~ m|<\s?p\b[^>]*?>\s*([^<]*?)\s*<\s?/\s?p\s?>|s) {
       $data->{'description'} = $1;
     }
   }
@@ -282,11 +282,11 @@ sub parse_content {
     }
   }
 
-  # src
-  if ($content =~ /src="[^"]*?"/) {
-    my $src = $1;
-    unless (defined $data->{'src'}) {
-      $data->{'src'} = $1;
+  # image
+  if ($content =~ /<\s*img\b.*?\bsrc\s*=\s*"([^"]*?)"/s) {
+    my $image = $1;
+    unless (defined $data->{'image'}) {
+      $data->{'image'} = $image;
     }
   }
       
