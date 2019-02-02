@@ -95,6 +95,79 @@ sub build {
 
 my $inline_elements_re = qr/^<(span|em|strong|abbr|acronym|dfn|q|cite|sup|sub|code|var|kbd|samp|bdo|font|big|small|b|i|s|strike|u|tt|a|label|object|applet|iframe|button|textarea|select|basefont|img|br|input|script|map)\b/;
 
+sub build_html {
+  my ($self, $data) = @_;
+  
+  my $giblog = $self->giblog;
+  
+  my $content_content = $data->{content};
+  
+  my $common_meta_file = $giblog->rel_file('templates/common/meta.html');
+  my $common_meta_content = $giblog->slurp_file($common_meta_file);
+  $data->{meta} = $common_meta_content;
+
+  my $common_header_file = $giblog->rel_file('templates/common/header.html');
+  my $common_header_content = $giblog->slurp_file($common_header_file);
+  $data->{header} = $common_header_content;
+
+  my $common_footer_file = $giblog->rel_file('templates/common/footer.html');
+  my $common_footer_content = $giblog->slurp_file($common_footer_file);
+  $data->{footer} = $common_footer_content;
+
+  my $common_side_file = $giblog->rel_file('templates/common/side.html');
+  my $common_side_content = $giblog->slurp_file($common_side_file);
+  $data->{side} = $common_side_content;
+
+  my $common_top_file = $giblog->rel_file('templates/common/top.html');
+  my $common_top_content = $giblog->slurp_file($common_top_file);
+  $data->{top} = $common_top_content;
+
+  my $common_bottom_file = $giblog->rel_file('templates/common/bottom.html');
+  my $common_bottom_content = $giblog->slurp_file($common_bottom_file);
+  $data->{bottom} = $common_bottom_content;
+  
+  $self->parse_common($data);
+  
+  my $html = <<"EOS";
+<!DOCTYPE html>
+<html>
+  <head>
+    $data->{meta}
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        $data->{header}
+      </div>
+      <div class="main">
+        <div class="entry">
+          <div class="top">
+            $data->{top}
+          </div>
+          <div class="content">
+            $data->{content}
+          </div>
+          <div class="bottom">
+            $data->{bottom}
+          </div>
+        </div>
+        <div class="side">
+          $data->{side}
+        </div>
+      </div>
+      <div class="footer">
+        $data->{footer}
+      </div>
+    </div>
+  </body>
+</html>
+EOS
+  
+  $data->{content} = $html;
+    
+  return $data;
+}
+
 sub parse_content {
   my ($self, $data) = @_;
   
@@ -186,79 +259,6 @@ sub parse_content {
   
   $data->{'content'} = $content_content;
   
-  return $data;
-}
-
-sub build_html {
-  my ($self, $data) = @_;
-  
-  my $giblog = $self->giblog;
-  
-  my $content_content = $data->{content};
-  
-  my $common_meta_file = $giblog->rel_file('templates/common/meta.html');
-  my $common_meta_content = $giblog->slurp_file($common_meta_file);
-  $data->{meta} = $common_meta_content;
-
-  my $common_header_file = $giblog->rel_file('templates/common/header.html');
-  my $common_header_content = $giblog->slurp_file($common_header_file);
-  $data->{header} = $common_header_content;
-
-  my $common_footer_file = $giblog->rel_file('templates/common/footer.html');
-  my $common_footer_content = $giblog->slurp_file($common_footer_file);
-  $data->{footer} = $common_footer_content;
-
-  my $common_side_file = $giblog->rel_file('templates/common/side.html');
-  my $common_side_content = $giblog->slurp_file($common_side_file);
-  $data->{side} = $common_side_content;
-
-  my $common_top_file = $giblog->rel_file('templates/common/top.html');
-  my $common_top_content = $giblog->slurp_file($common_top_file);
-  $data->{top} = $common_top_content;
-
-  my $common_bottom_file = $giblog->rel_file('templates/common/bottom.html');
-  my $common_bottom_content = $giblog->slurp_file($common_bottom_file);
-  $data->{bottom} = $common_bottom_content;
-  
-  $self->parse_common($data);
-  
-  my $html = <<"EOS";
-<!DOCTYPE html>
-<html>
-  <head>
-    $data->{meta}
-  </head>
-  <body>
-    <div class="container">
-      <div class="header">
-        $data->{header}
-      </div>
-      <div class="main">
-        <div class="entry">
-          <div class="top">
-            $data->{top}
-          </div>
-          <div class="content">
-            $data->{content}
-          </div>
-          <div class="bottom">
-            $data->{bottom}
-          </div>
-        </div>
-        <div class="side">
-          $data->{side}
-        </div>
-      </div>
-      <div class="footer">
-        $data->{footer}
-      </div>
-    </div>
-  </body>
-</html>
-EOS
-  
-  $data->{content} = $html;
-    
   return $data;
 }
 

@@ -126,11 +126,47 @@ use warnings;
 sub run {
   my ($self, @args) = @_;
   
-  # Write pre process
+  # Write pre run
   
-  $self->SUPER::command(@args);
+  $self->SUPER::run(@args);
   
-  # Write post porsess
+  # Write post run
+}
+
+sub parse_content {
+  my ($self, $data) = @_;
+  
+  # Write pre parse_content
+  
+  $self->SUPER::parse_content($data);
+  
+  # Write post parse_content
+  
+  return $data;
+}
+
+sub parse_common {
+  my ($self, $data) = @_;
+  
+  # Write pre parse_common
+  
+  $self->SUPER::parse_common($data);
+  
+  # Write post parse_common
+  
+  return $data;
+}
+
+sub build_html {
+  my ($self, $data) = @_;
+  
+  # Write pre build_html
+  
+  $self->SUPER::build_html($data);
+  
+  # Write post build_html
+  
+  return $data;
 }
 
 1;

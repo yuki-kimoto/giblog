@@ -42,14 +42,16 @@ sub config { shift->{config} }
 sub read_config {
   my $self = shift;
   
-  my $config_file = $self->rel_file('giblog.conf');
-  
-  my $config_content = $self->slurp_file($config_file);
-  
-  my $config = eval $config_content
-    or confess "Can't parse config file \"$config_file\"";
-  
-  $self->{config} = $config;
+  unless (defined $self->{config}) {
+    my $config_file = $self->rel_file('giblog.conf');
+    
+    my $config_content = $self->slurp_file($config_file);
+    
+    my $config = eval $config_content
+      or confess "Can't parse config file \"$config_file\"";
+    
+    $self->{config} = $config;
+  }
 }
 
 sub new {
