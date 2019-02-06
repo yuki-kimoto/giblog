@@ -269,8 +269,11 @@ sub parse_content {
   
   # Create description from first p tag
   unless (defined $data->{'description'}) {
-    if ($content =~ m|<\s?p\b[^>]*?>\s*([^<]*?)\s*<\s?/\s?p\s?>|s) {
-      $data->{'description'} = $1;
+    if ($content =~ m|<\s?p\b[^>]*?>\s*(\S*?)\s*<\s?/\s?p\s?>|s) {
+      my $description = $1;
+      # remove tag
+      $description =~ s/<.*?>//g;
+      $data->{'description'} = $description;
     }
   }
 
