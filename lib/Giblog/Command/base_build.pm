@@ -214,7 +214,7 @@ sub parse_content {
   Giblog::Util::parse_description($giblog, $data);
 
   # Create description from first p tag
-  Giblog::Util::create_description_from_first_p_tag($giblog, $data);
+  Giblog::Util::parse_description_from_first_p_tag($giblog, $data);
 
   # Parse keywords
   Giblog::Util::parse_keywords($giblog, $data);

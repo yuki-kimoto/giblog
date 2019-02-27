@@ -71,7 +71,7 @@ sub parse_description {
   }
 }
 
-sub create_description_from_first_p_tag {
+sub parse_description_from_first_p_tag {
   my ($giblog, $data) = @_;
 
   my $content = $data->{content};
