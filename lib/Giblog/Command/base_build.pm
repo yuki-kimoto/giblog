@@ -176,7 +176,7 @@ sub parse_content {
   my $content = $data->{content};
   
   # Parse Giblog syntax
-  Giblog::Util::parse_giblog_syntax($data);
+  Giblog::Util::parse_giblog_syntax($giblog, $data);
   
   # title
   my $path = $data->{path};
