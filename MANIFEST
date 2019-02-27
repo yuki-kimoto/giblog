@@ -2,9 +2,9 @@ Changes
 Development.txt
 ignore.txt
 lib/Giblog.pm
+lib/Giblog/API.pm
 lib/Giblog/Command.pm
 lib/Giblog/Command/add.pm
-lib/Giblog/Command/base_build.pm
 lib/Giblog/Command/build.pm
 lib/Giblog/Command/new.pm
 lib/Giblog/Command/new/proto/public/blog/.gitkeep

@@ -1,10 +1,25 @@
-package Giblog::Util;
+package Giblog::API;
 
 use strict;
 use warnings;
+use File::Find 'find';
+use File::Basename 'dirname', 'basename';
+use File::Path 'mkpath';
+
+sub new {
+  my $class = shift;
+  
+  my $self = {@_};
+  
+  return bless $self, $class;
+}
+
+sub giblog { shift->{giblog} }
 
 sub build_all {
-  my ($giblog, $cb) = @_;
+  my ($self, $cb) = @_;
+  
+  my $giblog = $self->giblog;
 
   my $templates_dir = $giblog->rel_file('templates');
   my $public_dir = $giblog->rel_file('public');
@@ -55,7 +70,7 @@ sub build_all {
     };
 
     # Build html
-    $cb->($giblog, $data);
+    $cb->($self, $data);
     
     my $html = $data->{content};
     
@@ -74,7 +89,9 @@ sub build_all {
 my $inline_elements_re = qr/^<(span|em|strong|abbr|acronym|dfn|q|cite|sup|sub|code|var|kbd|samp|bdo|font|big|small|b|i|s|strike|u|tt|a|label|object|applet|iframe|button|textarea|select|basefont|img|br|input|script|map)\b/;
 
 sub parse_giblog_syntax {
-  my ($giblog, $data) = @_;
+  my ($self, $data) = @_;
+  
+  my $giblog = $self->giblog;
   
   my $content = $data->{content};
 
@@ -127,7 +144,9 @@ sub parse_giblog_syntax {
 }
 
 sub parse_title {
-  my ($giblog, $data) = @_;
+  my ($self, $data) = @_;
+  
+  my $giblog = $self->giblog;
 
   my $config = $giblog->config;
 
@@ -161,7 +180,9 @@ sub parse_title {
 }
 
 sub add_page_link {
-  my ($giblog, $data) = @_;
+  my ($self, $data) = @_;
+  
+  my $giblog = $self->giblog;
 
   my $content = $data->{content};
   
@@ -177,7 +198,9 @@ sub add_page_link {
 }
 
 sub parse_description {
-  my ($giblog, $data) = @_;
+  my ($self, $data) = @_;
+  
+  my $giblog = $self->giblog;
 
   my $content = $data->{content};
   
@@ -190,7 +213,9 @@ sub parse_description {
 }
 
 sub parse_description_from_first_p_tag {
-  my ($giblog, $data) = @_;
+  my ($self, $data) = @_;
+  
+  my $giblog = $self->giblog;
 
   my $content = $data->{content};
   
@@ -211,7 +236,9 @@ sub parse_description_from_first_p_tag {
 }
 
 sub parse_keywords {
-  my ($giblog, $data) = @_;
+  my ($self, $data) = @_;
+  
+  my $giblog = $self->giblog;
 
   my $content = $data->{content};
 
@@ -225,7 +252,9 @@ sub parse_keywords {
 }
 
 sub parse_first_img_src {
-  my ($giblog, $data) = @_;
+  my ($self, $data) = @_;
+  
+  my $giblog = $self->giblog;
 
   my $content = $data->{content};
   
@@ -239,7 +268,9 @@ sub parse_first_img_src {
 }
 
 sub wrap_content {
-  my ($giblog, $data) = @_;
+  my ($self, $data) = @_;
+  
+  my $giblog = $self->giblog;
 
   my $content = <<"EOS";
 <!DOCTYPE html>
@@ -280,7 +311,9 @@ EOS
 }
 
 sub add_meta_title {
-  my ($giblog, $data) = @_;
+  my ($self, $data) = @_;
+  
+  my $giblog = $self->giblog;
   
   my $meta = $data->{meta};
   
@@ -294,7 +327,9 @@ sub add_meta_title {
 }
 
 sub add_meta_description {
-  my ($giblog, $data) = @_;
+  my ($self, $data) = @_;
+  
+  my $giblog = $self->giblog;
   
   my $meta = $data->{meta};
   
@@ -308,7 +343,9 @@ sub add_meta_description {
 }
 
 sub prepare_wrap_content {
-  my ($giblog, $data) = @_;
+  my ($self, $data) = @_;
+  
+  my $giblog = $self->giblog;
   
   my $common_meta_file = $giblog->rel_file('templates/common/meta.html');
   my $common_meta_content = $giblog->slurp_file($common_meta_file);
