@@ -3,11 +3,6 @@ package Giblog;
 use 5.008007;
 use strict;
 use warnings;
-use Carp 'confess';
-use File::Find 'find';
-use File::Basename 'basename', 'dirname';
-use File::Path 'mkpath';
-use Encode 'encode', 'decode';
 
 =head1 NAME
 
@@ -21,39 +16,6 @@ Version 0.01
 
 our $VERSION = '0.02';
 
-sub command_rel_file {
-  my ($self, $command, $rel_file) = @_;
-  
-  my $command_rel_path = ref $command;
-  $command_rel_path =~ s/::/\//g;
-  $command_rel_path .= '.pm';
-  
-  my $command_path = $INC{$command_rel_path};
-  my $command_dir = $command_path;
-  $command_dir =~ s/\.pm$//;
-  
-  my $file = "$command_dir/$rel_file";
-  
-  return $file;
-}
-
-sub config { shift->{config} }
-
-sub read_config {
-  my $self = shift;
-  
-  unless (defined $self->{config}) {
-    my $config_file = $self->rel_file('giblog.conf');
-    
-    my $config_content = $self->slurp_file($config_file);
-    
-    my $config = eval $config_content
-      or confess "Can't parse config file \"$config_file\"";
-    
-    $self->{config} = $config;
-  }
-}
-
 sub new {
   my $class = shift;
   
@@ -64,57 +26,8 @@ sub new {
   return bless $self, $class;
 }
 
-sub giblog_dir {
-  my $self = shift;
-  
-  return $self->{'giblog-dir'};
-}
-
-sub rel_file {
-  my ($self, $file) = @_;
-  
-  my $giblog_dir = $self->giblog_dir;
-  
-  if (defined $giblog_dir) {
-    return "$giblog_dir/$file";
-  }
-  else {
-    return $file;
-  }
-}
-
-sub create_dir {
-  my ($self, $dir) = @_;
-  mkdir $dir
-    or confess "Can't create directory \"$dir\": $!";
-}
-
-sub create_file {
-  my ($self, $file) = @_;
-  open my $fh, '>', $file
-    or confess "Can't create file \"$file\": $!";
-}
-
-sub write_to_file {
-  my ($self, $file, $content) = @_;
-  open my $fh, '>', $file
-    or confess "Can't create file \"$file\": $!";
-  
-  print $fh encode('UTF-8', $content);
-}
-
-sub slurp_file {
-  my ($self, $file) = @_;
-
-  open my $fh, '<', $file
-    or confess "Can't read file \"$file\": $!";
-  
-  my $content = do { local $/; <$fh> };
-  $content = decode('UTF-8', $content);
-  
-  return $content;
-}
-
+sub giblog_dir { shift->{'giblog-dir'} }
+sub config { shift->{config} }
 
 =head1 SYNOPSIS
 

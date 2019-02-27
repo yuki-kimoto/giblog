@@ -7,6 +7,7 @@ use Giblog;
 use Getopt::Long 'GetOptions';
 use List::Util 'first';
 use Carp 'confess';
+use Giblog::API;
 
 # Reorder command line args -x --xxx is after command
 my @ordered_argv;
@@ -44,12 +45,14 @@ my $giblog = Giblog->new(
   'giblog-dir' => $giblog_dir
 );
 
+my $api = Giblog::API->new(giblog => $giblog);
+
 # Command is implemented in command
 my $command_class = "Giblog::Command::$command_name";
 eval "use $command_class;";
 if ($@) {
   confess "Can't load command $command_class:\n$!\n$@";
 }
-my $command = $command_class->new(giblog => $giblog);
+my $command = $command_class->new(giblog => $giblog, api => $api);
 
 $command->run(@ARGV);

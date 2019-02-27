@@ -5,6 +5,8 @@ use warnings;
 use File::Find 'find';
 use File::Basename 'dirname', 'basename';
 use File::Path 'mkpath';
+use Carp 'confess';
+use Encode 'encode', 'decode';
 
 sub new {
   my $class = shift;
@@ -14,15 +16,94 @@ sub new {
   return bless $self, $class;
 }
 
+sub read_config {
+  my $self = shift;
+  
+  my $giblog = $self->giblog;
+  
+  unless (defined $giblog->{config}) {
+    my $config_file = $self->rel_file('giblog.conf');
+    
+    my $config_content = $self->slurp_file($config_file);
+    
+    my $config = eval $config_content
+      or confess "Can't parse config file \"$config_file\"";
+    
+    $giblog->{config} = $config;
+  }
+}
+
+sub config { shift->giblog->config }
+sub giblog_dir { shift->giblog->giblog_dir };
+
+sub rel_file {
+  my ($self, $file) = @_;
+  
+  my $giblog_dir = $self->giblog->giblog_dir;
+  
+  if (defined $giblog_dir) {
+    return "$giblog_dir/$file";
+  }
+  else {
+    return $file;
+  }
+}
+
+sub create_dir {
+  my ($self, $dir) = @_;
+  mkdir $dir
+    or confess "Can't create directory \"$dir\": $!";
+}
+
+sub create_file {
+  my ($self, $file) = @_;
+  open my $fh, '>', $file
+    or confess "Can't create file \"$file\": $!";
+}
+
+sub write_to_file {
+  my ($self, $file, $content) = @_;
+  open my $fh, '>', $file
+    or confess "Can't create file \"$file\": $!";
+  
+  print $fh encode('UTF-8', $content);
+}
+
+sub slurp_file {
+  my ($self, $file) = @_;
+
+  open my $fh, '<', $file
+    or confess "Can't read file \"$file\": $!";
+  
+  my $content = do { local $/; <$fh> };
+  $content = decode('UTF-8', $content);
+  
+  return $content;
+}
+
+sub command_rel_file {
+  my ($self, $command, $rel_file) = @_;
+  
+  my $command_rel_path = ref $command;
+  $command_rel_path =~ s/::/\//g;
+  $command_rel_path .= '.pm';
+  
+  my $command_path = $INC{$command_rel_path};
+  my $command_dir = $command_path;
+  $command_dir =~ s/\.pm$//;
+  
+  my $file = "$command_dir/$rel_file";
+  
+  return $file;
+}
+
 sub giblog { shift->{giblog} }
 
 sub build_all {
   my ($self, $cb) = @_;
   
-  my $giblog = $self->giblog;
-
-  my $templates_dir = $giblog->rel_file('templates');
-  my $public_dir = $giblog->rel_file('public');
+  my $templates_dir = $self->rel_file('templates');
+  my $public_dir = $self->rel_file('public');
   
   # Get template files
   my @template_rel_files;
@@ -55,8 +136,8 @@ sub build_all {
   );
   
   for my $template_rel_file (@template_rel_files) {
-    my $template_file = $giblog->rel_file($template_rel_file);
-    my $content = $giblog->slurp_file($template_file);
+    my $template_file = $self->rel_file($template_rel_file);
+    my $content = $self->slurp_file($template_file);
     
     my $path = $template_rel_file;
     $path =~ s|^templates||;
@@ -77,12 +158,12 @@ sub build_all {
     # public file
     my $public_rel_file = $template_rel_file;
     $public_rel_file =~ s/^templates/public/;
-    my $public_file = $giblog->rel_file("$public_rel_file");
+    my $public_file = $self->rel_file("$public_rel_file");
     my $public_dir = dirname $public_file;
     mkpath $public_dir;
     
     # Write to public file
-    $giblog->write_to_file($public_file, $html);
+    $self->write_to_file($public_file, $html);
   }
 }
 
@@ -146,9 +227,7 @@ sub parse_giblog_syntax {
 sub parse_title {
   my ($self, $data) = @_;
   
-  my $giblog = $self->giblog;
-
-  my $config = $giblog->config;
+  my $config = $self->config;
 
   my $content = $data->{content};
   
@@ -345,30 +424,28 @@ sub add_meta_description {
 sub prepare_wrap_content {
   my ($self, $data) = @_;
   
-  my $giblog = $self->giblog;
-  
-  my $common_meta_file = $giblog->rel_file('templates/common/meta.html');
-  my $common_meta_content = $giblog->slurp_file($common_meta_file);
+  my $common_meta_file = $self->rel_file('templates/common/meta.html');
+  my $common_meta_content = $self->slurp_file($common_meta_file);
   $data->{meta} = $common_meta_content;
 
-  my $common_header_file = $giblog->rel_file('templates/common/header.html');
-  my $common_header_content = $giblog->slurp_file($common_header_file);
+  my $common_header_file = $self->rel_file('templates/common/header.html');
+  my $common_header_content = $self->slurp_file($common_header_file);
   $data->{header} = $common_header_content;
 
-  my $common_footer_file = $giblog->rel_file('templates/common/footer.html');
-  my $common_footer_content = $giblog->slurp_file($common_footer_file);
+  my $common_footer_file = $self->rel_file('templates/common/footer.html');
+  my $common_footer_content = $self->slurp_file($common_footer_file);
   $data->{footer} = $common_footer_content;
 
-  my $common_side_file = $giblog->rel_file('templates/common/side.html');
-  my $common_side_content = $giblog->slurp_file($common_side_file);
+  my $common_side_file = $self->rel_file('templates/common/side.html');
+  my $common_side_content = $self->slurp_file($common_side_file);
   $data->{side} = $common_side_content;
 
-  my $common_top_file = $giblog->rel_file('templates/common/top.html');
-  my $common_top_content = $giblog->slurp_file($common_top_file);
+  my $common_top_file = $self->rel_file('templates/common/top.html');
+  my $common_top_content = $self->slurp_file($common_top_file);
   $data->{top} = $common_top_content;
 
-  my $common_bottom_file = $giblog->rel_file('templates/common/bottom.html');
-  my $common_bottom_content = $giblog->slurp_file($common_bottom_file);
+  my $common_bottom_file = $self->rel_file('templates/common/bottom.html');
+  my $common_bottom_content = $self->slurp_file($common_bottom_file);
   $data->{bottom} = $common_bottom_content;
 }
 

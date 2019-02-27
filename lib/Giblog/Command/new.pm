@@ -15,7 +15,7 @@ use File::Find 'find';
 sub run {
   my ($self, $website_name) = @_;
   
-  my $giblog = $self->giblog;
+  my $api = $self->api;
   
   unless (defined $website_name) {
     die "Website name must be specifed\n";
@@ -29,10 +29,10 @@ sub run {
   }
   
   my $command_class = ref $self;
-  my $command_proto_dir = $giblog->command_rel_file($self, 'proto');
+  my $command_proto_dir = $api->command_rel_file($self, 'proto');
 
   # Create website directory
-  $giblog->create_dir($website_name);
+  $api->create_dir($website_name);
 
   # Copy command proto files to user directory
   my @files;
@@ -62,20 +62,20 @@ sub run {
   # Create giblog.conf
   my $config_file = "$website_name/giblog.conf";
   unless (-f $config_file) {
-    $giblog->create_file($config_file);
+    $api->create_file($config_file);
     my $config = <<"EOS";
 {
   site_title => 'Web Site Name',
   site_url => 'http://somesite.example',
 }
 EOS
-    $giblog->write_to_file($config_file, $config);
+    $api->write_to_file($config_file, $config);
   }
   
   # Create web application
   my $webapp_file = "$website_name/webapp";
   unless (-f $webapp_file) {
-    $giblog->create_file($webapp_file);
+    $api->create_file($webapp_file);
     my $webapp = <<'EOS';
 #!/usr/bin/env perl
 
@@ -107,14 +107,14 @@ get '/' => sub {
 
 app->start;
 EOS
-    $giblog->write_to_file($webapp_file, $webapp);
+    $api->write_to_file($webapp_file, $webapp);
   }
   
   # Create build command
   mkpath "$website_name/lib/Giblog/Command";
   my $build_command_file = "$website_name/lib/Giblog/Command/build.pm";
   unless (-f $build_command_file) {
-    $giblog->create_file($build_command_file);
+    $api->create_file($build_command_file);
     my $build_command = <<'EOS';
 package Giblog::Command::build;
 
@@ -145,7 +145,7 @@ sub build_html {
 
 1;
 EOS
-    $giblog->write_to_file($build_command_file, $build_command);
+    $api->write_to_file($build_command_file, $build_command);
   }
 }
 

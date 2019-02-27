@@ -8,9 +8,9 @@ use warnings;
 sub run {
   my ($self) = @_;
   
-  my $giblog = $self->giblog;
+  my $api = $self->api;
   
-  my $entry_dir = $giblog->rel_file('templates/blog');
+  my $entry_dir = $api->rel_file('templates/blog');
   
   # Data and time
   my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime;
@@ -23,7 +23,7 @@ sub run {
 <!-- /blog/$datetime -->
 
 EOS
-  $giblog->write_to_file($entry_file, $entry);
+  $api->write_to_file($entry_file, $entry);
 }
 
 1;
