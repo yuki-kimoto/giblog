@@ -13,16 +13,10 @@ use Giblog::Util;
 
 sub run {
   my $self = shift;
-  
-  my $giblog = $self->giblog;
-  
-  $giblog->read_config;
-  
-  $self->build;
 }
 
 sub build {
-  my ($self) = @_;
+  my ($self, $cb) = @_;
   
   my $giblog = $self->giblog;
 
@@ -75,7 +69,7 @@ sub build {
     };
 
     # Build html
-    $self->build_html($data);
+    $cb->($giblog, $data);
     
     my $html = $data->{content};
     
@@ -89,12 +83,6 @@ sub build {
     # Write to public file
     $giblog->write_to_file($public_file, $html);
   }
-}
-
-sub build_html {
-  my ($self, $data) = @_;
-  
-  # Nothing
 }
 
 1;
