@@ -173,12 +173,11 @@ sub parse_content {
   my $giblog = $self->giblog;
   my $config = $giblog->config;
   
-  my $content = $data->{content};
-  
   # Parse Giblog syntax
   Giblog::Util::parse_giblog_syntax($giblog, $data);
   
   # title
+  my $content = $data->{content};
   my $path = $data->{path};
   my $path_tmp = $path;
   unless (defined $path_tmp) {
@@ -209,6 +208,7 @@ sub parse_content {
       $data->{title} = $title;
     }
   }
+  $data->{'content'} = $content;
 
   # Parse description
   Giblog::Util::parse_description($giblog, $data);
@@ -221,8 +221,6 @@ sub parse_content {
 
   # Parse first image src
   Giblog::Util::parse_first_img_src($giblog, $data);
-
-  $data->{'content'} = $content;
 }
 
 sub parse_common {

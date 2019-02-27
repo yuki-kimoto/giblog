@@ -9,7 +9,7 @@ sub parse_giblog_syntax {
   my ($giblog, $data) = @_;
   
   my $content = $data->{content};
-  
+
   # Normalize line break;
   $content =~ s/\x0D\x0A|\x0D|\x0A/\n/g;
   
