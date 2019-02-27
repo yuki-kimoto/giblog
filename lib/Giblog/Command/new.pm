@@ -133,26 +133,6 @@ sub run {
   # Write post run
 }
 
-sub parse_content {
-  my ($self, $data) = @_;
-  
-  # Write pre parse_content
-  
-  $self->SUPER::parse_content($data);
-  
-  # Write post parse_content
-}
-
-sub parse_common {
-  my ($self, $data) = @_;
-  
-  # Write pre parse_common
-  
-  $self->SUPER::parse_common($data);
-  
-  # Write post parse_common
-}
-
 sub build_html {
   my ($self, $data) = @_;
   

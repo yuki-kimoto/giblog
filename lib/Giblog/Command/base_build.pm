@@ -73,9 +73,30 @@ sub build {
       content => $content,
       path => $path,
     };
-    
-    # Parse template
-    $self->parse_content($data);
+
+    my $common_meta_file = $giblog->rel_file('templates/common/meta.html');
+    my $common_meta_content = $giblog->slurp_file($common_meta_file);
+    $data->{meta} = $common_meta_content;
+
+    my $common_header_file = $giblog->rel_file('templates/common/header.html');
+    my $common_header_content = $giblog->slurp_file($common_header_file);
+    $data->{header} = $common_header_content;
+
+    my $common_footer_file = $giblog->rel_file('templates/common/footer.html');
+    my $common_footer_content = $giblog->slurp_file($common_footer_file);
+    $data->{footer} = $common_footer_content;
+
+    my $common_side_file = $giblog->rel_file('templates/common/side.html');
+    my $common_side_content = $giblog->slurp_file($common_side_file);
+    $data->{side} = $common_side_content;
+
+    my $common_top_file = $giblog->rel_file('templates/common/top.html');
+    my $common_top_content = $giblog->slurp_file($common_top_file);
+    $data->{top} = $common_top_content;
+
+    my $common_bottom_file = $giblog->rel_file('templates/common/bottom.html');
+    my $common_bottom_content = $giblog->slurp_file($common_bottom_file);
+    $data->{bottom} = $common_bottom_content;
     
     # Build html
     $self->build_html($data);
@@ -98,32 +119,29 @@ sub build_html {
   my ($self, $data) = @_;
   
   my $giblog = $self->giblog;
+
+  # Parse Giblog syntax
+  Giblog::Util::parse_giblog_syntax($giblog, $data);
+
+  # Parse title
+  Giblog::Util::parse_title($giblog, $data);
+
+  # Add page link
+  Giblog::Util::add_page_link($giblog, $data);
+
+  # Parse description
+  Giblog::Util::parse_description($giblog, $data);
+
+  # Create description from first p tag
+  Giblog::Util::parse_description_from_first_p_tag($giblog, $data);
+
+  # Parse keywords
+  Giblog::Util::parse_keywords($giblog, $data);
+
+  # Parse first image src
+  Giblog::Util::parse_first_img_src($giblog, $data);
   
   my $content = $data->{content};
-  
-  my $common_meta_file = $giblog->rel_file('templates/common/meta.html');
-  my $common_meta_content = $giblog->slurp_file($common_meta_file);
-  $data->{meta} = $common_meta_content;
-
-  my $common_header_file = $giblog->rel_file('templates/common/header.html');
-  my $common_header_content = $giblog->slurp_file($common_header_file);
-  $data->{header} = $common_header_content;
-
-  my $common_footer_file = $giblog->rel_file('templates/common/footer.html');
-  my $common_footer_content = $giblog->slurp_file($common_footer_file);
-  $data->{footer} = $common_footer_content;
-
-  my $common_side_file = $giblog->rel_file('templates/common/side.html');
-  my $common_side_content = $giblog->slurp_file($common_side_file);
-  $data->{side} = $common_side_content;
-
-  my $common_top_file = $giblog->rel_file('templates/common/top.html');
-  my $common_top_content = $giblog->slurp_file($common_top_file);
-  $data->{top} = $common_top_content;
-
-  my $common_bottom_file = $giblog->rel_file('templates/common/bottom.html');
-  my $common_bottom_content = $giblog->slurp_file($common_bottom_file);
-  $data->{bottom} = $common_bottom_content;
   
   $self->parse_common($data);
   
@@ -167,33 +185,6 @@ EOS
   return $data;
 }
 
-sub parse_content {
-  my ($self, $data) = @_;
-  
-  my $giblog = $self->giblog;
-  
-  # Parse Giblog syntax
-  Giblog::Util::parse_giblog_syntax($giblog, $data);
-
-  # Parse title
-  Giblog::Util::parse_title($giblog, $data);
-
-  # Add page link
-  Giblog::Util::add_page_link($giblog, $data);
-
-  # Parse description
-  Giblog::Util::parse_description($giblog, $data);
-
-  # Create description from first p tag
-  Giblog::Util::parse_description_from_first_p_tag($giblog, $data);
-
-  # Parse keywords
-  Giblog::Util::parse_keywords($giblog, $data);
-
-  # Parse first image src
-  Giblog::Util::parse_first_img_src($giblog, $data);
-}
-
 sub parse_common {
   my ($self, $data) = @_;
   
@@ -203,24 +194,6 @@ sub parse_common {
   # Config
   my $config = $giblog->config;
   
-  # meta
-  {
-    my $meta = $data->{meta};
-    
-    # Title
-    my $title = $data->{title};
-    if (defined $title) {
-      $meta .= "\n<title>$title</title>\n";
-    }
-    
-    # Decription
-    my $description = $data->{description};
-    if (defined $description) {
-      $meta .= qq(\n<meta name="description" content="$description">\n);
-    }
-    
-    $data->{meta} = $meta;
-  }
 }
 
 1;
