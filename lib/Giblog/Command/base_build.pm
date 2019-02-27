@@ -186,9 +186,6 @@ sub parse_content {
   }
   if ($content =~ s|class="title"[^>]*?>([^<]*?)<|class="title"><a href="$path_tmp">$1</a><|) {
     my $page_title = $1;
-    unless (defined $data->{'title_original'}) {
-      $data->{'title_original'} = $page_title;
-    }
     unless (defined $data->{'title'}) {
       # Add site title after title
       my $site_title = $config->{site_title};
@@ -216,9 +213,6 @@ sub parse_content {
   # description
   if ($content =~ m|class="description"[^>]*?>([^<]*?)<|) {
     my $description = $1;
-    unless (defined $data->{'description_original'}) {
-      $data->{'description_original'} = $description;
-    }
     unless (defined $data->{'description'}) {
       $data->{'description'} = $description;
     }
