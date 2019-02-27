@@ -210,23 +210,11 @@ sub parse_content {
     }
   }
 
-  # description
+  # Parse description
   Giblog::Util::parse_description($giblog, $data);
 
   # Create description from first p tag
-  unless (defined $data->{'description'}) {
-    if ($content =~ m|<\s?p\b[^>]*?>(.*?)<\s?/\s?p\s?>|s) {
-      my $description = $1;
-      # remove tag
-      $description =~ s/<.*?>//g;
-      
-      # trim space
-      $description =~ s/^\s+//;
-      $description =~ s/\s+$//;
-      
-      $data->{'description'} = $description;
-    }
-  }
+  Giblog::Util::create_description_from_first_p_tag($giblog, $data);
 
   # keywords
   if ($content =~ m|class="keywords"[^>]*?>([^<]*?)<|) {

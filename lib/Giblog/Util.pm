@@ -71,4 +71,25 @@ sub parse_description {
   }
 }
 
+sub create_description_from_first_p_tag {
+  my ($giblog, $data) = @_;
+
+  my $content = $data->{content};
+  
+  # Create description from first p tag
+  unless (defined $data->{'description'}) {
+    if ($content =~ m|<\s?p\b[^>]*?>(.*?)<\s?/\s?p\s?>|s) {
+      my $description = $1;
+      # remove tag
+      $description =~ s/<.*?>//g;
+      
+      # trim space
+      $description =~ s/^\s+//;
+      $description =~ s/\s+$//;
+      
+      $data->{'description'} = $description;
+    }
+  }
+}
+
 1;
