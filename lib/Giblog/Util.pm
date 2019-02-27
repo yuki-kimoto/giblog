@@ -92,4 +92,32 @@ sub create_description_from_first_p_tag {
   }
 }
 
+sub parse_keywords {
+  my ($giblog, $data) = @_;
+
+  my $content = $data->{content};
+
+  # keywords
+  if ($content =~ m|class="keywords"[^>]*?>([^<]*?)<|) {
+    my $keywords = $1;
+    unless (defined $data->{'keywords'}) {
+      $data->{'keywords'} = $1;
+    }
+  }
+}
+
+sub parse_first_img_src {
+  my ($giblog, $data) = @_;
+
+  my $content = $data->{content};
+  
+  # image
+  if ($content =~ /<\s*img\b.*?\bsrc\s*=\s*"([^"]*?)"/s) {
+    my $image = $1;
+    unless (defined $data->{'image'}) {
+      $data->{'image'} = $image;
+    }
+  }
+}
+
 1;

@@ -216,23 +216,12 @@ sub parse_content {
   # Create description from first p tag
   Giblog::Util::create_description_from_first_p_tag($giblog, $data);
 
-  # keywords
-  if ($content =~ m|class="keywords"[^>]*?>([^<]*?)<|) {
-    my $keywords = $1;
-    unless (defined $data->{'keywords'}) {
-      $data->{'keywords'} = $1;
-    }
-  }
+  # Parse keywords
+  Giblog::Util::parse_keywords($giblog, $data);
 
-  # image
-  if ($content =~ /<\s*img\b.*?\bsrc\s*=\s*"([^"]*?)"/s) {
-    my $image = $1;
-    unless (defined $data->{'image'}) {
-      $data->{'image'} = $image;
-    }
-  }
-      
-  
+  # Parse first image src
+  Giblog::Util::parse_first_img_src($giblog, $data);
+
   $data->{'content'} = $content;
 }
 
