@@ -170,4 +170,101 @@ sub parse_first_img_src {
   }
 }
 
+sub wrap_content {
+  my ($giblog, $data) = @_;
+
+  my $content = <<"EOS";
+<!DOCTYPE html>
+<html>
+  <head>
+    $data->{meta}
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        $data->{header}
+      </div>
+      <div class="main">
+        <div class="entry">
+          <div class="top">
+            $data->{top}
+          </div>
+          <div class="content">
+            $data->{content}
+          </div>
+          <div class="bottom">
+            $data->{bottom}
+          </div>
+        </div>
+        <div class="side">
+          $data->{side}
+        </div>
+      </div>
+      <div class="footer">
+        $data->{footer}
+      </div>
+    </div>
+  </body>
+</html>
+EOS
+  
+  $data->{content} = $content;
+}
+
+sub add_meta_title {
+  my ($giblog, $data) = @_;
+  
+  my $meta = $data->{meta};
+  
+  # Title
+  my $title = $data->{title};
+  if (defined $title) {
+    $meta .= "\n<title>$title</title>\n";
+  }
+  
+  $data->{meta} = $meta;
+}
+
+sub add_meta_description {
+  my ($giblog, $data) = @_;
+  
+  my $meta = $data->{meta};
+  
+  # Title
+  my $description = $data->{description};
+  if (defined $description) {
+    $meta .= qq(\n<meta name="description" content="$description">\n);
+  }
+  
+  $data->{meta} = $meta;
+}
+
+sub prepare_wrap_content {
+  my ($giblog, $data) = @_;
+  
+  my $common_meta_file = $giblog->rel_file('templates/common/meta.html');
+  my $common_meta_content = $giblog->slurp_file($common_meta_file);
+  $data->{meta} = $common_meta_content;
+
+  my $common_header_file = $giblog->rel_file('templates/common/header.html');
+  my $common_header_content = $giblog->slurp_file($common_header_file);
+  $data->{header} = $common_header_content;
+
+  my $common_footer_file = $giblog->rel_file('templates/common/footer.html');
+  my $common_footer_content = $giblog->slurp_file($common_footer_file);
+  $data->{footer} = $common_footer_content;
+
+  my $common_side_file = $giblog->rel_file('templates/common/side.html');
+  my $common_side_content = $giblog->slurp_file($common_side_file);
+  $data->{side} = $common_side_content;
+
+  my $common_top_file = $giblog->rel_file('templates/common/top.html');
+  my $common_top_content = $giblog->slurp_file($common_top_file);
+  $data->{top} = $common_top_content;
+
+  my $common_bottom_file = $giblog->rel_file('templates/common/bottom.html');
+  my $common_bottom_content = $giblog->slurp_file($common_bottom_file);
+  $data->{bottom} = $common_bottom_content;
+}
+
 1;
