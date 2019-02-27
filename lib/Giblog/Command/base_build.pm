@@ -211,13 +211,8 @@ sub parse_content {
   }
 
   # description
-  if ($content =~ m|class="description"[^>]*?>([^<]*?)<|) {
-    my $description = $1;
-    unless (defined $data->{'description'}) {
-      $data->{'description'} = $description;
-    }
-  }
-  
+  Giblog::Util::parse_description($giblog, $data);
+
   # Create description from first p tag
   unless (defined $data->{'description'}) {
     if ($content =~ m|<\s?p\b[^>]*?>(.*?)<\s?/\s?p\s?>|s) {
