@@ -1,6 +1,6 @@
 package Giblog::Command::build;
 
-use base 'Giblog::Command::base_build';
+use base 'Giblog::Command';
 
 use strict;
 use warnings;
