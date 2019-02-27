@@ -61,14 +61,51 @@ sub parse_giblog_syntax {
 sub parse_title {
   my ($giblog, $data) = @_;
 
+  my $config = $giblog->config;
+
   my $content = $data->{content};
   
   if ($content =~ m|class="title"[^>]*?>([^<]*?)<|) {
-    my $title = $1;
+    my $page_title = $1;
     unless (defined $data->{'title'}) {
-      $data->{'title'} = $title;
+      # Add site title after title
+      my $site_title = $config->{site_title};
+      my $title;
+      if (length $page_title) {
+        if (length $site_title) {
+          $title = "$page_title - $site_title";
+        }
+        else {
+          $title = $page_title;
+        }
+      }
+      else {
+        if (length $site_title) {
+          $title = $site_title;
+        }
+        else {
+          $title = '';
+        }
+      }
+      $data->{title} = $title;
     }
   }
+}
+
+sub add_page_link {
+  my ($giblog, $data) = @_;
+
+  my $content = $data->{content};
+  
+  # Add page link
+  my $path = $data->{path};
+  my $path_tmp = $path;
+  unless (defined $path_tmp) {
+    $path_tmp = '';
+  }
+  $content =~ s|class="title"[^>]*?>([^<]*?)<|class="title"><a href="$path_tmp">$1</a><|;
+
+  $data->{'content'} = $content;
 }
 
 sub parse_description {

@@ -171,47 +171,15 @@ sub parse_content {
   my ($self, $data) = @_;
   
   my $giblog = $self->giblog;
-  my $config = $giblog->config;
   
   # Parse Giblog syntax
   Giblog::Util::parse_giblog_syntax($giblog, $data);
 
   # Parse title
   Giblog::Util::parse_title($giblog, $data);
-  
-  # title
-  my $content = $data->{content};
-  my $path = $data->{path};
-  my $path_tmp = $path;
-  unless (defined $path_tmp) {
-    $path_tmp = '';
-  }
-  if ($content =~ s|class="title"[^>]*?>([^<]*?)<|class="title"><a href="$path_tmp">$1</a><|) {
-    my $page_title = $1;
-    unless (defined $data->{'title'}) {
-      # Add site title after title
-      my $site_title = $config->{site_title};
-      my $title;
-      if (length $page_title) {
-        if (length $site_title) {
-          $title = "$page_title - $site_title";
-        }
-        else {
-          $title = $page_title;
-        }
-      }
-      else {
-        if (length $site_title) {
-          $title = $site_title;
-        }
-        else {
-          $title = '';
-        }
-      }
-      $data->{title} = $title;
-    }
-  }
-  $data->{'content'} = $content;
+
+  # Add page link
+  Giblog::Util::add_page_link($giblog, $data);
 
   # Parse description
   Giblog::Util::parse_description($giblog, $data);
