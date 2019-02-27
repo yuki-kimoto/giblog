@@ -58,6 +58,19 @@ sub parse_giblog_syntax {
   $data->{content} = $content;
 }
 
+sub parse_title {
+  my ($giblog, $data) = @_;
+
+  my $content = $data->{content};
+  
+  if ($content =~ m|class="title"[^>]*?>([^<]*?)<|) {
+    my $title = $1;
+    unless (defined $data->{'title'}) {
+      $data->{'title'} = $title;
+    }
+  }
+}
+
 sub parse_description {
   my ($giblog, $data) = @_;
 
