@@ -133,16 +133,6 @@ sub run {
   # Write post run
 }
 
-sub build_html {
-  my ($self, $data) = @_;
-  
-  # Write pre build_html
-  
-  $self->SUPER::build_html($data);
-  
-  # Write post build_html
-}
-
 1;
 EOS
     $api->write_to_file($build_command_file, $build_command);
