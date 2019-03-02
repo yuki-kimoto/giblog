@@ -4,6 +4,9 @@ use 5.008007;
 use strict;
 use warnings;
 
+use Getopt::Long 'GetOptions';
+use List::Util 'first';
+
 =head1 NAME
 
 Giblog - Static HTML Generator in Git and SmartPhone age
@@ -28,6 +31,51 @@ sub new {
 
 sub giblog_dir { shift->{'giblog-dir'} }
 sub config { shift->{config} }
+
+sub parse_argv {
+  my ($class, @argv) = @_;
+ 
+  use DDP; p @argv;
+  
+  # Reorder command line args -x --xxx is after command
+  my @ordered_argv;
+  for my $arg (@argv) {
+    if ($arg !~ /^-/) {
+      push @ordered_argv, $arg;
+    }
+  }
+  for my $arg (@argv) {
+    if ($arg =~ /^-/) {
+      push @ordered_argv, $arg;
+    }
+  }
+  @argv = @ordered_argv;
+
+  # Command
+  my $command_name = shift @argv;
+  unless (defined $command_name) {
+    die "Command must be specifed\n";
+  }
+  if ($command_name =~ /^-/) {
+    die "Command \"$command_name\" is not found\n";
+  }
+  
+  local @ARGV = @argv;
+  my $getopt_option_save = Getopt::Long::Configure(qw(default no_auto_abbrev no_ignore_case));
+  GetOptions(
+    "d|giblog-dir=s" => \my $giblog_dir,
+    'I|include=s'  => \my @include,
+  );
+  Getopt::Long::Configure($getopt_option_save);
+  
+  my $opt = {
+    giblog_dir => $giblog_dir,
+    include => \@include,
+    command_name => $command_name,
+  };
+  
+  return $opt;
+}
 
 =head1 SYNOPSIS
 

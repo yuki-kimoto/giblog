@@ -4,42 +4,18 @@ use strict;
 use warnings;
 
 use Giblog;
-use Getopt::Long 'GetOptions';
-use List::Util 'first';
 use Carp 'confess';
 use Giblog::API;
 
-# Reorder command line args -x --xxx is after command
-my @ordered_argv;
-for my $arg (@ARGV) {
-  if ($arg !~ /^-/) {
-    push @ordered_argv, $arg;
-  }
-}
-for my $arg (@ARGV) {
-  if ($arg =~ /^-/) {
-    push @ordered_argv, $arg;
-  }
-}
-@ARGV = @ordered_argv;
+my $opt = Giblog->parse_argv(@ARGV);
 
-# Command
-my $command_name = shift @ARGV;
-unless (defined $command_name) {
-  die "Command must be specifed\n";
-}
-if ($command_name =~ /^-/) {
-  die "Command \"$command_name\" is not found\n";
-}
+my $include = $opt->{include};
+my $giblog_dir = $opt->{giblog_dir};
+my $command_name = $opt->{command_name};
 
-my $getopt_option_save = Getopt::Long::Configure(qw(default no_auto_abbrev no_ignore_case));
-GetOptions(
-  "d|giblog-dir=s" => \my $giblog_dir,
-  'I|include=s'  => \my @include,
-);
-Getopt::Long::Configure($getopt_option_save);
+use DDP; p $opt;
 
-unshift @INC, @include, 'lib';
+unshift @INC, @$include, 'lib';
 
 my $giblog = Giblog->new(
   'giblog-dir' => $giblog_dir
@@ -54,5 +30,8 @@ if ($@) {
   confess "Can't load command $command_class:\n$!\n$@";
 }
 my $command = $command_class->new(giblog => $giblog, api => $api);
+
+# Remove command name
+shift @ARGV;
 
 $command->run(@ARGV);
