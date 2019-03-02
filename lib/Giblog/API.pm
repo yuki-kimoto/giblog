@@ -7,6 +7,7 @@ use File::Basename 'dirname', 'basename';
 use File::Path 'mkpath';
 use Carp 'confess';
 use Encode 'encode', 'decode';
+use File::Copy 'copy';
 
 sub new {
   my $class = shift;
@@ -14,6 +15,57 @@ sub new {
   my $self = {@_};
   
   return bless $self, $class;
+}
+
+sub get_proto_dir {
+  my ($self, $module_name) = @_;
+  
+  my $proto_dir = $self->module_rel_file($module_name, 'proto');
+  
+  return $proto_dir;
+}
+
+sub create_website {
+  my ($self, $website_name, $proto_dir) = @_;
+  
+  unless (defined $website_name) {
+    confess "Website name must be specifed\n";
+  }
+  if ($website_name !~ /^[a-zA-Z0-9_\-]+$/) {
+    confess "Website name \"$website_name\" is invalid\n";
+  }
+  
+  if (-f $website_name) {
+    confess "Website \"$website_name\" is already exists\n";
+  }
+
+  # Create website directory
+  $self->create_dir($website_name);
+
+  # Copy command proto files to user directory
+  my @files;
+  find(
+    {
+      wanted => sub {
+        my $proto_file = $File::Find::name;
+        
+        # Skip directory
+        return unless -f $proto_file;
+        
+        my $rel_file = $proto_file;
+        $rel_file =~ s/^\Q$proto_dir\E[\/|\\]//;
+        
+        my $user_file = "$website_name/$rel_file";
+        my $user_dir = dirname $user_file;
+        mkpath $user_dir;
+        
+        copy $proto_file, $user_file
+          or confess "Can't copy $proto_file to $user_file: $!";
+      },
+      no_chdir => 1,
+    },
+    $proto_dir
+  );
 }
 
 sub run_command {
@@ -95,10 +147,10 @@ sub slurp_file {
   return $content;
 }
 
-sub command_rel_file {
-  my ($self, $command, $rel_file) = @_;
+sub module_rel_file {
+  my ($self, $module_name, $rel_file) = @_;
   
-  my $command_rel_path = ref $command;
+  my $command_rel_path = $module_name;
   $command_rel_path =~ s/::/\//g;
   $command_rel_path .= '.pm';
   
