@@ -73,29 +73,16 @@ EOS
   }
   
   # Create web application
-  my $webapp_file = "$website_name/webapp";
+  my $webapp_file = "$website_name/serve.pl";
   unless (-f $webapp_file) {
     $api->create_file($webapp_file);
     my $webapp = <<'EOS';
-#!/usr/bin/env perl
-
 use strict;
 use warnings;
 
-use File::Basename 'dirname';
-my $giblog_dir;
-BEGIN {
-  $giblog_dir = dirname __FILE__;
-}
-use lib "$giblog_dir/lib";
-use Giblog;
-use Giblog::Command::build;
-
-print "Server start\n";
-
-my $giblog = Giblog->new('giblog-dir' => $giblog_dir);
-my $build_command = Giblog::Command::build->new(giblog => $giblog);
-$build_command->run;
+my $cmd = 'giblog build';
+system($cmd) == 0
+  or die "Can't execute $cmd: $!";
 
 use Mojolicious::Lite;
 
@@ -118,19 +105,55 @@ EOS
     my $build_command = <<'EOS';
 package Giblog::Command::build;
 
-use base 'Giblog::Command::base_build';
-
 use strict;
 use warnings;
 
 sub run {
   my ($self, @args) = @_;
   
-  # Write pre run
+  my $api = $self->api;
   
-  $self->SUPER::run(@args);
+  $api->read_config;
   
-  # Write post run
+  $api->build_all(sub {
+    my ($api, $data) = @_;
+    
+    # Config
+    my $config = $api->config;
+
+    # Parse Giblog syntax
+    $api->parse_giblog_syntax($data);
+
+    # Parse title
+    $api->parse_title($data);
+
+    # Add page link
+    $api->add_page_link($data);
+
+    # Parse description
+    $api->parse_description($data);
+
+    # Create description from first p tag
+    $api->parse_description_from_first_p_tag($data);
+
+    # Parse keywords
+    $api->parse_keywords($data);
+
+    # Parse first image src
+    $api->parse_first_img_src($data);
+
+    # Prepare wrap content
+    $api->prepare_wrap_content($data);
+    
+    # Add meta title
+    $api->add_meta_title($data);
+
+    # Add meta description
+    $api->add_meta_description($data);
+
+    # Wrap content by header, footer, etc
+    $api->wrap_content($data);
+  });
 }
 
 1;
