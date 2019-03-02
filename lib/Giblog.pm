@@ -29,7 +29,7 @@ sub new {
   return bless $self, $class;
 }
 
-sub giblog_dir { shift->{'giblog-dir'} }
+sub giblog_dir { shift->{'giblog_dir'} }
 sub config { shift->{config} }
 
 sub build_api {

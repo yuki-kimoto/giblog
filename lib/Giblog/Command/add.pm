@@ -12,6 +12,8 @@ sub run {
   
   my $entry_dir = $api->rel_file('templates/blog');
   
+  warn $entry_dir;
+  
   # Data and time
   my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime;
   $year += 1900;
