@@ -35,8 +35,6 @@ sub config { shift->{config} }
 sub parse_argv {
   my ($class, @argv) = @_;
  
-  use DDP; p @argv;
-  
   # Reorder command line args -x --xxx is after command
   my @ordered_argv;
   for my $arg (@argv) {

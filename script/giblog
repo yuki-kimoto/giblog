@@ -13,8 +13,6 @@ my $include = $opt->{include};
 my $giblog_dir = $opt->{giblog_dir};
 my $command_name = $opt->{command_name};
 
-use DDP; p $opt;
-
 unshift @INC, @$include, 'lib';
 
 my $giblog = Giblog->new(
