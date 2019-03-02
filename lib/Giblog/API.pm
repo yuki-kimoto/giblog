@@ -16,6 +16,20 @@ sub new {
   return bless $self, $class;
 }
 
+sub run_command {
+  my ($self, $command_name, @argv) = @_;
+  
+  # Command is implemented in command
+  my $command_class = "Giblog::Command::$command_name";
+  eval "use $command_class;";
+  if ($@) {
+    confess "Can't load command $command_class:\n$!\n$@";
+  }
+  my $command = $command_class->new(api => $self);
+
+  $command->run(@argv);
+}
+
 sub read_config {
   my $self = shift;
   

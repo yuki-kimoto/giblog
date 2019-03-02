@@ -34,7 +34,7 @@ sub config { shift->{config} }
 
 sub parse_argv {
   my ($class, @argv) = @_;
- 
+  
   # Reorder command line args -x --xxx is after command
   my @ordered_argv;
   for my $arg (@argv) {
@@ -70,6 +70,7 @@ sub parse_argv {
     giblog_dir => $giblog_dir,
     include => \@include,
     command_name => $command_name,
+    argv => \@argv
   };
   
   return $opt;

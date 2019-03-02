@@ -4,7 +4,6 @@ use strict;
 use warnings;
 
 use Giblog;
-use Carp 'confess';
 use Giblog::API;
 
 my $opt = Giblog->parse_argv(@ARGV);
@@ -12,6 +11,7 @@ my $opt = Giblog->parse_argv(@ARGV);
 my $include = $opt->{include};
 my $giblog_dir = $opt->{giblog_dir};
 my $command_name = $opt->{command_name};
+my $argv = $opt->{argv};
 
 unshift @INC, @$include, 'lib';
 
@@ -21,15 +21,4 @@ my $giblog = Giblog->new(
 
 my $api = Giblog::API->new(giblog => $giblog);
 
-# Command is implemented in command
-my $command_class = "Giblog::Command::$command_name";
-eval "use $command_class;";
-if ($@) {
-  confess "Can't load command $command_class:\n$!\n$@";
-}
-my $command = $command_class->new(giblog => $giblog, api => $api);
-
-# Remove command name
-shift @ARGV;
-
-$command->run(@ARGV);
+$api->run_command($command_name, @$argv);
