@@ -9,16 +9,11 @@ use Giblog::API;
 my $opt = Giblog->parse_argv(@ARGV);
 
 my $include = $opt->{include};
-my $giblog_dir = $opt->{giblog_dir};
 my $command_name = $opt->{command_name};
 my $argv = $opt->{argv};
 
 unshift @INC, @$include, 'lib';
 
-my $giblog = Giblog->new(
-  'giblog-dir' => $giblog_dir
-);
-
-my $api = Giblog::API->new(giblog => $giblog);
+my $api = Giblog->build_api(%$opt);
 
 $api->run_command($command_name, @$argv);

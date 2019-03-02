@@ -32,6 +32,16 @@ sub new {
 sub giblog_dir { shift->{'giblog-dir'} }
 sub config { shift->{config} }
 
+sub build_api {
+  my ($class, %opt) = @_;
+  
+  my $giblog = Giblog->new(%opt);
+
+  my $api = Giblog::API->new(giblog => $giblog);
+  
+  return $api;
+}
+
 sub parse_argv {
   my ($class, @argv) = @_;
   
