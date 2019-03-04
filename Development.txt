@@ -6,13 +6,12 @@ rm -rf mysite_zemi && make && perl -Mblib script/giblog new_zemi mysite_zemi
 rm -rf mysite_test && make && perl -Mblib script/giblog new_test mysite_test
 
 # Create new entry
-make && perl -Mblib script/giblog --giblog-dir=mysite add
+make && perl -Mblib script/giblog add --giblog-dir=mysite
 
 # Build
-make && perl -Mblib script/giblog --giblog-dir=mysite build
+make && perl -Mblib script/giblog build -I=mysite/lib --giblog-dir=mysite
 
 # Serve
 export PERL5LIB=blib/lib morbo mysite/webapp
 
 make && perl -Mblib script/giblog --giblog-dir=mysitezemi build
-

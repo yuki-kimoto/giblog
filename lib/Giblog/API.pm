@@ -87,16 +87,20 @@ sub read_config {
   
   my $giblog = $self->giblog;
   
+  # Read config
+  my $config;
   unless (defined $giblog->{config}) {
     my $config_file = $self->rel_file('giblog.conf');
     
     my $config_content = $self->slurp_file($config_file);
     
-    my $config = eval $config_content
+    $config = eval $config_content
       or confess "Can't parse config file \"$config_file\"";
     
     $giblog->{config} = $config;
   }
+  
+  return $config;
 }
 
 sub config { shift->giblog->config }
@@ -165,12 +169,11 @@ sub module_rel_file {
 
 sub giblog { shift->{giblog} }
 
-sub build_all {
-  my ($self, $cb) = @_;
-  
+sub get_templates_files {
+  my $self = shift;
+
   my $templates_dir = $self->rel_file('templates');
-  my $public_dir = $self->rel_file('public');
-  
+
   # Get template files
   my @template_rel_files;
   find(
@@ -192,7 +195,6 @@ sub build_all {
         my $template_rel_file = $template_file;
         $template_rel_file =~ s/^$templates_dir//;
         $template_rel_file =~ s/^[\\\/]//;
-        $template_rel_file = "templates/$template_rel_file";
         
         push @template_rel_files, $template_rel_file;
       },
@@ -201,36 +203,33 @@ sub build_all {
     $templates_dir
   );
   
-  for my $template_rel_file (@template_rel_files) {
-    my $template_file = $self->rel_file($template_rel_file);
-    my $content = $self->slurp_file($template_file);
-    
-    my $path = $template_rel_file;
-    $path =~ s|^templates||;
-    if ($path eq '/index.html') {
-      $path = '/';
-    }
-    
-    my $data = {
-      content => $content,
-      path => $path,
-    };
+  return \@template_rel_files;
+}
 
-    # Build html
-    $cb->($self, $data);
-    
-    my $html = $data->{content};
-    
-    # public file
-    my $public_rel_file = $template_rel_file;
-    $public_rel_file =~ s/^templates/public/;
-    my $public_file = $self->rel_file("$public_rel_file");
-    my $public_dir = dirname $public_file;
-    mkpath $public_dir;
-    
-    # Write to public file
-    $self->write_to_file($public_file, $html);
-  }
+sub get_content {
+  my ($self, $data) = @_;
+  
+  my $file = $data->{file};
+  
+  my $template_file = $self->rel_file("templates/$file");
+  my $content = $self->slurp_file($template_file);
+  
+  $data->{content} = $content;
+}
+
+sub write_to_public_file {
+  my ($self, $data) = @_;
+  
+  my $content = $data->{content};
+  my $file = $data->{file};
+  
+  # public file
+  my $public_file = $self->rel_file("public/$file");
+  my $public_dir = dirname $public_file;
+  mkpath $public_dir;
+  
+  # Write to public file
+  $self->write_to_file($public_file, $content);
 }
 
 my $inline_elements_re = qr/^<(span|em|strong|abbr|acronym|dfn|q|cite|sup|sub|code|var|kbd|samp|bdo|font|big|small|b|i|s|strike|u|tt|a|label|object|applet|iframe|button|textarea|select|basefont|img|br|input|script|map)\b/;
@@ -332,12 +331,16 @@ sub add_page_link {
   my $content = $data->{content};
   
   # Add page link
-  my $path = $data->{path};
-  my $path_tmp = $path;
-  unless (defined $path_tmp) {
-    $path_tmp = '';
+  my $file = $data->{file};
+  my $path;
+  if ($file eq 'index.html') {
+    $path = '/';
   }
-  $content =~ s|class="title"[^>]*?>([^<]*?)<|class="title"><a href="$path_tmp">$1</a><|;
+  else {
+    $path = "/$file";
+  }
+  
+  $content =~ s|class="title"[^>]*?>([^<]*?)<|class="title"><a href="$path">$1</a><|;
 
   $data->{'content'} = $content;
 }
@@ -412,7 +415,7 @@ sub parse_first_img_src {
   }
 }
 
-sub wrap_content {
+sub wrap {
   my ($self, $data) = @_;
   
   my $giblog = $self->giblog;
@@ -487,7 +490,7 @@ sub add_meta_description {
   $data->{meta} = $meta;
 }
 
-sub prepare_wrap_content {
+sub prepare_wrap {
   my ($self, $data) = @_;
   
   my $common_meta_file = $self->rel_file('templates/common/meta.html');

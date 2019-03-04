@@ -45,22 +45,13 @@ sub build_api {
 sub parse_argv {
   my ($class, @argv) = @_;
   
-  # Reorder command line args -x --xxx is after command
-  my @ordered_argv;
-  for my $arg (@argv) {
-    if ($arg !~ /^-/) {
-      push @ordered_argv, $arg;
-    }
+  # If first argument don't start with -, it is command
+  my $command_name;
+  if (@argv && $argv[0] !~ /^-/) {
+    $command_name = shift @argv;
   }
-  for my $arg (@argv) {
-    if ($arg =~ /^-/) {
-      push @ordered_argv, $arg;
-    }
-  }
-  @argv = @ordered_argv;
 
   # Command
-  my $command_name = shift @argv;
   unless (defined $command_name) {
     die "Command must be specifed\n";
   }

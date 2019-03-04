@@ -5,10 +5,10 @@ use base 'Giblog::Command';
 use strict;
 use warnings;
 
+use Carp 'confess';
+
 sub run {
-  my ($self, @args) = @_;
-  
-  # Nothing
+  confess "Not inplemented"
 }
 
 1;
