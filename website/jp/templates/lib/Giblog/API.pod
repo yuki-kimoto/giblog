@@ -8,7 +8,7 @@ Giblog::API - Giblog API
 
 Giblog APIはHTMLコンテンツを処理をするためのAPIです。
 
-=head1 メソッド
+=head1 ユーティリティメソッド
 
 =head2 new
 
@@ -58,17 +58,57 @@ protoディレクトリが指定されない場合は、例外が発生します
 
 =head2 run_command
 
+  $api->run_command($command_name, @args);
+
+コマンド名を指定して、引数を与えてコマンドを実行します。
+
+たとえば、コマンド名が「build」の場合は「Giblog::Command::build」がロードされ、このクラスの「run」メソッドが実行されます。
+
+コマンド名に対応するコマンドクラスがロードできなかった場合は、例外が発生します。
+
 =head2 read_config
+
+  my $config = $api->read_config;
+  
+ホームディレクトリ直下にある「giblog.conf」を読み込みます。
+
+「giblog.conf」は、Perlのソースコードとして正しく、ハッシュのリファレンスを返す必要があります。そうでない場合は、例外が発生します。
 
 =head2 config
 
+  my $config = $api->read_config;
+
+「read_config」で読み込まれた設定を取得します。「read_confg」が実行される前は、未定義です。
+
 =head2 giblog_dir
+
+  my $giblog_dir = $api->giblog_dir;
+
+Giblogのホームディレクトリを取得します。
 
 =head2 rel_file
 
+  my $file = $api->rel_file('foo/bar');
+
+Giblogのホームディレクトリに、指定された相対パスを結合したパスを返します。
+
+ホームディレクトリが設定されていない場合は、そのまま返します。
+
 =head2 create_dir
 
+  $api->create_dir($dir);
+
+ディレクトリを作成します。
+
+ディレクトリの作成に失敗した場合は、例外が発生します。
+
 =head2 create_file
+
+  $api->create_file($file);
+
+ファイルを作成します。
+
+ファイルの作成に失敗した場合は、例外が発生します。
 
 =head2 write_to_file
 
@@ -79,6 +119,8 @@ protoディレクトリが指定されない場合は、例外が発生します
 =head2 giblog
 
 =head2 get_templates_files
+
+=head1 データ操作メソッド
 
 =head2 get_content
 
