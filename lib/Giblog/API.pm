@@ -26,21 +26,22 @@ sub get_proto_dir {
 }
 
 sub create_website {
-  my ($self, $website_name, $proto_dir) = @_;
+  my ($self, $home_dir, $proto_dir) = @_;
   
-  unless (defined $website_name) {
+  unless (defined $home_dir) {
     confess "Website name must be specifed\n";
   }
-  if ($website_name !~ /^[a-zA-Z0-9_\-]+$/) {
-    confess "Website name \"$website_name\" is invalid\n";
+  
+  if (-f $home_dir) {
+    confess "Website \"$home_dir\" is already exists\n";
   }
   
-  if (-f $website_name) {
-    confess "Website \"$website_name\" is already exists\n";
+  unless (-d $proto_dir) {
+    confess "proto diretory can't specified\n";
   }
 
   # Create website directory
-  $self->create_dir($website_name);
+  $self->create_dir($home_dir);
 
   # Copy command proto files to user directory
   my @files;
@@ -55,7 +56,7 @@ sub create_website {
         my $rel_file = $proto_file;
         $rel_file =~ s/^\Q$proto_dir\E[\/|\\]//;
         
-        my $user_file = "$website_name/$rel_file";
+        my $user_file = "$home_dir/$rel_file";
         my $user_dir = dirname $user_file;
         mkpath $user_dir;
         
@@ -159,6 +160,11 @@ sub module_rel_file {
   $command_rel_path .= '.pm';
   
   my $command_path = $INC{$command_rel_path};
+  
+  unless ($command_path) {
+    confess "Can't get module path because module is not loaded";
+  }
+  
   my $command_dir = $command_path;
   $command_dir =~ s/\.pm$//;
   
@@ -519,3 +525,69 @@ sub prepare_wrap {
 }
 
 1;
+
+=head1 NAME
+
+Giblog::API - Giblog API
+
+=head1 DESCRIPTION
+
+Giblog API is APIs to manipulate HTML contents.
+
+=head1 METHODS
+
+=head2 new
+
+=head2 get_proto_dir
+
+=head2 create_website
+
+=head2 run_command
+
+=head2 read_config
+
+=head2 config
+
+=head2 giblog_dir
+
+=head2 rel_file
+
+=head2 create_dir
+
+=head2 create_file
+
+=head2 write_to_file
+
+=head2 slurp_file
+
+=head2 module_rel_file
+
+=head2 giblog
+
+=head2 get_templates_files
+
+=head2 get_content
+
+=head2 write_to_public_file
+
+=head2 parse_giblog_syntax
+
+=head2 parse_title
+
+=head2 add_page_link
+
+=head2 parse_description
+
+=head2 parse_description_from_first_p_tag
+
+=head2 parse_keywords
+
+=head2 parse_first_img_src
+
+=head2 wrap
+
+=head2 add_meta_title
+
+=head2 add_meta_description
+
+=head2 prepare_wrap
