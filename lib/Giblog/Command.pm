@@ -5,7 +5,7 @@ sub new {
   
   my $self = {@_};
   
-  return bless $self, $class;
+  return bless $self, ref $class || $class;
 }
 
 sub api { shift->{api} }

@@ -1,20 +1,21 @@
-package Giblog::Command::new;
+package Giblog::Command::new_hp;
 
-use base 'Giblog::Command';
+use base 'Giblog::Command::new';
 
 use strict;
 use warnings;
 
-sub run {
-  my ($self, $website_name) = @_;
-
-  my $api = $self->api;
-  
-  my $module_name = ref $self;
-  
-  my $proto_dir = $api->get_proto_dir($module_name);
-  
-  $api->create_website($website_name, $proto_dir);
-}
+sub run { shift->SUPER::new(@_) }
 
 1;
+
+=head1 NAME
+
+Giblog::Command::new_hp - new_hp command
+
+=head1 DESCRIPTION
+
+=head1 METHODS
+
+L<Giblog::Command::new_hp> inherits all methods from L<Giblog::Command> and
+implements the following new_hp ones.

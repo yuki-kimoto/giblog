@@ -2,8 +2,9 @@
 
 # Create new website
 rm -rf mysite && make && perl -Mblib script/giblog new mysite
+rm -rf mysite && make && perl -Mblib script/giblog new_blog mysite_blog
+rm -rf mysite && make && perl -Mblib script/giblog new_hp mysite_hp
 rm -rf mysite_zemi && make && perl -Mblib script/giblog new_zemi mysite_zemi
-rm -rf mysite_test && make && perl -Mblib script/giblog new_test mysite_test
 
 # Create new entry
 make && perl -Mblib script/giblog add --giblog-dir=mysite

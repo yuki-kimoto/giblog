@@ -6,7 +6,9 @@ use strict;
 use warnings;
 
 sub run {
-  my ($self, $website_name) = @_;
+  my ($self, @argv) = @_;
+  
+  my $website_name = shift @argv;
 
   my $api = $self->api;
   
@@ -18,3 +20,20 @@ sub run {
 }
 
 1;
+
+=head1 NAME
+
+Giblog::Command::new - new command
+
+=head1 DESCRIPTION
+
+=head1 METHODS
+
+L<Giblog::Command::new> inherits all methods from L<Giblog::Command> and
+implements the following new ones.
+
+=head2 run
+
+  $command->run(@argv);
+
+Execute command.
