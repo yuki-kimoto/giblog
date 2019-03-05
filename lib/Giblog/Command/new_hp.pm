@@ -13,9 +13,13 @@ sub run { shift->SUPER::new(@_) }
 
 Giblog::Command::new_hp - new_hp command
 
-=head1 DESCRIPTION
-
 =head1 METHODS
 
-L<Giblog::Command::new_hp> inherits all methods from L<Giblog::Command> and
-implements the following new_hp ones.
+L<Giblog::Command::new_hp> inherits all methods from L<Giblog::Command::new> and
+implements the following new ones.
+
+=head2 run
+
+  $command->run(@argv);
+
+Execute new_hp command.

@@ -13,9 +13,13 @@ sub run { shift->SUPER::new(@_) }
 
 Giblog::Command::new_zemi - new_zemi command
 
-=head1 DESCRIPTION
-
 =head1 METHODS
 
-L<Giblog::Command::new_zemi> inherits all methods from L<Giblog::Command> and
-implements the following new_zemi ones.
+L<Giblog::Command::new_zemi> inherits all methods from L<Giblog::Command::new> and
+implements the following new ones.
+
+=head2 run
+
+  $command->run(@argv);
+
+Execute new_zemi command.

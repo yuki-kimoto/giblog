@@ -29,3 +29,18 @@ EOS
 }
 
 1;
+
+=head1 NAME
+
+Giblog::Command::add - add command
+
+=head1 METHODS
+
+L<Giblog::Command::add> inherits all methods from L<Giblog::Command> and
+implements the following add ones.
+
+=head2 run
+
+  $command->run(@argv);
+
+Execute add command.

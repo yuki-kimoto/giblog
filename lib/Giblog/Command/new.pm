@@ -25,8 +25,6 @@ sub run {
 
 Giblog::Command::new - new command
 
-=head1 DESCRIPTION
-
 =head1 METHODS
 
 L<Giblog::Command::new> inherits all methods from L<Giblog::Command> and
@@ -36,4 +34,4 @@ implements the following new ones.
 
   $command->run(@argv);
 
-Execute command.
+Execute new command.

@@ -12,3 +12,18 @@ sub run {
 }
 
 1;
+
+=head1 NAME
+
+Giblog::Command::build - build command
+
+=head1 METHODS
+
+L<Giblog::Command::build> inherits all methods from L<Giblog::Command> and
+implements the following new ones.
+
+=head2 run
+
+  $command->run(@argv);
+
+Execute build command.
