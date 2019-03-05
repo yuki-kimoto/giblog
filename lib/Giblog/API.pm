@@ -630,6 +630,10 @@ Giblog API is APIs to manipulate HTML contents.
 
 =head2 parse_title
 
+=head2 parse_title_from_first_h_tag
+
+=head2 add_page_link_to_first_h_tag
+
 =head2 add_page_link
 
 =head2 parse_description
