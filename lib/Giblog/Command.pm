@@ -1,5 +1,8 @@
 package Giblog::Command;
 
+use strict;
+use warnings;
+
 sub new {
   my $class = shift;
   
@@ -18,12 +21,9 @@ Giblog::Command - command
 
 =head1 METHODS
 
-L<Giblog::Command> inherits all methods from L<Giblog::Command> and
-implements the following new ones.
-
 =head2 new
 
-  $command->run(%args);
+  $command->new(%args);
 
 Create command object.
 

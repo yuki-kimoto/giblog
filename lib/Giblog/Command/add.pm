@@ -37,7 +37,7 @@ Giblog::Command::add - add command
 =head1 METHODS
 
 L<Giblog::Command::add> inherits all methods from L<Giblog::Command> and
-implements the following add ones.
+implements the following new ones.
 
 =head2 run
 
