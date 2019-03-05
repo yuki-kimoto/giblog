@@ -5,7 +5,7 @@ use base 'Giblog::Command::new';
 use strict;
 use warnings;
 
-sub run { shift->SUPER::new(@_) }
+sub run { shift->SUPER::run(@_) }
 
 1;
 
