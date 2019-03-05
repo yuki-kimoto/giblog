@@ -329,6 +329,62 @@ sub parse_title {
   }
 }
 
+sub parse_title_from_first_h_tag {
+  my ($self, $data) = @_;
+  
+  my $config = $self->config;
+
+  my $content = $data->{content};
+  
+  if ($content =~ m|<\s*h[1-6]\b[^>]*?>([^<]*?)<|) {
+    my $page_title = $1;
+    unless (defined $data->{'title'}) {
+      # Add site title after title
+      my $site_title = $config->{site_title};
+      my $title;
+      if (length $page_title) {
+        if (length $site_title) {
+          $title = "$page_title - $site_title";
+        }
+        else {
+          $title = $page_title;
+        }
+      }
+      else {
+        if (length $site_title) {
+          $title = $site_title;
+        }
+        else {
+          $title = '';
+        }
+      }
+      $data->{title} = $title;
+    }
+  }
+}
+
+sub add_page_link_to_first_h_tag {
+  my ($self, $data) = @_;
+  
+  my $giblog = $self->giblog;
+
+  my $content = $data->{content};
+  
+  # Add page link
+  my $file = $data->{file};
+  my $path;
+  if ($file eq 'index.html') {
+    $path = '/';
+  }
+  else {
+    $path = "/$file";
+  }
+  
+  $content =~ s|(<\s*h[1-6]\b[^>]*?>)([^<]*?)<|$1<a href="$path">$2</a><|;
+
+  $data->{'content'} = $content;
+}
+
 sub add_page_link {
   my ($self, $data) = @_;
   
