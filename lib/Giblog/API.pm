@@ -302,28 +302,9 @@ sub parse_title {
 
   my $content = $data->{content};
   
-  if ($content =~ m|class="title"[^>]*?>([^<]*?)<|) {
-    my $page_title = $1;
-    unless (defined $data->{'title'}) {
-      # Add site title after title
-      my $site_title = $config->{site_title};
-      my $title;
-      if (length $page_title) {
-        if (length $site_title) {
-          $title = "$page_title - $site_title";
-        }
-        else {
-          $title = $page_title;
-        }
-      }
-      else {
-        if (length $site_title) {
-          $title = $site_title;
-        }
-        else {
-          $title = '';
-        }
-      }
+  unless (defined $data->{'title'}) {
+    if ($content =~ m|class="title"[^>]*?>([^<]*?)<|) {
+      my $title = $1;
       $data->{title} = $title;
     }
   }
@@ -336,28 +317,9 @@ sub parse_title_from_first_h_tag {
 
   my $content = $data->{content};
   
-  if ($content =~ m|<\s*h[1-6]\b[^>]*?>([^<]*?)<|) {
-    my $page_title = $1;
-    unless (defined $data->{'title'}) {
-      # Add site title after title
-      my $site_title = $config->{site_title};
-      my $title;
-      if (length $page_title) {
-        if (length $site_title) {
-          $title = "$page_title - $site_title";
-        }
-        else {
-          $title = $page_title;
-        }
-      }
-      else {
-        if (length $site_title) {
-          $title = $site_title;
-        }
-        else {
-          $title = '';
-        }
-      }
+  unless (defined $data->{'title'}) {
+    if ($content =~ m|<\s*h[1-6]\b[^>]*?>([^<]*?)<|) {
+      my $title = $1;
       $data->{title} = $title;
     }
   }
