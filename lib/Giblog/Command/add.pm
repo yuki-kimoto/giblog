@@ -19,11 +19,7 @@ sub run {
   my $datetime = sprintf("%04d%02d%02d%02d%02d%02d", $year, $mon, $mday, $hour, $min, $sec);
   
   my $entry_file = "$entry_dir/$datetime.html";
-  my $entry = <<"EOS";
-<!-- /blog/$datetime -->
-
-EOS
-  $api->write_to_file($entry_file, $entry);
+  $api->create_file($entry_file);
   
   warn "Create $entry_file\n";
 }
