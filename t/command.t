@@ -130,7 +130,7 @@ sub slurp {
     system($cmd) == 0
       or die "Can't execute command $cmd:$!";
   }
-  sleep 1;
+  sleep 2;
   {
     my $cmd = "$^X -Mblib blib/script/giblog add --giblog-dir=$website_dir";
     system($cmd) == 0
