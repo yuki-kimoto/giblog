@@ -4,6 +4,7 @@ use base 'Giblog::Command';
 
 use strict;
 use warnings;
+use Carp 'confess';
 
 sub run {
   my ($self) = @_;
@@ -18,7 +19,11 @@ sub run {
   $mon++;
   my $datetime = sprintf("%04d%02d%02d%02d%02d%02d", $year, $mon, $mday, $hour, $min, $sec);
   
+  # Create entry file
   my $entry_file = "$entry_dir/$datetime.html";
+  if (-f $entry_file) {
+    confess "Fail add command. $entry_file is Alread exists";
+  }
   $api->create_file($entry_file);
   
   warn "Create $entry_file\n";
