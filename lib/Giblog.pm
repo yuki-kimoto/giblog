@@ -4,6 +4,8 @@ use 5.008007;
 use strict;
 use warnings;
 
+use Getopt::Long 'GetOptions';
+
 our $VERSION = '0.01';
 
 sub new {

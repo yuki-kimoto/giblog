@@ -35,3 +35,4 @@ SPVM-.*
 ^spvmcc_build/[^\.]
 .idea/.*
 ^mysite
+^t/tmp

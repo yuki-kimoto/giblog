@@ -39,3 +39,4 @@ t/precompile
 spvmcc_build/*
 !spvmcc_build/.gitkeep
 mysite*/*
+t/tmp/*
