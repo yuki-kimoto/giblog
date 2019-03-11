@@ -44,3 +44,78 @@ sub slurp {
   my $readme_content = slurp "$website_dir/README";
   like($readme_content, qr|Giblog/Command/new/proto|);
 }
+
+# new_hp command
+{
+  my $website_dir = "$test_dir/mysite_new_hp";
+  my $cmd = "$^X -Mblib blib/script/giblog new_hp $website_dir";
+  system($cmd) == 0
+    or die "Can't execute command $cmd:$!";
+  
+  my @files = sort glob "$website_dir/*";
+  
+  is_deeply(
+    \@files, 
+    [
+      "$website_dir/README",
+      "$website_dir/giblog.conf",
+      "$website_dir/lib",
+      "$website_dir/public",
+      "$website_dir/serve.pl",
+      "$website_dir/templates",
+    ]
+  );
+  
+  my $readme_content = slurp "$website_dir/README";
+  like($readme_content, qr|Giblog/Command/new_hp/proto|);
+}
+
+# new_blog command
+{
+  my $website_dir = "$test_dir/mysite_new_blog";
+  my $cmd = "$^X -Mblib blib/script/giblog new_blog $website_dir";
+  system($cmd) == 0
+    or die "Can't execute command $cmd:$!";
+  
+  my @files = sort glob "$website_dir/*";
+  
+  is_deeply(
+    \@files, 
+    [
+      "$website_dir/README",
+      "$website_dir/giblog.conf",
+      "$website_dir/lib",
+      "$website_dir/public",
+      "$website_dir/serve.pl",
+      "$website_dir/templates",
+    ]
+  );
+  
+  my $readme_content = slurp "$website_dir/README";
+  like($readme_content, qr|Giblog/Command/new_blog/proto|);
+}
+
+# new_zemi command
+{
+  my $website_dir = "$test_dir/mysite_new_zemi";
+  my $cmd = "$^X -Mblib blib/script/giblog new_zemi $website_dir";
+  system($cmd) == 0
+    or die "Can't execute command $cmd:$!";
+  
+  my @files = sort glob "$website_dir/*";
+  
+  is_deeply(
+    \@files, 
+    [
+      "$website_dir/README",
+      "$website_dir/giblog.conf",
+      "$website_dir/lib",
+      "$website_dir/public",
+      "$website_dir/serve.pl",
+      "$website_dir/templates",
+    ]
+  );
+  
+  my $readme_content = slurp "$website_dir/README";
+  like($readme_content, qr|Giblog/Command/new_zemi/proto|);
+}
