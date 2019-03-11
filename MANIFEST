@@ -1,4 +1,12 @@
 Changes
+doc/jp/public/css/common.css
+doc/jp/public/index.html
+doc/jp/templates/common/footer.html
+doc/jp/templates/common/header.html
+doc/jp/templates/common/meta.html
+doc/jp/templates/index.html
+doc/jp/templates/lib/Giblog.pod
+doc/jp/templates/lib/Giblog/API.pod
 lib/Giblog.pm
 lib/Giblog/API.pm
 lib/Giblog/Command.pm
@@ -11,6 +19,7 @@ lib/Giblog/Command/new/proto/public/blog/.gitkeep
 lib/Giblog/Command/new/proto/public/css/common.css
 lib/Giblog/Command/new/proto/public/images/.gitkeep
 lib/Giblog/Command/new/proto/public/js/.gitkeep
+lib/Giblog/Command/new/proto/README
 lib/Giblog/Command/new/proto/serve.pl
 lib/Giblog/Command/new/proto/templates/blog/.gitkeep
 lib/Giblog/Command/new/proto/templates/common/bottom.html
@@ -27,6 +36,7 @@ lib/Giblog/Command/new_blog/proto/public/blog/.gitkeep
 lib/Giblog/Command/new_blog/proto/public/css/common.css
 lib/Giblog/Command/new_blog/proto/public/images/.gitkeep
 lib/Giblog/Command/new_blog/proto/public/js/.gitkeep
+lib/Giblog/Command/new_blog/proto/README
 lib/Giblog/Command/new_blog/proto/serve.pl
 lib/Giblog/Command/new_blog/proto/templates/blog/.gitkeep
 lib/Giblog/Command/new_blog/proto/templates/common/bottom.html
@@ -43,6 +53,7 @@ lib/Giblog/Command/new_hp/proto/public/blog/.gitkeep
 lib/Giblog/Command/new_hp/proto/public/css/common.css
 lib/Giblog/Command/new_hp/proto/public/images/.gitkeep
 lib/Giblog/Command/new_hp/proto/public/js/.gitkeep
+lib/Giblog/Command/new_hp/proto/README
 lib/Giblog/Command/new_hp/proto/serve.pl
 lib/Giblog/Command/new_hp/proto/templates/blog/.gitkeep
 lib/Giblog/Command/new_hp/proto/templates/common/bottom.html
@@ -60,6 +71,7 @@ lib/Giblog/Command/new_zemi/proto/public/css/common.css
 lib/Giblog/Command/new_zemi/proto/public/images/.gitkeep
 lib/Giblog/Command/new_zemi/proto/public/js/.gitkeep
 lib/Giblog/Command/new_zemi/proto/public/js/jquery-v3.3.1.js
+lib/Giblog/Command/new_zemi/proto/README
 lib/Giblog/Command/new_zemi/proto/serve.pl
 lib/Giblog/Command/new_zemi/proto/templates/blog/.gitkeep
 lib/Giblog/Command/new_zemi/proto/templates/common/bottom.html
@@ -75,14 +87,7 @@ README
 README_DEVEL.txt
 script/giblog
 t/00-load.t
+t/command.t
 t/manifest.t
 t/pod-coverage.t
 t/pod.t
-website/jp/public/css/common.css
-website/jp/templates/common/footer.html
-website/jp/templates/common/header.html
-website/jp/templates/common/meta.html
-website/jp/templates/index.html
-website/jp/templates/lib/Giblog.pod
-website/jp/templates/lib/Giblog/API.pod
-xt/boilerplate.t
