@@ -649,11 +649,19 @@ If Creating file fail, exception occur.
 
   $api->write_to_file($file, $content);
 
-Write content to file.
+Write content to file. Content is encoded to UTF-8.
 
 If file is not exists, file is created automatically.
 
 If Creating file fail, exception occur.
+
+=head2 slurp_file
+
+  my $content = $api->slurp_file($file);
+
+Get file content. Content is decoded from UTF-8.
+
+If file is not exists, exception occur.
 
 =head2 get_proto_dir
 
@@ -707,8 +715,6 @@ Giblogのホームディレクトリを取得します。
 Giblogのホームディレクトリに、指定された相対パスを結合したパスを返します。
 
 ホームディレクトリが設定されていない場合は、そのまま返します。
-
-=head2 slurp_file
 
 =head2 module_rel_file
 

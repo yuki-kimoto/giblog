@@ -145,7 +145,7 @@ mkpath $test_dir;
   {
     my $giblog = Giblog->new;
     my $api = Giblog::API->new(giblog => $giblog);
-    my $dir = 't/tmp/api/foo/bar';
+    my $dir = 't/tmp/api/foo/create_dir';
     eval {
       $api->create_dir($dir);
     };
@@ -168,30 +168,7 @@ mkpath $test_dir;
   {
     my $giblog = Giblog->new;
     my $api = Giblog::API->new(giblog => $giblog);
-    my $file = 't/tmp/api/foo/bar';
-    eval {
-      $api->create_file($file);
-    };
-    ok($@);
-  }
-}
-
-# create_file
-{
-  # create_file - create file
-  {
-    my $giblog = Giblog->new;
-    my $api = Giblog::API->new(giblog => $giblog);
-    my $file = 't/tmp/api/create_file';
-    $api->create_file($file);
-    ok(-f $file);
-  }
-
-  # create_file - exception - Can't create file
-  {
-    my $giblog = Giblog->new;
-    my $api = Giblog::API->new(giblog => $giblog);
-    my $file = 't/tmp/api/foo/bar';
+    my $file = 't/tmp/api/foo/create_file';
     eval {
       $api->create_file($file);
     };
@@ -201,17 +178,18 @@ mkpath $test_dir;
 
 # write_to_file
 {
-  # write_to_file - create file
+  # write_to_file - write content to file
   {
     my $giblog = Giblog->new;
     my $api = Giblog::API->new(giblog => $giblog);
     my $file = 't/tmp/api/write_to_file';
-    my $content = "‚ ‚¢‚¤";
+    my $content = "ã‚ã„ã†";
     $api->write_to_file($file, $content);
     ok(-f $file);
     open my $fh, '<', $file
       or die "Can't open $file: $!";
     my $content_from_file = do { local $/; <$fh> };
+    $content_from_file = decode('UTF-8', $content_from_file);
     is($content_from_file, $content);
   }
 
@@ -219,9 +197,38 @@ mkpath $test_dir;
   {
     my $giblog = Giblog->new;
     my $api = Giblog::API->new(giblog => $giblog);
-    my $file = 't/tmp/api/foo/bar';
+    my $file = 't/tmp/api/foo/write_to_file';
     eval {
       $api->write_to_file($file);
+    };
+    ok($@);
+  }
+}
+
+# slurp_file
+{
+  # slurp_file - slurp file
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $file = 't/tmp/api/slurp_file';
+    my $content_input = "ã‚ã„ã†";
+    open my $fh, '>', $file
+      or die "Can't open $file: $!";
+    print $fh encode('UTF-8', $content_input);
+    close $fh;
+    
+    my $content = $api->slurp_file($file);
+    is($content, $content_input);
+  }
+
+  # slurp_file - exception - Can't create file
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $file = 't/tmp/api/foo/slurp_file';
+    eval {
+      $api->slurp_file($file);
     };
     ok($@);
   }
