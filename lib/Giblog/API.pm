@@ -589,6 +589,12 @@ By C<giblog> method, you can access this parameter.
 
 =back
 
+=head2 giblog
+
+  my $giblog = $api->giblog;
+
+Get L<Giblog> object.
+
 =head2 config
 
   my $config = $api->config;
@@ -711,8 +717,6 @@ protoディレクトリが指定されない場合は、例外が発生します。
 コマンド名に対応するコマンドクラスがロードできなかった場合は、例外が発生します。
 
 =head2 module_rel_file
-
-=head2 giblog
 
 =head2 get_templates_files
 

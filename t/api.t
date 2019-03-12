@@ -24,27 +24,11 @@ mkpath $test_dir;
   is($giblog, $api->giblog);
 }
 
-# get_proto_dir
+# giblog
 {
   my $giblog = Giblog->new;
   my $api = Giblog::API->new(giblog => $giblog);
-  
-  # get_proto_dir - path
-  {
-    my $module_name = 'Giblog::Command::new';
-    my $proto_dir = $api->get_proto_dir($module_name);
-    like($proto_dir, qr|blib/lib/Giblog/Command/new/proto$|);
-    ok(-d $proto_dir);
-  }
-  
-  # get_proto_dir - exception - module not found
-  {
-    my $module_name = 'Giblog::Command::not_found';
-    eval {
-      my $proto_dir = $api->get_proto_dir($module_name);
-    };
-    ok($@);
-  }
+  is($giblog, $api->giblog);
 }
 
 # config
@@ -253,5 +237,28 @@ mkpath $test_dir;
     my $rel_file = 'foo/bar';
     my $file = $api->rel_file($rel_file);
     is($file, $rel_file);
+  }
+}
+
+# get_proto_dir
+{
+  my $giblog = Giblog->new;
+  my $api = Giblog::API->new(giblog => $giblog);
+  
+  # get_proto_dir - path
+  {
+    my $module_name = 'Giblog::Command::new';
+    my $proto_dir = $api->get_proto_dir($module_name);
+    like($proto_dir, qr|blib/lib/Giblog/Command/new/proto$|);
+    ok(-d $proto_dir);
+  }
+  
+  # get_proto_dir - exception - module not found
+  {
+    my $module_name = 'Giblog::Command::not_found';
+    eval {
+      my $proto_dir = $api->get_proto_dir($module_name);
+    };
+    ok($@);
   }
 }
