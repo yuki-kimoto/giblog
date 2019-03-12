@@ -150,3 +150,26 @@ mkpath $test_dir;
     ok($@);
   }
 }
+
+# create_file
+{
+  # create_file - create fileectory
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $file = 't/tmp/api/create_file';
+    $api->create_file($file);
+    ok(-f $file);
+  }
+
+  # create_file - exception - Can't create fileectory
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $file = 't/tmp/api/foo/bar';
+    eval {
+      $api->create_file($file);
+    };
+    ok($@);
+  }
+}
