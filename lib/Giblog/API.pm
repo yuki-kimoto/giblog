@@ -575,6 +575,18 @@ By C<giblog> method, you can access this parameter.
 
 =back
 
+=head2 config
+
+  my $config = $api->config;
+
+Get Giblog config. This is hash reference.
+
+Config is loaded by C<read_config> method.
+
+If config is not loaded, this method return undef.
+
+=head2 giblog_dir
+
 =head2 get_proto_dir
 
   my $proto_dir = $api->get_proto_dir($module_name);

@@ -44,3 +44,24 @@ mkpath $test_dir;
     ok($@);
   }
 }
+
+# config
+{
+  # config - default is undef
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    ok(!defined $api->config);
+  }
+  
+  # config - read config
+  {
+    my $giblog = Giblog->new(giblog_dir => 't/tmp/api');
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $config_content = '{foo => 1}';
+    $api->write_to_file('t/tmp/api/giblog.conf', $config_content);
+    $api->read_config;
+    my $config = $api->config;
+    is_deeply($config, {foo => 1});
+  }
+}
