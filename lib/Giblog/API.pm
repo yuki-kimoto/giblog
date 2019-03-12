@@ -569,20 +569,24 @@ B<Parameters:>
 
 Set L<Giblog> object.
 
+By C<giblog> method, you can access this parameter.
+
+  my $giblog = $api->giblog;
+
 =back
 
 =head2 get_proto_dir
 
   my $proto_dir = $api->get_proto_dir($module_name);
 
-モジュール名を指定して、対応する「proto」ディレクトリのパスを取得します。
+Get "proto" directory path corresponding to module name.
 
-モジュール名が「Giblog::Command::new_foo」であった場合で、読み込まれたパスが「lib/Giblog/Command/new_foo.pm」であった場合は、「proto」ディレクトリのパスは「lib/Giblog/Command/new_foo/proto」になります。
+If module name is "Giblog::Command::new_foo" and loading path is "lib/Giblog/Command/new_foo.pm", path of "proto" directory is "lib/Giblog/Command/new_foo/proto".
 
   lib/Giblog/Command/new_foo.pm
                     /new_foo/proto
 
-モジュールは、すでに読み込まれている必要があります。そうでない場合は、例外が発生します。
+Module must be loaded. otherwise exception occur.
 
 =head2 create_website
 
