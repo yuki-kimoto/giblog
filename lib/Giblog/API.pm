@@ -31,6 +31,73 @@ sub get_proto_dir {
   return $proto_dir;
 }
 
+sub read_config {
+  my $self = shift;
+  
+  my $giblog = $self->giblog;
+  
+  # Read config
+  my $config;
+  if (defined $giblog->{config}) {
+    confess "Config is already loaded";
+  }
+  
+  my $config_file = $self->rel_file('giblog.conf');
+  
+  my $config_content = $self->slurp_file($config_file);
+  
+  $config = eval $config_content
+    or confess "Can't parse config file \"$config_file\"";
+    
+  unless (ref $config eq 'HASH') {
+    confess "\"$config_file\" must end with hash reference";
+  }
+  
+  $giblog->{config} = $config;
+  
+  return $config;
+}
+
+sub clear_config {
+  my $self = shift;
+  
+  my $giblog = $self->giblog;
+  
+  $giblog->{config} = undef;
+}
+
+sub create_dir {
+  my ($self, $dir) = @_;
+  mkdir $dir
+    or confess "Can't create directory \"$dir\": $!";
+}
+
+sub create_file {
+  my ($self, $file) = @_;
+  open my $fh, '>', $file
+    or confess "Can't create file \"$file\": $!";
+}
+
+sub write_to_file {
+  my ($self, $file, $content) = @_;
+  open my $fh, '>', $file
+    or confess "Can't create file \"$file\": $!";
+  
+  print $fh encode('UTF-8', $content);
+}
+
+sub slurp_file {
+  my ($self, $file) = @_;
+
+  open my $fh, '<', $file
+    or confess "Can't read file \"$file\": $!";
+  
+  my $content = do { local $/; <$fh> };
+  $content = decode('UTF-8', $content);
+  
+  return $content;
+}
+
 sub create_website {
   my ($self, $home_dir, $proto_dir) = @_;
   
@@ -89,41 +156,6 @@ sub run_command {
   $command->run(@argv);
 }
 
-sub clear_config {
-  my $self = shift;
-  
-  my $giblog = $self->giblog;
-  
-  $giblog->{config} = undef;
-}
-
-sub read_config {
-  my $self = shift;
-  
-  my $giblog = $self->giblog;
-  
-  # Read config
-  my $config;
-  if (defined $giblog->{config}) {
-    confess "Config is already loaded";
-  }
-  
-  my $config_file = $self->rel_file('giblog.conf');
-  
-  my $config_content = $self->slurp_file($config_file);
-  
-  $config = eval $config_content
-    or confess "Can't parse config file \"$config_file\"";
-    
-  unless (ref $config eq 'HASH') {
-    confess "\"$config_file\" must end with hash reference";
-  }
-  
-  $giblog->{config} = $config;
-  
-  return $config;
-}
-
 sub rel_file {
   my ($self, $file) = @_;
   
@@ -135,38 +167,6 @@ sub rel_file {
   else {
     return $file;
   }
-}
-
-sub create_dir {
-  my ($self, $dir) = @_;
-  mkdir $dir
-    or confess "Can't create directory \"$dir\": $!";
-}
-
-sub create_file {
-  my ($self, $file) = @_;
-  open my $fh, '>', $file
-    or confess "Can't create file \"$file\": $!";
-}
-
-sub write_to_file {
-  my ($self, $file, $content) = @_;
-  open my $fh, '>', $file
-    or confess "Can't create file \"$file\": $!";
-  
-  print $fh encode('UTF-8', $content);
-}
-
-sub slurp_file {
-  my ($self, $file) = @_;
-
-  open my $fh, '<', $file
-    or confess "Can't read file \"$file\": $!";
-  
-  my $content = do { local $/; <$fh> };
-  $content = decode('UTF-8', $content);
-  
-  return $content;
 }
 
 sub module_rel_file {
@@ -629,6 +629,22 @@ After calling read_config, You can also get config by C<config> method.
 
 Clear config. Set undef to config.
 
+=head2 create_dir
+
+  $api->create_dir($dir);
+
+Create directory.
+
+If Creating directory fail, exception occur.
+
+=head2 create_file
+
+  $api->create_file($file);
+
+ファイルを作成します。
+
+ファイルの作成に失敗した場合は、例外が発生します。
+
 =head2 get_proto_dir
 
   my $proto_dir = $api->get_proto_dir($module_name);
@@ -681,22 +697,6 @@ Giblogのホームディレクトリを取得します。
 Giblogのホームディレクトリに、指定された相対パスを結合したパスを返します。
 
 ホームディレクトリが設定されていない場合は、そのまま返します。
-
-=head2 create_dir
-
-  $api->create_dir($dir);
-
-ディレクトリを作成します。
-
-ディレクトリの作成に失敗した場合は、例外が発生します。
-
-=head2 create_file
-
-  $api->create_file($file);
-
-ファイルを作成します。
-
-ファイルの作成に失敗した場合は、例外が発生します。
 
 =head2 write_to_file
 

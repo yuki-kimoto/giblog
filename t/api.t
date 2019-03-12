@@ -128,3 +128,25 @@ mkpath $test_dir;
   }
 }
 
+# create_dir
+{
+  # create_dir - create directory
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $dir = 't/tmp/api/create_dir';
+    $api->create_dir($dir);
+    ok(-d $dir);
+  }
+
+  # create_dir - exception - Can't create directory
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $dir = 't/tmp/api/foo/bar';
+    eval {
+      $api->create_dir($dir);
+    };
+    ok($@);
+  }
+}
