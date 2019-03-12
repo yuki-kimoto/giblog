@@ -65,3 +65,13 @@ mkpath $test_dir;
     is_deeply($config, {foo => 1});
   }
 }
+
+# giblog_dir
+{
+  # giblog_dir - get Giblog directory
+  {
+    my $giblog = Giblog->new(giblog_dir => 't/tmp/api');
+    my $api = Giblog::API->new(giblog => $giblog);
+    is($api->giblog_dir, 't/tmp/api');
+  }
+}

@@ -587,6 +587,10 @@ If config is not loaded, this method return undef.
 
 =head2 giblog_dir
 
+  my $giblog_dir = $api->giblog_dir;
+
+Get Giblog home directory.
+
 =head2 get_proto_dir
 
   my $proto_dir = $api->get_proto_dir($module_name);
