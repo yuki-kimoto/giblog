@@ -122,6 +122,7 @@ sub slurp {
     like($readme_content, qr|Giblog/Command/new_zemi/proto|);
   }
 }
+
 # add
 {
   my $website_dir = "$test_dir/mysite_new";

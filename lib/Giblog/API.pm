@@ -17,6 +17,12 @@ sub new {
   return bless $self, $class;
 }
 
+sub giblog { shift->{giblog} }
+
+sub config { shift->giblog->config }
+
+sub giblog_dir { shift->giblog->giblog_dir };
+
 sub get_proto_dir {
   my ($self, $module_name) = @_;
   
@@ -104,9 +110,6 @@ sub read_config {
   return $config;
 }
 
-sub config { shift->giblog->config }
-sub giblog_dir { shift->giblog->giblog_dir };
-
 sub rel_file {
   my ($self, $file) = @_;
   
@@ -172,8 +175,6 @@ sub module_rel_file {
   
   return $file;
 }
-
-sub giblog { shift->{giblog} }
 
 sub get_templates_files {
   my $self = shift;
@@ -550,29 +551,108 @@ Giblog::API - Giblog API
 
 =head1 DESCRIPTION
 
-Giblog API is APIs to manipulate HTML contents.
+Giblog::API defines sevral methods to manipulate HTML contents.
 
 =head1 METHODS
 
 =head2 new
 
+  my $api = Giblog::API->new(%params);
+
+Create L<Giblog::API> object.
+
+B<Parameters:>
+
+=over 4
+
+=item * giblog
+
+Set L<Giblog> object.
+
+=back
+
 =head2 get_proto_dir
+
+  my $proto_dir = $api->get_proto_dir($module_name);
+
+モジュール名を指定して、対応する「proto」ディレクトリのパスを取得します。
+
+モジュール名が「Giblog::Command::new_foo」であった場合で、読み込まれたパスが「lib/Giblog/Command/new_foo.pm」であった場合は、「proto」ディレクトリのパスは「lib/Giblog/Command/new_foo/proto」になります。
+
+  lib/Giblog/Command/new_foo.pm
+                    /new_foo/proto
+
+モジュールは、すでに読み込まれている必要があります。そうでない場合は、例外が発生します。
 
 =head2 create_website
 
+  $api->create_website($website_name, $proto_dir);
+
+ウェブサイト名と、protoディレクトリを指定して、Webサイトを作成します。
+
+ウェブサイト名で指定された名前を持つディレクトリが作成され、その中にprotoディレクトリの中身がコピーされます。
+
+ウェブサイト名は、ファイル名として有効な名前を指定してください。
+
+ウェブサイト名が、指定されない場合は、例外が発生します。
+
+ウェブサイトがすでに存在する場合は、例外が発生します。
+
+protoディレクトリが指定されない場合は、例外が発生します。
+
 =head2 run_command
+
+  $api->run_command($command_name, @args);
+
+コマンド名を指定して、引数を与えてコマンドを実行します。
+
+たとえば、コマンド名が「build」の場合は「Giblog::Command::build」がロードされ、このクラスの「run」メソッドが実行されます。
+
+コマンド名に対応するコマンドクラスがロードできなかった場合は、例外が発生します。
 
 =head2 read_config
 
+  my $config = $api->read_config;
+  
+ホームディレクトリ直下にある「giblog.conf」を読み込みます。
+
+「giblog.conf」は、Perlのソースコードとして正しく、ハッシュのリファレンスを返す必要があります。そうでない場合は、例外が発生します。
+
 =head2 config
+
+  my $config = $api->read_config;
+
+「read_config」で読み込まれた設定を取得します。「read_confg」が実行される前は、未定義です。
 
 =head2 giblog_dir
 
+  my $giblog_dir = $api->giblog_dir;
+
+Giblogのホームディレクトリを取得します。
+
 =head2 rel_file
+
+  my $file = $api->rel_file('foo/bar');
+
+Giblogのホームディレクトリに、指定された相対パスを結合したパスを返します。
+
+ホームディレクトリが設定されていない場合は、そのまま返します。
 
 =head2 create_dir
 
+  $api->create_dir($dir);
+
+ディレクトリを作成します。
+
+ディレクトリの作成に失敗した場合は、例外が発生します。
+
 =head2 create_file
+
+  $api->create_file($file);
+
+ファイルを作成します。
+
+ファイルの作成に失敗した場合は、例外が発生します。
 
 =head2 write_to_file
 
@@ -591,10 +671,6 @@ Giblog API is APIs to manipulate HTML contents.
 =head2 parse_giblog_syntax
 
 =head2 parse_title
-
-=head2 parse_title_from_first_h_tag
-
-=head2 add_page_link_to_first_h_tag
 
 =head2 add_page_link
 
