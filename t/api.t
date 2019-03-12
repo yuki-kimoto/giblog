@@ -1,6 +1,8 @@
 use strict;
 use warnings;
+use utf8;
 use Test::More 'no_plan';
+use Encode 'decode', 'encode';
 
 use Giblog::API;
 use Giblog;
@@ -153,7 +155,7 @@ mkpath $test_dir;
 
 # create_file
 {
-  # create_file - create fileectory
+  # create_file - create file
   {
     my $giblog = Giblog->new;
     my $api = Giblog::API->new(giblog => $giblog);
@@ -162,13 +164,64 @@ mkpath $test_dir;
     ok(-f $file);
   }
 
-  # create_file - exception - Can't create fileectory
+  # create_file - exception - Can't create file
   {
     my $giblog = Giblog->new;
     my $api = Giblog::API->new(giblog => $giblog);
     my $file = 't/tmp/api/foo/bar';
     eval {
       $api->create_file($file);
+    };
+    ok($@);
+  }
+}
+
+# create_file
+{
+  # create_file - create file
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $file = 't/tmp/api/create_file';
+    $api->create_file($file);
+    ok(-f $file);
+  }
+
+  # create_file - exception - Can't create file
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $file = 't/tmp/api/foo/bar';
+    eval {
+      $api->create_file($file);
+    };
+    ok($@);
+  }
+}
+
+# write_to_file
+{
+  # write_to_file - create file
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $file = 't/tmp/api/write_to_file';
+    my $content = "‚ ‚¢‚¤";
+    $api->write_to_file($file, $content);
+    ok(-f $file);
+    open my $fh, '<', $file
+      or die "Can't open $file: $!";
+    my $content_from_file = do { local $/; <$fh> };
+    is($content_from_file, $content);
+  }
+
+  # write_to_file - exception - Can't create file
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $file = 't/tmp/api/foo/bar';
+    eval {
+      $api->write_to_file($file);
     };
     ok($@);
   }

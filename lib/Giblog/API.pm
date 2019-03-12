@@ -641,9 +641,19 @@ If Creating directory fail, exception occur.
 
   $api->create_file($file);
 
-ファイルを作成します。
+Create file.
 
-ファイルの作成に失敗した場合は、例外が発生します。
+If Creating file fail, exception occur.
+
+=head2 write_to_file
+
+  $api->write_to_file($file, $content);
+
+Write content to file.
+
+If file is not exists, file is created automatically.
+
+If Creating file fail, exception occur.
 
 =head2 get_proto_dir
 
@@ -697,8 +707,6 @@ Giblogのホームディレクトリを取得します。
 Giblogのホームディレクトリに、指定された相対パスを結合したパスを返します。
 
 ホームディレクトリが設定されていない場合は、そのまま返します。
-
-=head2 write_to_file
 
 =head2 slurp_file
 
