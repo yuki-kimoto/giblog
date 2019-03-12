@@ -26,7 +26,7 @@ sub giblog_dir { shift->giblog->giblog_dir };
 sub get_proto_dir {
   my ($self, $module_name) = @_;
   
-  my $proto_dir = $self->module_rel_file($module_name, 'proto');
+  my $proto_dir = $self->_module_rel_file($module_name, 'proto');
   
   return $proto_dir;
 }
@@ -169,7 +169,7 @@ sub rel_file {
   }
 }
 
-sub module_rel_file {
+sub _module_rel_file {
   my ($self, $module_name, $rel_file) = @_;
   
   my $command_rel_path = $module_name;
@@ -673,7 +673,7 @@ If file is not exists, exception occur.
 
   my $file = $api->rel_file('foo/bar');
 
-Get path which concat giblog home directory with specified relative path.
+Get combined path of giblog home directory and specified relative path.
 
 If home directory is not set, return specified path.
 
@@ -687,8 +687,17 @@ If module name is "Giblog::Command::new_foo" and loading path is "lib/Giblog/Com
 
   lib/Giblog/Command/new_foo.pm
                     /new_foo/proto
-
 Module must be loaded. otherwise exception occur.
+
+=head2 run_command
+
+  $api->run_command($command_name, @args);
+
+Load command class and create object and execute "run" method.
+
+For example, if command name is "build", then "Giblog::Command::build" is loaded, and the object is created and, "run" method is executed.
+
+If module loading fail, exception occur.
 
 =head2 create_website
 
@@ -705,18 +714,6 @@ Module must be loaded. otherwise exception occur.
 ウェブサイトがすでに存在する場合は、例外が発生します。
 
 protoディレクトリが指定されない場合は、例外が発生します。
-
-=head2 run_command
-
-  $api->run_command($command_name, @args);
-
-コマンド名を指定して、引数を与えてコマンドを実行します。
-
-たとえば、コマンド名が「build」の場合は「Giblog::Command::build」がロードされ、このクラスの「run」メソッドが実行されます。
-
-コマンド名に対応するコマンドクラスがロードできなかった場合は、例外が発生します。
-
-=head2 module_rel_file
 
 =head2 get_templates_files
 

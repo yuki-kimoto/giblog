@@ -1,6 +1,9 @@
 use strict;
 use warnings;
 use utf8;
+
+use lib 't/lib';
+
 use Test::More 'no_plan';
 use Encode 'decode', 'encode';
 
@@ -258,6 +261,30 @@ mkpath $test_dir;
     my $module_name = 'Giblog::Command::not_found';
     eval {
       my $proto_dir = $api->get_proto_dir($module_name);
+    };
+    ok($@);
+  }
+}
+
+# run_command
+{
+  # run_command - run command
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $command = 'test';
+    my $num = 0;
+    $api->run_command($command, \$num);
+    is($num, 3);
+  }
+
+  # run_command - exeption - can't find command
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $command = 'not_exists';
+    eval {
+      $api->run_command($command);
     };
     ok($@);
   }
