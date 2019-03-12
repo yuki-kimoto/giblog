@@ -89,6 +89,14 @@ sub run_command {
   $command->run(@argv);
 }
 
+sub clear_config {
+  my $self = shift;
+  
+  my $giblog = $self->giblog;
+  
+  $giblog->{config} = undef;
+}
+
 sub read_config {
   my $self = shift;
   
@@ -96,16 +104,22 @@ sub read_config {
   
   # Read config
   my $config;
-  unless (defined $giblog->{config}) {
-    my $config_file = $self->rel_file('giblog.conf');
-    
-    my $config_content = $self->slurp_file($config_file);
-    
-    $config = eval $config_content
-      or confess "Can't parse config file \"$config_file\"";
-    
-    $giblog->{config} = $config;
+  if (defined $giblog->{config}) {
+    confess "Config is already loaded";
   }
+  
+  my $config_file = $self->rel_file('giblog.conf');
+  
+  my $config_content = $self->slurp_file($config_file);
+  
+  $config = eval $config_content
+    or confess "Can't parse config file \"$config_file\"";
+    
+  unless (ref $config eq 'HASH') {
+    confess "\"$config_file\" must end with hash reference";
+  }
+  
+  $giblog->{config} = $config;
   
   return $config;
 }
@@ -591,6 +605,30 @@ If config is not loaded, this method return undef.
 
 Get Giblog home directory.
 
+=head2 read_config
+
+  my $config = $api->read_config;
+
+Parse "giblog.conf" in Giblog home directory and return hash reference.
+
+"giblog.conf" must end with correct hash reference.
+  
+  # giblog.conf
+  {
+    site_title => 'mysite',
+    site_url => 'http://somesite.example',
+  }
+
+Otherwise exception occur.
+
+After calling read_config, You can also get config by C<config> method.
+
+=head2 clear_config
+
+  $api->clear_config;
+
+Clear config. Set undef to config.
+
 =head2 get_proto_dir
 
   my $proto_dir = $api->get_proto_dir($module_name);
@@ -629,20 +667,6 @@ protoディレクトリが指定されない場合は、例外が発生します。
 たとえば、コマンド名が「build」の場合は「Giblog::Command::build」がロードされ、このクラスの「run」メソッドが実行されます。
 
 コマンド名に対応するコマンドクラスがロードできなかった場合は、例外が発生します。
-
-=head2 read_config
-
-  my $config = $api->read_config;
-  
-ホームディレクトリ直下にある「giblog.conf」を読み込みます。
-
-「giblog.conf」は、Perlのソースコードとして正しく、ハッシュのリファレンスを返す必要があります。そうでない場合は、例外が発生します。
-
-=head2 config
-
-  my $config = $api->read_config;
-
-「read_config」で読み込まれた設定を取得します。「read_confg」が実行される前は、未定義です。
 
 =head2 giblog_dir
 

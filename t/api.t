@@ -75,3 +75,56 @@ mkpath $test_dir;
     is($api->giblog_dir, 't/tmp/api');
   }
 }
+
+# read_config
+{
+  # read_config - read config
+  {
+    my $giblog = Giblog->new(giblog_dir => 't/tmp/api');
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $config_content = '{foo => 1}';
+    $api->write_to_file('t/tmp/api/giblog.conf', $config_content);
+    my $config = $api->read_config;
+    is_deeply($config, {foo => 1});
+  }
+  
+  # read_config - exception - syntax error
+  {
+    my $giblog = Giblog->new(giblog_dir => 't/tmp/api');
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $config_content = 'use strict; PPPPP;';
+    $api->write_to_file('t/tmp/api/giblog.conf', $config_content);
+    eval {
+      my $config = $api->read_config;
+    };
+    ok($@);
+  }
+
+  # read_config - exception - not hash reference
+  {
+    my $giblog = Giblog->new(giblog_dir => 't/tmp/api');
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $config_content = '[]';
+    $api->write_to_file('t/tmp/api/giblog.conf', $config_content);
+    eval {
+      my $config = $api->read_config;
+    };
+    ok($@);
+  }
+}
+
+# clear_config
+{
+  # clear_config - clear config
+  {
+    my $giblog = Giblog->new(giblog_dir => 't/tmp/api');
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $config_content = '{foo => 1}';
+    $api->write_to_file('t/tmp/api/giblog.conf', $config_content);
+    my $config = $api->read_config;
+    is_deeply($config, {foo => 1});
+    $api->clear_config;
+    ok(! defined $api->config);
+  }
+}
+
