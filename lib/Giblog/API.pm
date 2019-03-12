@@ -663,6 +663,14 @@ Get file content. Content is decoded from UTF-8.
 
 If file is not exists, exception occur.
 
+=head2 rel_file
+
+  my $file = $api->rel_file('foo/bar');
+
+Get path which concat giblog home directory with specified relative path.
+
+If home directory is not set, return specified path.
+
 =head2 get_proto_dir
 
   my $proto_dir = $api->get_proto_dir($module_name);
@@ -701,20 +709,6 @@ protoディレクトリが指定されない場合は、例外が発生します。
 たとえば、コマンド名が「build」の場合は「Giblog::Command::build」がロードされ、このクラスの「run」メソッドが実行されます。
 
 コマンド名に対応するコマンドクラスがロードできなかった場合は、例外が発生します。
-
-=head2 giblog_dir
-
-  my $giblog_dir = $api->giblog_dir;
-
-Giblogのホームディレクトリを取得します。
-
-=head2 rel_file
-
-  my $file = $api->rel_file('foo/bar');
-
-Giblogのホームディレクトリに、指定された相対パスを結合したパスを返します。
-
-ホームディレクトリが設定されていない場合は、そのまま返します。
 
 =head2 module_rel_file
 

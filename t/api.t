@@ -233,3 +233,25 @@ mkpath $test_dir;
     ok($@);
   }
 }
+
+# rel_file
+{
+  # rel_file - create path
+  {
+    my $giblog_dir = 't/tmp/api';
+    my $giblog = Giblog->new(giblog_dir => $giblog_dir);
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $rel_file = 'foo/bar';
+    my $file = $api->rel_file($rel_file);
+    is($file, "$giblog_dir/$rel_file");
+  }
+
+  # rel_file - no home dir
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $rel_file = 'foo/bar';
+    my $file = $api->rel_file($rel_file);
+    is($file, $rel_file);
+  }
+}
