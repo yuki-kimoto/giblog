@@ -373,6 +373,7 @@ mkpath $test_dir;
   # get_templates_files - get template files
   {
     my $giblog_dir = 't/tmp/api/get_templates_files';
+    rmtree $giblog_dir;
     my $giblog = Giblog->new(giblog_dir => $giblog_dir);
     my $api = Giblog::API->new(giblog => $giblog);
     my $module_name = 'Giblog::Command::new';
@@ -380,6 +381,24 @@ mkpath $test_dir;
 
     my $files = $api->get_templates_files;
   }
-
 }
 
+# get_content
+{
+  # get_content - get content
+  {
+    my $giblog_dir = 't/tmp/api/get_content';
+    rmtree $giblog_dir;
+    my $giblog = Giblog->new(giblog_dir => $giblog_dir);
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $module_name = 'Giblog::Command::new';
+    $api->create_website_from_proto($giblog_dir, $module_name);
+    $api->write_to_file("$giblog_dir/templates/index.html", "あいう");
+    
+    my $data = {file => 'index.html'};
+    $api->get_content($data);
+    my $content = $data->{content};
+    
+    is($content, "あいう");
+  }
+}
