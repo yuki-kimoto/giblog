@@ -736,6 +736,25 @@ For example,
 
 =head2 get_content
 
+  $api->get_content($data);
+
+Get content from relative file name from "templates" directory. Content is decoded from UTF-8.
+
+B<INPUT:>
+
+  $data->{file}
+
+B<OUTPUT:>
+
+  $data->{content}
+  
+For example:
+  
+  # Get content from templates/index.html
+  $data->{file} = 'index.html';
+  $api->get_content($data);
+  my $content = $data->{content};
+
 =head2 parse_giblog_syntax
 
 =head2 parse_title
