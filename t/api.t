@@ -295,4 +295,79 @@ mkpath $test_dir;
     my $readme_content = $api->slurp_file("$giblog_dir/README");
     like($readme_content, qr|Giblog/Command/new/proto|);
   }
+
+  # create_website_from_proto - exception - module not loaded
+  {
+    my $module_name = 'Giblog::Command::not_found';
+    eval {
+      $api->create_website_from_proto($giblog_dir, $module_name);
+    };
+    ok($@);
+  }
+
+  # create_website_from_proto - exception - home dir is not specified
+  {
+    unlink $giblog_dir;
+    my $module_name = 'Giblog::Command::new';
+    eval {
+      $api->create_website_from_proto(undef, $module_name);
+    };
+    ok($@);
+  }
+
+  # create_website_from_proto - exception - home dir is already exists
+  {
+    unlink $giblog_dir;
+    mkdir $giblog_dir;
+    my $module_name = 'Giblog::Command::new';
+    eval {
+      $api->create_website_from_proto($giblog_dir, $module_name);
+    };
+    ok($@);
+  }
+
+  # create_website_from_proto - exception - module name is not specified
+  {
+    unlink $giblog_dir;
+    eval {
+      $api->create_website_from_proto($giblog_dir, undef);
+    };
+    ok($@);
+  }
+
+  # create_website_from_proto - exception - module is not loaded
+  {
+    unlink $giblog_dir;
+    my $module_name = 'Giblog::Command::not_found';
+    eval {
+      $api->create_website_from_proto($giblog_dir, $module_name);
+    };
+    ok($@);
+  }
 }
+
+# get_templates_files
+{
+  # get_templates_files - get template files
+  {
+    my $giblog_dir = 't/tmp/api/get_templates_files';
+    my $giblog = Giblog->new(giblog_dir => $giblog_dir);
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $module_name = 'Giblog::Command::new';
+    $api->create_website_from_proto($giblog_dir, $module_name);
+    $api->create_file("$giblog_dir/templates/blog/1111.html");
+
+    my $files = $api->get_templates_files;
+
+    @$files = sort @$files;
+
+    is_deeply(
+      $files, 
+      [
+        "blog/1111.html",
+        "index.html",
+      ]
+    );
+  }
+}
+

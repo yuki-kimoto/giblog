@@ -214,7 +214,7 @@ sub get_templates_files {
         # Skip common files
         return if $template_file =~ /^\Q$templates_dir\/common/;
         
-        my $template_file_base = $_;
+        my $template_file_base = basename $_;
         
         # Skip hidden file
         return if $template_file_base =~ /^\./;
@@ -722,8 +722,6 @@ If proto direcotry corresponding to module name is not found, exception occur.
 
 =head2 get_content
 
-=head2 write_to_public_file
-
 =head2 parse_giblog_syntax
 
 =head2 parse_title
@@ -745,3 +743,5 @@ If proto direcotry corresponding to module name is not found, exception occur.
 =head2 add_meta_description
 
 =head2 prepare_wrap
+
+=head2 write_to_public_file
