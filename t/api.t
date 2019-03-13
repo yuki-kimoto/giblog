@@ -243,29 +243,6 @@ mkpath $test_dir;
   }
 }
 
-# get_proto_dir
-{
-  my $giblog = Giblog->new;
-  my $api = Giblog::API->new(giblog => $giblog);
-  
-  # get_proto_dir - path
-  {
-    my $module_name = 'Giblog::Command::new';
-    my $proto_dir = $api->get_proto_dir($module_name);
-    like($proto_dir, qr|blib/lib/Giblog/Command/new/proto$|);
-    ok(-d $proto_dir);
-  }
-  
-  # get_proto_dir - exception - module not found
-  {
-    my $module_name = 'Giblog::Command::not_found';
-    eval {
-      my $proto_dir = $api->get_proto_dir($module_name);
-    };
-    ok($@);
-  }
-}
-
 # run_command
 {
   # run_command - run command
@@ -287,5 +264,35 @@ mkpath $test_dir;
       $api->run_command($command);
     };
     ok($@);
+  }
+}
+
+# create_website_from_proto
+{
+  my $giblog_dir = 't/tmp/api/create_website';
+  my $giblog = Giblog->new;
+  my $api = Giblog::API->new(giblog => $giblog);
+  
+  # create_website_from_proto - path
+  {
+    my $module_name = 'Giblog::Command::new';
+    $api->create_website_from_proto($giblog_dir, $module_name);
+
+    my @files = sort glob "$giblog_dir/*";
+
+    is_deeply(
+      \@files, 
+      [
+        "$giblog_dir/README",
+        "$giblog_dir/giblog.conf",
+        "$giblog_dir/lib",
+        "$giblog_dir/public",
+        "$giblog_dir/serve.pl",
+        "$giblog_dir/templates",
+      ]
+    );
+    
+    my $readme_content = $api->slurp_file("$giblog_dir/README");
+    like($readme_content, qr|Giblog/Command/new/proto|);
   }
 }

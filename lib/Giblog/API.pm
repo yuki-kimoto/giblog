@@ -104,7 +104,7 @@ sub run_command {
   $command->run(@argv);
 }
 
-sub get_proto_dir {
+sub _get_proto_dir {
   my ($self, $module_name) = @_;
   
   my $proto_dir = $self->_module_rel_file($module_name, 'proto');
@@ -123,7 +123,7 @@ sub create_website_from_proto {
     confess "Home directory \"$home_dir\" is already exists\n";
   }
   
-  my $proto_dir = $self->get_proto_dir($module_name);
+  my $proto_dir = $self->_get_proto_dir($module_name);
   
   unless (defined $proto_dir) {
     confess "proto diretory can't specified\n";
@@ -683,18 +683,6 @@ Get combined path of giblog home directory and specified relative path.
 
 If home directory is not set, return specified path.
 
-=head2 get_proto_dir
-
-  my $proto_dir = $api->get_proto_dir($module_name);
-
-Get "proto" directory path corresponding to module name.
-
-If module name is "Giblog::Command::new_foo" and loading path is "lib/Giblog/Command/new_foo.pm", path of "proto" directory is "lib/Giblog/Command/new_foo/proto".
-
-  lib/Giblog/Command/new_foo.pm
-                    /new_foo/proto
-Module must be loaded. otherwise exception occur.
-
 =head2 run_command
 
   $api->run_command($command_name, @args);
@@ -705,21 +693,30 @@ For example, if command name is "build", then "Giblog::Command::build" is loaded
 
 If module loading fail, exception occur.
 
-=head2 create_website
+=head2 create_website_from_proto
 
-  $api->create_website($website_name, $proto_dir);
+  $api->create_website_from_proto($home_dir, $module_name);
 
-ウェブサイト名と、protoディレクトリを指定して、Webサイトを作成します。
+Create website home directory and copy files from prototype directory.
 
-ウェブサイト名で指定された名前を持つディレクトリが作成され、その中にprotoディレクトリの中身がコピーされます。
+Prototype directory is automatically detected from module name.
 
-ウェブサイト名は、ファイル名として有効な名前を指定してください。
+If module name is "Giblog::Command::new_foo" and loading path is "lib/Giblog/Command/new_foo.pm", path of prototype directory is "lib/Giblog/Command/new_foo/proto".
 
-ウェブサイト名が、指定されない場合は、例外が発生します。
+  lib/Giblog/Command/new_foo.pm
+                    /new_foo/proto
 
-ウェブサイトがすでに存在する場合は、例外が発生します。
+Module must be loaded before calling "create_website_from_proto". otherwise exception occur.
 
-protoディレクトリが指定されない場合は、例外が発生します。
+If home directory is not specified, exception occur.
+
+If home directory already exists, exception occur.
+
+If creating directory fail, exception occur.
+
+If proto directory corresponding to module name is not specified, exception occur.
+
+If proto direcotry corresponding to module name is not found, exception occur.
 
 =head2 get_templates_files
 
