@@ -369,5 +369,17 @@ mkpath $test_dir;
       ]
     );
   }
+
+  # get_templates_files - get template files
+  {
+    my $giblog_dir = 't/tmp/api/get_templates_files';
+    my $giblog = Giblog->new(giblog_dir => $giblog_dir);
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $module_name = 'Giblog::Command::new';
+    $api->create_website_from_proto($giblog_dir, $module_name);
+
+    my $files = $api->get_templates_files;
+  }
+
 }
 

@@ -720,6 +720,20 @@ If proto direcotry corresponding to module name is not found, exception occur.
 
 =head2 get_templates_files
 
+  $api->get_templates_files;
+
+Get file names in "templates" directory in giblog home directory.
+
+Files in "templates/common" directory and hidden files(which start with ".") is not contained.
+
+Got file name is relative name from "templates" directory.
+
+For example,
+
+  index.html
+  blog/20190312121345.html
+  blog/20190314452341.html
+
 =head2 get_content
 
 =head2 parse_giblog_syntax
