@@ -14,9 +14,7 @@ sub run {
   
   my $module_name = ref $self;
   
-  my $proto_dir = $api->get_proto_dir($module_name);
-  
-  $api->create_website($website_name, $proto_dir);
+  $api->create_website_from_proto($website_name, $module_name);
 }
 
 1;

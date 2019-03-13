@@ -23,14 +23,6 @@ sub config { shift->giblog->config }
 
 sub giblog_dir { shift->giblog->giblog_dir };
 
-sub get_proto_dir {
-  my ($self, $module_name) = @_;
-  
-  my $proto_dir = $self->_module_rel_file($module_name, 'proto');
-  
-  return $proto_dir;
-}
-
 sub read_config {
   my $self = shift;
   
@@ -98,19 +90,47 @@ sub slurp_file {
   return $content;
 }
 
-sub create_website {
-  my ($self, $home_dir, $proto_dir) = @_;
+sub run_command {
+  my ($self, $command_name, @argv) = @_;
+  
+  # Command is implemented in command
+  my $command_class = "Giblog::Command::$command_name";
+  eval "use $command_class;";
+  if ($@) {
+    confess "Can't load command $command_class:\n$!\n$@";
+  }
+  my $command = $command_class->new(api => $self);
+
+  $command->run(@argv);
+}
+
+sub get_proto_dir {
+  my ($self, $module_name) = @_;
+  
+  my $proto_dir = $self->_module_rel_file($module_name, 'proto');
+  
+  return $proto_dir;
+}
+
+sub create_website_from_proto {
+  my ($self, $home_dir, $module_name) = @_;
   
   unless (defined $home_dir) {
-    confess "Website name must be specifed\n";
+    confess "Home directory must be specifed\n";
   }
   
   if (-f $home_dir) {
-    confess "Website \"$home_dir\" is already exists\n";
+    confess "Home directory \"$home_dir\" is already exists\n";
   }
   
-  unless (-d $proto_dir) {
+  my $proto_dir = $self->get_proto_dir($module_name);
+  
+  unless (defined $proto_dir) {
     confess "proto diretory can't specified\n";
+  }
+
+  unless (-d $proto_dir) {
+    confess "Can't find proto diretory $proto_dir\n";
   }
 
   # Create website directory
@@ -140,20 +160,6 @@ sub create_website {
     },
     $proto_dir
   );
-}
-
-sub run_command {
-  my ($self, $command_name, @argv) = @_;
-  
-  # Command is implemented in command
-  my $command_class = "Giblog::Command::$command_name";
-  eval "use $command_class;";
-  if ($@) {
-    confess "Can't load command $command_class:\n$!\n$@";
-  }
-  my $command = $command_class->new(api => $self);
-
-  $command->run(@argv);
 }
 
 sub rel_file {
