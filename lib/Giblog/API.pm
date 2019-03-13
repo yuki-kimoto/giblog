@@ -748,7 +748,7 @@ B<OUTPUT:>
 
   $data->{content}
   
-For example:
+B<Example:>
   
   # Get content from templates/index.html
   $data->{file} = 'index.html';
@@ -756,6 +756,85 @@ For example:
   my $content = $data->{content};
 
 =head2 parse_giblog_syntax
+
+  $api->parse_giblog_syntax($data);
+
+Parse input text as "Giblog syntax", and return output.
+
+B<INPUT:>
+
+  $data->{content}
+
+B<OUTPUT:>
+
+  $data->{content}
+  
+B<Example:>
+  
+  # Get content from templates/index.html
+  $data->{content} = <<'EOS';
+Hello World!
+
+<b>Hi, Yuki</b>
+
+<div>
+  OK
+</div>
+
+<pre>
+my $foo = 1 > 3 && 2 < 5;
+</pre>
+EOS
+  $api->parse_giblog_syntax($data);
+  my $content = $data->{content};
+
+B<Giblog syntax>
+
+Giblog syntax is simple syntax to write content easily.
+
+=over 4
+
+=item * Add p tag automatically
+
+Add p tag to inline element starting from the beginning of line.
+
+  # Input
+  Hello World!
+  
+  <b>Hi, Yuki</b>
+  
+  <div>
+    OK
+  </div>
+  
+  # Output
+  <p>
+    Hello World!
+  </p>
+  <p>
+    <b>Hi, Yuki</b>
+  </p>
+  <div>
+    OK
+  </div>
+
+Empty line is deleted.
+
+=item * Escape E<&gt;>, E<&lt;> in pre tag
+
+If the pre tag starts at the beginning of the line and the end tag of pre starts at the beginning of the line, do HTML escapes ">" and "<" between them.
+  
+  # Input
+  <pre>
+  my $foo = 1 > 3 && 2 < 5;
+  </pre>
+
+  # Output
+  <pre>
+  my $foo = 1 &gt; 3 && 2 &lt; 5;
+  </pre>
+
+=back
 
 =head2 parse_title
 
@@ -769,12 +848,12 @@ For example:
 
 =head2 parse_first_img_src
 
+=head2 prepare_wrap
+
 =head2 wrap
 
 =head2 add_meta_title
 
 =head2 add_meta_description
-
-=head2 prepare_wrap
 
 =head2 write_to_public_file
