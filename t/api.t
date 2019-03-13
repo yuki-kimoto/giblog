@@ -402,3 +402,50 @@ mkpath $test_dir;
     is($content, "あいう");
   }
 }
+
+# parse_giblog_syntax
+{
+  # parse_giblog_syntax - parse giblog syntax
+  {
+    my $giblog_dir = 't/tmp/api/parse_giblog_syntax';
+    rmtree $giblog_dir;
+    my $giblog = Giblog->new(giblog_dir => $giblog_dir);
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $module_name = 'Giblog::Command::new';
+    $api->create_website_from_proto($giblog_dir, $module_name);
+    my $input = <<'EOS';
+Hello World!
+
+<b>Hi, Yuki</b>
+
+<div>
+  OK
+</div>
+
+<pre>
+my $foo = 1 > 3 && 2 < 5;
+</pre>
+EOS
+    
+    my $data = {content => $input};
+    $api->parse_giblog_syntax($data);
+    my $content = $data->{content};
+    
+    my $expect = <<'EOS';
+<p>
+  Hello World!
+</p>
+<p>
+  <b>Hi, Yuki</b>
+</p>
+<div>
+  OK
+</div>
+<pre>
+my $foo = 1 &gt; 3 && 2 &lt; 5;
+</pre>
+EOS
+    
+    is($content, $expect);
+  }
+}
