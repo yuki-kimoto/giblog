@@ -31,10 +31,10 @@ sub run {
     $api->parse_title($data);
 
     # Add page link
-    $api->add_page_link($data);
+    $api->add_page_link($data, {root => 'index.html'});
 
-    # Prepare wrap
-    $api->prepare_wrap($data);
+    # Read common templates
+    $api->read_common_templates($data);
     
     # Add meta title
     $api->add_meta_title($data);

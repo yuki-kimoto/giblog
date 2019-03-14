@@ -25,7 +25,7 @@ sub run {
     $api->parse_title($data);
 
     # Add page link
-    $api->add_page_link($data);
+    $api->add_page_link($data, {root => 'index.html'});
 
     # Parse description
     $api->parse_description($data);
@@ -36,8 +36,8 @@ sub run {
     # Parse keywords
     $api->parse_keywords($data);
 
-    # Prepare wrap content
-    $api->prepare_wrap_content($data);
+    # Read common templates
+    $api->read_common_templates($data);
     
     # Add meta title
     $api->add_meta_title($data);
@@ -46,7 +46,7 @@ sub run {
     $api->add_meta_description($data);
 
     # Wrap content by header, footer, etc
-    $api->wrap_content($data);
+    $api->wrap($data);
   });
 }
 

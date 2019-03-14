@@ -334,8 +334,10 @@ sub parse_title_from_first_h_tag {
 }
 
 sub add_page_link {
-  my ($self, $data) = @_;
-  
+  my ($self, $data, $opt) = @_;
+
+  $opt ||= {};
+
   my $giblog = $self->giblog;
 
   my $content = $data->{content};
@@ -343,20 +345,28 @@ sub add_page_link {
   # Add page link
   my $file = $data->{file};
   my $path;
-  if ($file eq 'index.html') {
-    $path = '/';
+  my $root = $opt->{root};
+  if (defined $root) {
+    if ($file eq $root) {
+      $path = "/";
+    }
+    else {
+      $path = "/$file";
+    }
   }
   else {
     $path = "/$file";
   }
   
   $content =~ s|class="title"[^>]*?>([^<]*?)<|class="title"><a href="$path">$1</a><|;
-
+  
   $data->{'content'} = $content;
 }
 
 sub add_page_link_to_first_h_tag {
-  my ($self, $data) = @_;
+  my ($self, $data, $opt) = @_;
+  
+  $opt ||= {};
   
   my $giblog = $self->giblog;
 
@@ -365,8 +375,14 @@ sub add_page_link_to_first_h_tag {
   # Add page link
   my $file = $data->{file};
   my $path;
-  if ($file eq 'index.html') {
-    $path = '/';
+  my $root = $opt->{root};
+  if (defined $root) {
+    if ($file eq $root) {
+      $path = "/";
+    }
+    else {
+      $path = "/$file";
+    }
   }
   else {
     $path = "/$file";
@@ -525,7 +541,7 @@ sub add_meta_description {
   $data->{meta} = $meta;
 }
 
-sub prepare_wrap {
+sub read_common_templates {
   my ($self, $data) = @_;
   
   my $common_meta_file = $self->rel_file('templates/common/meta.html');
@@ -895,6 +911,7 @@ B<Example:>
 =head2 add_page_link
 
   $api->add_page_link($data);
+  $api->add_page_link($data, $opt);
 
 Add page link to text of tag which class name is "title".
 
@@ -913,7 +930,7 @@ B<OUTPUT:>
 
 If added link is the path which combine "/" and value of "file".
 
-If value of "file" is "index.html", added link become "/".
+if $opt->{root} is specifed and this match $data->{file}, added link is "/".
 
 B<Example: entry page>
   
@@ -946,6 +963,7 @@ Content is changed to
 =head2 add_page_link_to_first_h_tag
 
   $api->add_page_link_to_first_h_tag($data);
+  $api->add_page_link_to_first_h_tag($data, $opt);
 
 Add page link to text of first h1, h2, h3, h4, h5, h6 tag.
 
@@ -964,7 +982,7 @@ B<OUTPUT:>
 
 If added link is the path which combine "/" and value of "file".
 
-If value of "file" is "index.html", added link become "/".
+if $opt->{root} is specifed and this match $data->{file}, added link is "/".
 
 B<Example: entry page>
   
@@ -1109,9 +1127,9 @@ B<Example:>
   $api->parse_first_img_src($data);
   my $img_src = $data->{img_src};
 
-=head2 prepare_wrap
+=head2 read_common_templates
 
-  $api->prepare_wrap($data);
+  $api->read_common_templates($data);
 
 Read common templates in "templates/common" directory.
 
@@ -1204,7 +1222,6 @@ Output is the following HTML.
       </div>
     </body>
   </html>
-
 
 =head2 write_to_public_file
 

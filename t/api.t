@@ -541,14 +541,14 @@ EOS
     is($content, '<div class="title"><a href="/blog/20181012123456.html">Perl Tutorial</a></div>');
   }
 
-  # add_page_link - add page link - top page
+  # add_page_link - add page link - root
   {
     my $giblog = Giblog->new;
     my $api = Giblog::API->new(giblog => $giblog);
     my $data = {};
     $data->{file} = 'index.html';
     $data->{content} = '<div class="title">Perl Tutorial</div>';
-    $api->add_page_link($data);
+    $api->add_page_link($data, {root => 'index.html'});
     my $content = $data->{content};
     is($content, '<div class="title"><a href="/">Perl Tutorial</a></div>');
   }
@@ -560,7 +560,7 @@ EOS
     my $data = {};
     $data->{file} = 'blog/20181012123456.html';
     $data->{content} = '<div class="not_found">Perl Tutorial</div>';
-    $api->add_page_link($data);
+    $api->add_page_link($data, {root => 'index.html'});
     my $content = $data->{content};
     is($content, '<div class="not_found">Perl Tutorial</div>');
   }
@@ -587,7 +587,7 @@ EOS
     my $data = {};
     $data->{file} = 'index.html';
     $data->{content} = '<h1>Perl Tutorial</h1>';
-    $api->add_page_link_to_first_h_tag($data);
+    $api->add_page_link_to_first_h_tag($data, {root => 'index.html'});
     my $content = $data->{content};
     is($content, '<h1><a href="/">Perl Tutorial</a></h1>');
   }
@@ -745,11 +745,11 @@ EOS
   }
 }
 
-# prepare_wrap
+# read_common_templates
 {
-  # prepare_wrap - read common templates in "templates/common" directory.
+  # read_common_templates - read common templates in "templates/common" directory.
   {
-    my $giblog_dir = 't/tmp/api/prepare_wrap';
+    my $giblog_dir = 't/tmp/api/read_common_templates';
     rmtree $giblog_dir;
     my $giblog = Giblog->new(giblog_dir => $giblog_dir);
     my $api = Giblog::API->new(giblog => $giblog);
@@ -764,7 +764,7 @@ EOS
     $api->write_to_file("$giblog_dir/templates/common/bottom.html", "か");
 
     my $data = {};
-    $api->prepare_wrap($data);
+    $api->read_common_templates($data);
     
     is($data->{meta}, "あ");
     is($data->{header}, "い");
@@ -822,7 +822,7 @@ EOS
     $api->write_to_file("$giblog_dir/templates/common/bottom.html", "か");
 
     my $data = {};
-    $api->prepare_wrap($data);
+    $api->read_common_templates($data);
     
     is($data->{meta}, "あ");
     is($data->{header}, "い");
