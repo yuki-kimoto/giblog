@@ -842,7 +842,7 @@ Add p tag to inline element starting from the beginning of line.
 
 Empty line is deleted.
 
-=item * Escape E<&gt;>, E<&lt;> in pre tag
+=item * Escape E<gt>, E<lt> in pre tag
 
 If the pre tag starts at the beginning of the line and the end tag of pre starts at the beginning of the line, do HTML escapes ">" and "<" between them.
   
