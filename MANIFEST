@@ -87,7 +87,9 @@ README
 README_DEVEL.txt
 script/giblog
 t/00-load.t
+t/api.t
 t/command.t
+t/lib/Giblog/Command/test.pm
 t/manifest.t
 t/pod-coverage.t
 t/pod.t
