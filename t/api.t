@@ -802,3 +802,72 @@ EOS
     is($data->{meta}, qq(あ\n<meta name="description" content="Perl is good">));
   }
 }
+
+# wrap
+{
+  # wrap - wrap content by common templates
+  {
+    my $giblog_dir = 't/tmp/api/wrap';
+    rmtree $giblog_dir;
+    my $giblog = Giblog->new(giblog_dir => $giblog_dir);
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $module_name = 'Giblog::Command::new';
+    $api->create_website_from_proto($giblog_dir, $module_name);
+    
+    $api->write_to_file("$giblog_dir/templates/common/meta.html", "あ");
+    $api->write_to_file("$giblog_dir/templates/common/header.html", "い");
+    $api->write_to_file("$giblog_dir/templates/common/footer.html", "う");
+    $api->write_to_file("$giblog_dir/templates/common/side.html", "え");
+    $api->write_to_file("$giblog_dir/templates/common/top.html", "お");
+    $api->write_to_file("$giblog_dir/templates/common/bottom.html", "か");
+
+    my $data = {};
+    $api->prepare_wrap($data);
+    
+    is($data->{meta}, "あ");
+    is($data->{header}, "い");
+    is($data->{footer}, "う");
+    is($data->{side}, "え");
+    is($data->{top}, "お");
+    is($data->{bottom}, "か");
+    
+    $data->{content} = 'コンテンツ';
+    $api->wrap($data);
+    
+    my $expect =<<'EOS';
+<!DOCTYPE html>
+<html>
+  <head>
+    あ
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        い
+      </div>
+      <div class="main">
+        <div class="entry">
+          <div class="top">
+            お
+          </div>
+          <div class="content">
+            コンテンツ
+          </div>
+          <div class="bottom">
+            か
+          </div>
+        </div>
+        <div class="side">
+          え
+        </div>
+      </div>
+      <div class="footer">
+        う
+      </div>
+    </div>
+  </body>
+</html>
+EOS
+    is($data->{content}, $expect);
+  }
+}

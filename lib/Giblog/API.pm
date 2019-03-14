@@ -1160,4 +1160,50 @@ If value of "meta" is "foo" and "description" is "Perl is good", output value of
 
 =head2 wrap
 
+Wrap content by common templates.
+
+B<INPUT:>
+
+  $data->{content}
+
+B<OUTPUT:>
+
+  $data->{content}
+
+Output is the following HTML.
+
+  <!DOCTYPE html>
+  <html>
+    <head>
+      $data->{meta}
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          $data->{header}
+        </div>
+        <div class="main">
+          <div class="entry">
+            <div class="top">
+              $data->{top}
+            </div>
+            <div class="content">
+              $data->{content}
+            </div>
+            <div class="bottom">
+              $data->{bottom}
+            </div>
+          </div>
+          <div class="side">
+            $data->{side}
+          </div>
+        </div>
+        <div class="footer">
+          $data->{footer}
+        </div>
+      </div>
+    </body>
+  </html>
+
+
 =head2 write_to_public_file
