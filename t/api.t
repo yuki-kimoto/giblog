@@ -774,3 +774,17 @@ EOS
     is($data->{bottom}, "か");
   }
 }
+
+# add_meta_title
+{
+  # add_meta_title - add meta title
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $data = {};
+    $data->{title} = "TITLE";
+    $data->{meta} = "あ";
+    $api->add_meta_title($data);
+    is($data->{meta}, "あ\n<title>TITLE</title>");
+  }
+}

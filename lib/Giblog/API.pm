@@ -503,7 +503,7 @@ sub add_meta_title {
   # Title
   my $title = $data->{title};
   if (defined $title) {
-    $meta .= "\n<title>$title</title>\n";
+    $meta .= "\n<title>$title</title>";
   }
   
   $data->{meta} = $meta;
@@ -1128,10 +1128,20 @@ B<OUTPUT:>
   $data->{top}
   $data->{bottom}
 
-=head2 wrap
-
 =head2 add_meta_title
 
+Add title tag to meta section.
+
+B<INPUT:>
+
+  $data->{title}
+
+B<OUTPUT:>
+
+  $data->{meta}
+
 =head2 add_meta_description
+
+=head2 wrap
 
 =head2 write_to_public_file
