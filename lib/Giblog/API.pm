@@ -1111,6 +1111,23 @@ B<Example:>
 
 =head2 prepare_wrap
 
+  $api->prepare_wrap($data);
+
+Read common templates in "templates/common" directory.
+
+The follwoing templates is loaded. Content is decoded from UTF-8.
+
+"meta.html", "header.html", "footer.html", "side.html", "top.html", "bottom.html"
+
+B<OUTPUT:>
+
+  $data->{meta}
+  $data->{header}
+  $data->{footer}
+  $data->{side}
+  $data->{top}
+  $data->{bottom}
+
 =head2 wrap
 
 =head2 add_meta_title

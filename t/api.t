@@ -744,3 +744,33 @@ EOS
     ok(!defined $img_src);
   }
 }
+
+# prepare_wrap
+{
+  # prepare_wrap - read common templates in "templates/common" directory.
+  {
+    my $giblog_dir = 't/tmp/api/prepare_wrap';
+    rmtree $giblog_dir;
+    my $giblog = Giblog->new(giblog_dir => $giblog_dir);
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $module_name = 'Giblog::Command::new';
+    $api->create_website_from_proto($giblog_dir, $module_name);
+    
+    $api->write_to_file("$giblog_dir/templates/common/meta.html", "あ");
+    $api->write_to_file("$giblog_dir/templates/common/header.html", "い");
+    $api->write_to_file("$giblog_dir/templates/common/footer.html", "う");
+    $api->write_to_file("$giblog_dir/templates/common/side.html", "え");
+    $api->write_to_file("$giblog_dir/templates/common/top.html", "お");
+    $api->write_to_file("$giblog_dir/templates/common/bottom.html", "か");
+
+    my $data = {};
+    $api->prepare_wrap($data);
+    
+    is($data->{meta}, "あ");
+    is($data->{header}, "い");
+    is($data->{footer}, "う");
+    is($data->{side}, "え");
+    is($data->{top}, "お");
+    is($data->{bottom}, "か");
+  }
+}
