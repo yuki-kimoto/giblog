@@ -788,3 +788,17 @@ EOS
     is($data->{meta}, "あ\n<title>TITLE</title>");
   }
 }
+
+# add_meta_description
+{
+  # add_meta_description - add meta description
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $data = {};
+    $data->{description} = "Perl is good";
+    $data->{meta} = "あ";
+    $api->add_meta_description($data);
+    is($data->{meta}, qq(あ\n<meta name="description" content="Perl is good">));
+  }
+}

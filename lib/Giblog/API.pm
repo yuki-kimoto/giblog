@@ -519,7 +519,7 @@ sub add_meta_description {
   # Title
   my $description = $data->{description};
   if (defined $description) {
-    $meta .= qq(\n<meta name="description" content="$description">\n);
+    $meta .= qq(\n<meta name="description" content="$description">);
   }
   
   $data->{meta} = $meta;
@@ -1135,12 +1135,28 @@ Add title tag to meta section.
 B<INPUT:>
 
   $data->{title}
+  $data->{meta}
 
 B<OUTPUT:>
 
   $data->{meta}
 
+If value of "meta" is "foo" and "title" is "Perl Tutorial", output value of "meta" become "foo\n<title>Perl Tutorial</title>"
+
 =head2 add_meta_description
+
+Add meta description tag to meta section.
+
+B<INPUT:>
+
+  $data->{description}
+  $data->{meta}
+
+B<OUTPUT:>
+
+  $data->{meta}
+
+If value of "meta" is "foo" and "description" is "Perl is good", output value of "meta" become "foo\n<meta name="description" content="Perl is good">"
 
 =head2 wrap
 
