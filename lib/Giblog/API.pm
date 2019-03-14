@@ -446,7 +446,7 @@ sub parse_first_img_src {
   # image
   if ($content =~ /<\s*img\b.*?\bsrc\s*=\s*"([^"]*?)"/s) {
     my $image = $1;
-    $data->{'image'} = $image;
+    $data->{'img_src'} = $image;
   }
 }
 
@@ -1085,6 +1085,29 @@ B<Example:>
   my $keywords = $data->{keywords};
 
 =head2 parse_first_img_src
+
+  $api->parse_first_img_src($data);
+
+Get image src from src attribute of first img tag.
+
+If parser can't get image src, image src become undef.
+
+B<INPUT:>
+
+  $data->{content}
+
+B<OUTPUT:>
+
+  $data->{img_src}
+
+B<Example:>
+  
+  # Get first_img_src
+  $data->{content} = <<'EOS';
+<img class="ppp" src="/path">
+  EOS
+  $api->parse_first_img_src($data);
+  my $img_src = $data->{img_src};
 
 =head2 prepare_wrap
 

@@ -710,3 +710,37 @@ EOS
     ok(!defined $keywords);
   }
 }
+
+# parse_first_img_src
+{
+  # parse_first_img_src - parse img src
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $input = <<'EOS';
+<img class="ppp" src="/path">
+<img class="ppp" src="/path2">
+EOS
+    
+    my $data = {content => $input};
+    $api->parse_first_img_src($data);
+    my $img_src = $data->{img_src};
+    
+    is($img_src, "/path");
+  }
+
+  # parse_first_img_src - not found
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $input = <<'EOS';
+<div class="not_found">あいう</div>
+EOS
+    
+    my $data = {content => $input};
+    $api->parse_first_img_src($data);
+    my $img_src = $data->{img_src};
+    
+    ok(!defined $img_src);
+  }
+}
