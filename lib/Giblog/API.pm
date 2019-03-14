@@ -244,21 +244,6 @@ sub get_content {
   $data->{content} = $content;
 }
 
-sub write_to_public_file {
-  my ($self, $data) = @_;
-  
-  my $content = $data->{content};
-  my $file = $data->{file};
-  
-  # public file
-  my $public_file = $self->rel_file("public/$file");
-  my $public_dir = dirname $public_file;
-  mkpath $public_dir;
-  
-  # Write to public file
-  $self->write_to_file($public_file, $content);
-}
-
 my $inline_elements_re = qr/^<(span|em|strong|abbr|acronym|dfn|q|cite|sup|sub|code|var|kbd|samp|bdo|font|big|small|b|i|s|strike|u|tt|a|label|object|applet|iframe|button|textarea|select|basefont|img|br|input|script|map)\b/;
 
 sub parse_giblog_syntax {
@@ -566,6 +551,21 @@ sub prepare_wrap {
   my $common_bottom_file = $self->rel_file('templates/common/bottom.html');
   my $common_bottom_content = $self->slurp_file($common_bottom_file);
   $data->{bottom} = $common_bottom_content;
+}
+
+sub write_to_public_file {
+  my ($self, $data) = @_;
+  
+  my $content = $data->{content};
+  my $file = $data->{file};
+  
+  # public file
+  my $public_file = $self->rel_file("public/$file");
+  my $public_dir = dirname $public_file;
+  mkpath $public_dir;
+  
+  # Write to public file
+  $self->write_to_file($public_file, $content);
 }
 
 1;
@@ -1024,6 +1024,40 @@ B<Example:>
   my $description = $data->{description};
 
 =head2 parse_description_from_first_p_tag
+
+  $api->parse_description_from_first_p_tag($data);
+
+Get description from text of first p tag.
+
+HTML tag is removed.
+
+Both of left spaces and right spaces is removed. This is Unicode space.
+
+If parser can't get description, description become undef.
+
+B<INPUT:>
+
+  $data->{content}
+
+B<OUTPUT:>
+
+  $data->{description}
+
+B<Example:>
+  
+  # Get description
+  $data->{content} = <<'EOS';
+  <p>
+    Perl Tutorial is site for beginners of Perl 
+  </p>
+  <p>
+    Foo, Bar
+  </p>
+  EOS
+  $api->parse_description_from_first_p_tag($data);
+  my $description = $data->{description};
+
+Description is "Perl Tutorial is site for beginners of Perl".
 
 =head2 parse_keywords
 

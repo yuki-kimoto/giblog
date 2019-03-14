@@ -639,3 +639,41 @@ EOS
     ok(!defined $description);
   }
 }
+
+# parse_description_from_first_p_tag
+{
+  # parse_description_from_first_p_tag - parse description from first p tag
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $input = <<'EOS';
+<p>
+  Perl Tutorial is site for beginners of Perl 
+</p>
+<p>
+  Foo, Bar
+</p>
+EOS
+    
+    my $data = {content => $input};
+    $api->parse_description_from_first_p_tag($data);
+    my $description = $data->{description};
+    
+    is($description, "Perl Tutorial is site for beginners of Perl");
+  }
+
+  # parse_description_from_first_p_tag - not found
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $input = <<'EOS';
+<div class="not_found">あいう</div>
+EOS
+    
+    my $data = {content => $input};
+    $api->parse_description_from_first_p_tag($data);
+    my $description = $data->{description};
+    
+    ok(!defined $description);
+  }
+}
