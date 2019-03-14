@@ -1207,3 +1207,12 @@ Output is the following HTML.
 
 
 =head2 write_to_public_file
+
+Write content to file in "public" directory. Content is encoded to UTF-8.
+
+If value of "file" is "index.html", write path become "public/index.html"
+
+B<INPUT:>
+
+  $data->{content}
+  $data->{file}

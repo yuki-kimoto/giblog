@@ -871,3 +871,25 @@ EOS
     is($data->{content}, $expect);
   }
 }
+
+# write_to_public_file
+{
+  # write_to_public_file - write content to public directory
+  {
+    my $giblog_dir = 't/tmp/api/write_to_public_file';
+    rmtree $giblog_dir;
+    my $giblog = Giblog->new(giblog_dir => $giblog_dir);
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $module_name = 'Giblog::Command::new';
+    $api->create_website_from_proto($giblog_dir, $module_name);
+    my $data = {};
+    $data->{file} = 'index.html';
+    $data->{content} = 'あ';
+    $api->write_to_public_file($data);
+    open my $fh, '<', "$giblog_dir/public/index.html"
+      or die "Can't open file";
+    my $content = do { local $/; <$fh> };
+    $content = decode('UTF-8', $content);
+    is($content, 'あ');
+  }
+}
