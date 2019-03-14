@@ -677,3 +677,36 @@ EOS
     ok(!defined $description);
   }
 }
+
+# parse_keywords
+{
+  # parse_keywords - parse keywords
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $input = <<'EOS';
+<div class="keywords">あいう</div>
+EOS
+    
+    my $data = {content => $input};
+    $api->parse_keywords($data);
+    my $keywords = $data->{keywords};
+    
+    is($keywords, "あいう");
+  }
+
+  # parse_keywords - not found
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $input = <<'EOS';
+<div class="not_found">あいう</div>
+EOS
+    
+    my $data = {content => $input};
+    $api->parse_keywords($data);
+    my $keywords = $data->{keywords};
+    
+    ok(!defined $keywords);
+  }
+}

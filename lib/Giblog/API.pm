@@ -1061,6 +1061,29 @@ Description is "Perl Tutorial is site for beginners of Perl".
 
 =head2 parse_keywords
 
+  $api->parse_keywords($data);
+
+Get keywords from text of tag which class name is "keywords".
+
+If parser can't get keywords, keywords become undef.
+
+B<INPUT:>
+
+  $data->{content}
+
+B<OUTPUT:>
+
+  $data->{keywords}
+
+B<Example:>
+  
+  # Get keywords
+  $data->{content} = <<'EOS';
+  <div class="keywords">Perl Tutorial</div>
+  EOS
+  $api->parse_keywords($data);
+  my $keywords = $data->{keywords};
+
 =head2 parse_first_img_src
 
 =head2 prepare_wrap
