@@ -478,3 +478,51 @@ EOS
     ok(!defined $title);
   }
 }
+
+# parse_title_from_first_h_tag
+{
+  # parse_title_from_first_h_tag - parse title from first h1 tag
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $input = <<'EOS';
+<h1>あいう</h1>
+EOS
+    
+    my $data = {content => $input};
+    $api->parse_title_from_first_h_tag($data);
+    my $title = $data->{title};
+    
+    is($title, "あいう");
+  }
+
+  # parse_title_from_first_h_tag - parse title from first h6 tag
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $input = <<'EOS';
+<h6>あいう</h6>
+EOS
+    
+    my $data = {content => $input};
+    $api->parse_title_from_first_h_tag($data);
+    my $title = $data->{title};
+    
+    is($title, "あいう");
+  }
+
+  # parse_title_from_first_h_tag - not found
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $input = <<'EOS';
+<div class="not_found">あいう</div>
+EOS
+    
+    my $data = {content => $input};
+    $api->parse_title_from_first_h_tag($data);
+    my $title = $data->{title};
+    
+    ok(!defined $title);
+  }
+}

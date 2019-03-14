@@ -343,6 +343,9 @@ sub parse_title_from_first_h_tag {
     my $title = $1;
     $data->{title} = $title;
   }
+  else {
+    $data->{title} = undef;
+  }
 }
 
 sub add_page_link_to_first_h_tag {
@@ -859,6 +862,31 @@ B<Example:>
   <div class="title">Perl Tutorial</div>
   EOS
   $api->parse_title($data);
+  my $title = $data->{title};
+
+=head2 parse_title_from_first_h_tag
+
+Get title from text of first h1, h2, h3, h4, h5, h6 tag.
+
+If parser can't get title, title become undef.
+
+  $api->parse_title_from_first_h_tag($data);
+
+B<INPUT:>
+
+  $data->{content}
+
+B<OUTPUT:>
+
+  $data->{title}
+
+B<Example:>
+  
+  # Get title
+  $data->{content} = <<'EOS';
+  <h1>Perl Tutorial</h1>
+  EOS
+  $api->parse_title_from_first_h_tag($data);
   my $title = $data->{title};
 
 =head2 add_page_link
