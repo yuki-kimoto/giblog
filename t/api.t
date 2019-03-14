@@ -407,12 +407,8 @@ mkpath $test_dir;
 {
   # parse_giblog_syntax - parse giblog syntax
   {
-    my $giblog_dir = 't/tmp/api/parse_giblog_syntax';
-    rmtree $giblog_dir;
-    my $giblog = Giblog->new(giblog_dir => $giblog_dir);
+    my $giblog = Giblog->new;
     my $api = Giblog::API->new(giblog => $giblog);
-    my $module_name = 'Giblog::Command::new';
-    $api->create_website_from_proto($giblog_dir, $module_name);
     my $input = <<'EOS';
 Hello World!
 
@@ -447,5 +443,23 @@ my $foo = 1 &gt; 3 && 2 &lt; 5;
 EOS
     
     is($content, $expect);
+  }
+}
+
+# parse_title
+{
+  # parse_title - parse title
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $input = <<'EOS';
+<div class="title">あいう</div>
+EOS
+    
+    my $data = {content => $input};
+    $api->parse_title($data);
+    my $title = $data->{title};
+    
+    is($title, "あいう");
   }
 }

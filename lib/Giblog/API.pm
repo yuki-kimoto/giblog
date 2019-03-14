@@ -323,11 +323,12 @@ sub parse_title {
 
   my $content = $data->{content};
   
-  unless (defined $data->{'title'}) {
-    if ($content =~ m|class="title"[^>]*?>([^<]*?)<|) {
-      my $title = $1;
-      $data->{title} = $title;
-    }
+  if ($content =~ m|class="title"[^>]*?>([^<]*?)<|) {
+    my $title = $1;
+    $data->{title} = $title;
+  }
+  else {
+    $data->{title} = undef;
   }
 }
 
@@ -338,11 +339,9 @@ sub parse_title_from_first_h_tag {
 
   my $content = $data->{content};
   
-  unless (defined $data->{'title'}) {
-    if ($content =~ m|<\s*h[1-6]\b[^>]*?>([^<]*?)<|) {
-      my $title = $1;
-      $data->{title} = $title;
-    }
+  if ($content =~ m|<\s*h[1-6]\b[^>]*?>([^<]*?)<|) {
+    my $title = $1;
+    $data->{title} = $title;
   }
 }
 
@@ -773,18 +772,19 @@ B<Example:>
   
   # Get content from templates/index.html
   $data->{content} = <<'EOS';
-Hello World!
+  Hello World!
 
-<b>Hi, Yuki</b>
+  <b>Hi, Yuki</b>
 
-<div>
-  OK
-</div>
+  <div>
+    OK
+  </div>
 
-<pre>
-my $foo = 1 > 3 && 2 < 5;
-</pre>
-EOS
+  <pre>
+  my $foo = 1 > 3 && 2 < 5;
+  </pre>
+  EOS
+  
   $api->parse_giblog_syntax($data);
   my $content = $data->{content};
 
@@ -837,6 +837,29 @@ If the pre tag starts at the beginning of the line and the end tag of pre starts
 =back
 
 =head2 parse_title
+
+Get title from text of tag which class name is "title".
+
+If parser can't get title, title become undef.
+
+  $api->parse_title($data);
+
+B<INPUT:>
+
+  $data->{content}
+
+B<OUTPUT:>
+
+  $data->{title}
+
+B<Example:>
+  
+  # Get title
+  $data->{content} = <<'EOS';
+  <div class="title">Perl Tutorial</div>
+  EOS
+  $api->parse_title($data);
+  my $title = $data->{title};
 
 =head2 add_page_link
 
