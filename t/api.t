@@ -516,7 +516,7 @@ EOS
     my $giblog = Giblog->new;
     my $api = Giblog::API->new(giblog => $giblog);
     my $input = <<'EOS';
-<div class="not_found">あいう</div>
+<h7">あいう</h7>
 EOS
     
     my $data = {content => $input};
@@ -524,5 +524,44 @@ EOS
     my $title = $data->{title};
     
     ok(!defined $title);
+  }
+}
+
+# add_page_link
+{
+  # add_page_link - add page link - entry page
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $data = {};
+    $data->{file} = 'blog/20181012123456.html';
+    $data->{content} = '<div class="title">Perl Tutorial</div>';
+    $api->add_page_link($data);
+    my $content = $data->{content};
+    is($content, '<div class="title"><a href="/blog/20181012123456.html">Perl Tutorial</a></div>');
+  }
+
+  # add_page_link - add page link - top page
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $data = {};
+    $data->{file} = 'index.html';
+    $data->{content} = '<div class="title">Perl Tutorial</div>';
+    $api->add_page_link($data);
+    my $content = $data->{content};
+    is($content, '<div class="title"><a href="/">Perl Tutorial</a></div>');
+  }
+
+  # add_page_link - not found
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $data = {};
+    $data->{file} = 'blog/20181012123456.html';
+    $data->{content} = '<div class="not_found">Perl Tutorial</div>';
+    $api->add_page_link($data);
+    my $content = $data->{content};
+    is($content, '<div class="not_found">Perl Tutorial</div>');
   }
 }

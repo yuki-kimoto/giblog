@@ -348,28 +348,6 @@ sub parse_title_from_first_h_tag {
   }
 }
 
-sub add_page_link_to_first_h_tag {
-  my ($self, $data) = @_;
-  
-  my $giblog = $self->giblog;
-
-  my $content = $data->{content};
-  
-  # Add page link
-  my $file = $data->{file};
-  my $path;
-  if ($file eq 'index.html') {
-    $path = '/';
-  }
-  else {
-    $path = "/$file";
-  }
-  
-  $content =~ s|(<\s*h[1-6]\b[^>]*?>)([^<]*?)<|$1<a href="$path">$2</a><|;
-
-  $data->{'content'} = $content;
-}
-
 sub add_page_link {
   my ($self, $data) = @_;
   
@@ -388,6 +366,28 @@ sub add_page_link {
   }
   
   $content =~ s|class="title"[^>]*?>([^<]*?)<|class="title"><a href="$path">$1</a><|;
+
+  $data->{'content'} = $content;
+}
+
+sub add_page_link_to_first_h_tag {
+  my ($self, $data) = @_;
+  
+  my $giblog = $self->giblog;
+
+  my $content = $data->{content};
+  
+  # Add page link
+  my $file = $data->{file};
+  my $path;
+  if ($file eq 'index.html') {
+    $path = '/';
+  }
+  else {
+    $path = "/$file";
+  }
+  
+  $content =~ s|(<\s*h[1-6]\b[^>]*?>)([^<]*?)<|$1<a href="$path">$2</a><|;
 
   $data->{'content'} = $content;
 }
@@ -891,6 +891,55 @@ B<Example:>
 
 =head2 add_page_link
 
+Add page link to text of tag which class name is "title".
+
+If parser can't get title, content is not changed.
+
+  $api->add_page_link($data);
+
+B<INPUT:>
+
+  $data->{file}
+  $data->{content}
+
+B<OUTPUT:>
+
+  $data->{content}
+
+"file" is relative path from "templates" directory.
+
+If added link is the path which combine "/" and value of "file".
+
+If value of "file" is "index.html", added link become "/".
+
+B<Example: entry page>
+  
+  # Add page link
+  $data->{file} = 'blog/20181012123456.html';
+  $data->{content} = <<'EOS';
+  <div class="title">Perl Tutorial</div>
+  EOS
+  $api->add_page_link($data);
+  my $content = $data->{content};
+
+Content is changed to
+
+  <div class="title"><a href="/blog/20181012123456.html">Perl Tutorial</a></div>
+
+B<Example: top page>
+
+  # Add page link
+  $data->{file} = 'index.html';
+  $data->{content} = <<'EOS';
+  <div class="title">Perl Tutorial</div>
+  EOS
+  $api->add_page_link($data);
+  my $content = $data->{content};
+
+Content is changed to
+
+  <div class="title"><a href="/">Perl Tutorial</a></div>
+  
 =head2 parse_description
 
 =head2 parse_description_from_first_p_tag
