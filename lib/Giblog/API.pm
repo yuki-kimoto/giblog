@@ -399,11 +399,17 @@ sub parse_description {
 
   my $content = $data->{content};
   
-  if ($content =~ m|class="description"[^>]*?>([^<]*?)<|) {
+  if ($content =~ m|class="description"[^>]*?>([^<]*?)<|s) {
     my $description = $1;
-    unless (defined $data->{'description'}) {
-      $data->{'description'} = $description;
-    }
+
+    # trim space
+    $description =~ s/^\s+//;
+    $description =~ s/\s+$//;
+
+    $data->{'description'} = $description;
+  }
+  else {
+    $data->{'description'} = undef;
   }
 }
 
@@ -415,18 +421,19 @@ sub parse_description_from_first_p_tag {
   my $content = $data->{content};
   
   # Create description from first p tag
-  unless (defined $data->{'description'}) {
-    if ($content =~ m|<\s?p\b[^>]*?>(.*?)<\s?/\s?p\s?>|s) {
-      my $description = $1;
-      # remove tag
-      $description =~ s/<.*?>//g;
-      
-      # trim space
-      $description =~ s/^\s+//;
-      $description =~ s/\s+$//;
-      
-      $data->{'description'} = $description;
-    }
+  if ($content =~ m|<\s?p\b[^>]*?>(.*?)<\s?/\s?p\s?>|s) {
+    my $description = $1;
+    # remove tag
+    $description =~ s/<.*?>//g;
+    
+    # trim space
+    $description =~ s/^\s+//;
+    $description =~ s/\s+$//;
+    
+    $data->{'description'} = $description;
+  }
+  else {
+    $data->{'description'} = undef;
   }
 }
 
@@ -440,9 +447,7 @@ sub parse_keywords {
   # keywords
   if ($content =~ m|class="keywords"[^>]*?>([^<]*?)<|) {
     my $keywords = $1;
-    unless (defined $data->{'keywords'}) {
-      $data->{'keywords'} = $1;
-    }
+    $data->{'keywords'} = $1;
   }
 }
 
@@ -456,9 +461,7 @@ sub parse_first_img_src {
   # image
   if ($content =~ /<\s*img\b.*?\bsrc\s*=\s*"([^"]*?)"/s) {
     my $image = $1;
-    unless (defined $data->{'image'}) {
-      $data->{'image'} = $image;
-    }
+    $data->{'image'} = $image;
   }
 }
 
@@ -841,11 +844,11 @@ If the pre tag starts at the beginning of the line and the end tag of pre starts
 
 =head2 parse_title
 
+  $api->parse_title($data);
+
 Get title from text of tag which class name is "title".
 
 If parser can't get title, title become undef.
-
-  $api->parse_title($data);
 
 B<INPUT:>
 
@@ -866,11 +869,11 @@ B<Example:>
 
 =head2 parse_title_from_first_h_tag
 
+  $api->parse_title_from_first_h_tag($data);
+
 Get title from text of first h1, h2, h3, h4, h5, h6 tag.
 
 If parser can't get title, title become undef.
-
-  $api->parse_title_from_first_h_tag($data);
 
 B<INPUT:>
 
@@ -891,11 +894,11 @@ B<Example:>
 
 =head2 add_page_link
 
+  $api->add_page_link($data);
+
 Add page link to text of tag which class name is "title".
 
 If parser can't get title, content is not changed.
-
-  $api->add_page_link($data);
 
 B<INPUT:>
 
@@ -942,11 +945,11 @@ Content is changed to
 
 =head2 add_page_link_to_first_h_tag
 
+  $api->add_page_link_to_first_h_tag($data);
+
 Add page link to text of first h1, h2, h3, h4, h5, h6 tag.
 
 If parser can't get title, content is not changed.
-
-  $api->add_page_link_to_first_h_tag($data);
 
 B<INPUT:>
 
@@ -992,6 +995,33 @@ Content is changed to
   <h1><a href="/">Perl Tutorial</a></h1>
 
 =head2 parse_description
+
+  $api->parse_description($data);
+
+Get description from text of tag which class name is "description".
+
+Both of left spaces and right spaces is removed. This is Unicode space.
+
+If parser can't get description, description become undef.
+
+B<INPUT:>
+
+  $data->{content}
+
+B<OUTPUT:>
+
+  $data->{description}
+
+B<Example:>
+  
+  # Get description
+  $data->{content} = <<'EOS';
+  <div class="description">
+    Perl Tutorial is site for beginners of Perl 
+  </div>
+  EOS
+  $api->parse_description($data);
+  my $description = $data->{description};
 
 =head2 parse_description_from_first_p_tag
 

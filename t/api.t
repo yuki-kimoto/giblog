@@ -604,3 +604,38 @@ EOS
     is($content, '<h7>Perl Tutorial</h7>');
   }
 }
+
+# parse_description
+{
+  # parse_description - parse description
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $input = <<'EOS';
+<div class="description">
+  あいう
+</div>
+EOS
+    
+    my $data = {content => $input};
+    $api->parse_description($data);
+    my $description = $data->{description};
+    
+    is($description, "あいう");
+  }
+
+  # parse_description - not found
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $input = <<'EOS';
+<div class="not_found">あいう</div>
+EOS
+    
+    my $data = {content => $input};
+    $api->parse_description($data);
+    my $description = $data->{description};
+    
+    ok(!defined $description);
+  }
+}
