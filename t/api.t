@@ -462,4 +462,19 @@ EOS
     
     is($title, "あいう");
   }
+
+  # parse_title - not found
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $input = <<'EOS';
+<div class="not_found">あいう</div>
+EOS
+    
+    my $data = {content => $input};
+    $api->parse_title($data);
+    my $title = $data->{title};
+    
+    ok(!defined $title);
+  }
 }
