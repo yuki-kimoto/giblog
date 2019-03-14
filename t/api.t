@@ -565,3 +565,42 @@ EOS
     is($content, '<div class="not_found">Perl Tutorial</div>');
   }
 }
+
+# add_page_link_to_first_h_tag
+{
+  # add_page_link_to_first_h_tag - add page link - entry page
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $data = {};
+    $data->{file} = 'blog/20181012123456.html';
+    $data->{content} = '<h1>Perl Tutorial</h1>';
+    $api->add_page_link_to_first_h_tag($data);
+    my $content = $data->{content};
+    is($content, '<h1><a href="/blog/20181012123456.html">Perl Tutorial</a></h1>');
+  }
+
+  # add_page_link_to_first_h_tag - add page link - top page
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $data = {};
+    $data->{file} = 'index.html';
+    $data->{content} = '<h1>Perl Tutorial</h1>';
+    $api->add_page_link_to_first_h_tag($data);
+    my $content = $data->{content};
+    is($content, '<h1><a href="/">Perl Tutorial</a></h1>');
+  }
+
+  # add_page_link_to_first_h_tag - not found
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $data = {};
+    $data->{file} = 'blog/20181012123456.html';
+    $data->{content} = '<h7>Perl Tutorial</h7>';
+    $api->add_page_link_to_first_h_tag($data);
+    my $content = $data->{content};
+    is($content, '<h7>Perl Tutorial</h7>');
+  }
+}

@@ -939,7 +939,58 @@ B<Example: top page>
 Content is changed to
 
   <div class="title"><a href="/">Perl Tutorial</a></div>
+
+=head2 add_page_link_to_first_h_tag
+
+Add page link to text of first h1, h2, h3, h4, h5, h6 tag.
+
+If parser can't get title, content is not changed.
+
+  $api->add_page_link_to_first_h_tag($data);
+
+B<INPUT:>
+
+  $data->{file}
+  $data->{content}
+
+B<OUTPUT:>
+
+  $data->{content}
+
+"file" is relative path from "templates" directory.
+
+If added link is the path which combine "/" and value of "file".
+
+If value of "file" is "index.html", added link become "/".
+
+B<Example: entry page>
   
+  # Add page link
+  $data->{file} = 'blog/20181012123456.html';
+  $data->{content} = <<'EOS';
+  <h1>Perl Tutorial</h1>
+  EOS
+  $api->add_page_link_to_first_h_tag($data);
+  my $content = $data->{content};
+
+Content is changed to
+
+  <h1><a href="/blog/20181012123456.html">Perl Tutorial</a></h1>
+
+B<Example: top page>
+
+  # Add page link
+  $data->{file} = 'index.html';
+  $data->{content} = <<'EOS';
+  <h1>Perl Tutorial</h1>
+  EOS
+  $api->add_page_link_to_first_h_tag($data);
+  my $content = $data->{content};
+
+Content is changed to
+
+  <h1><a href="/">Perl Tutorial</a></h1>
+
 =head2 parse_description
 
 =head2 parse_description_from_first_p_tag
