@@ -3,7 +3,9 @@ use warnings;
 use Test::More 'no_plan';
 
 use File::Path 'mkpath', 'rmtree';
+use Cwd 'getcwd';
 
+my $giblog_dir = '../../../..';
 my $test_dir = 't/tmp/command';
 
 rmtree $test_dir;
@@ -125,22 +127,53 @@ sub slurp {
 
 # add
 {
-  my $home_dir = "$test_dir/mysite_new";
+  # add - change directory
   {
-    my $cmd = "$^X -Mblib blib/script/giblog add --home=$home_dir";
-    system($cmd) == 0
-      or die "Can't execute command $cmd:$!";
+    my $home_dir = "$test_dir/mysite_new";
+    rmtree $home_dir;
+    my $new_cmd = "$^X -Mblib blib/script/giblog new $home_dir";
+    system($new_cmd) == 0
+      or die "Can't execute command $new_cmd:$!";
+    my $save_cur_dir = getcwd;
+    chdir $home_dir
+      or die "Can't change directory";
+    {
+      my $add_cmd = "$^X -Mblib $giblog_dir/blib/script/giblog add";
+      system($add_cmd) == 0
+        or die "Can't execute command $add_cmd:$!";
+    }
+    sleep 2;
+    {
+      my $add_cmd = "$^X -Mblib $giblog_dir/blib/script/giblog add";
+      system($add_cmd) == 0
+        or die "Can't execute command $add_cmd:$!";
+    }
+    chdir $save_cur_dir
+      or die "Can't back to saved current directory";
+    
+    my @files = glob "$home_dir/templates/blog/*";
+    
+    is(scalar @files, 2);
+    like($files[0], qr/\d{14}\.html/);
+    like($files[1], qr/\d{14}\.html/);
   }
-  sleep 2;
+
+  # add - --home option
   {
-    my $cmd = "$^X -Mblib blib/script/giblog add --home=$home_dir";
-    system($cmd) == 0
-      or die "Can't execute command $cmd:$!";
+    my $home_dir = "$test_dir/mysite_new";
+    rmtree $home_dir;
+    my $new_cmd = "$^X -Mblib blib/script/giblog new $home_dir";
+    system($new_cmd) == 0
+      or die "Can't execute command $new_cmd:$!";
+    
+    {
+      my $add_cmd = "$^X -Mblib blib/script/giblog add --home=$home_dir";
+      system($add_cmd) == 0
+        or die "Can't execute command $add_cmd:$!";
+    }
+    my @files = glob "$home_dir/templates/blog/*";
+    
+    is(scalar @files, 1);
+    like($files[0], qr/\d{14}\.html/);
   }
-  
-  my @files = glob "$home_dir/templates/blog/*";
-  
-  is(scalar @files, 2);
-  like($files[0], qr/\d{14}\.html/);
-  like($files[1], qr/\d{14}\.html/);
 }
