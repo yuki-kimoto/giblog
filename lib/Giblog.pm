@@ -51,7 +51,7 @@ sub parse_argv {
   local @ARGV = @argv;
   my $getopt_option_save = Getopt::Long::Configure(qw(default no_auto_abbrev no_ignore_case));
   GetOptions(
-    "d|giblog-dir=s" => \my $home_dir,
+    "h|home=s" => \my $home_dir,
     'I|include=s'  => \my @include,
   );
   Getopt::Long::Configure($getopt_option_save);
