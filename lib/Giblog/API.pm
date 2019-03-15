@@ -636,23 +636,21 @@ If config is not loaded, this method return undef.
 
   my $home_dir = $api->home_dir;
 
-Get Giblog home directory.
+Get home directory.
 
 =head2 read_config
 
   my $config = $api->read_config;
 
-Parse "giblog.conf" in Giblog home directory and return hash reference.
+Parse "giblog.conf" in home directory and return hash reference.
 
-"giblog.conf" must end with correct hash reference.
+"giblog.conf" must end with correct hash reference. Otherwise exception occur.
   
   # giblog.conf
   {
     site_title => 'mysite',
     site_url => 'http://somesite.example',
   }
-
-Otherwise exception occur.
 
 After calling read_config, You can also get config by C<config> method.
 
@@ -700,7 +698,7 @@ If file is not exists, exception occur.
 
   my $file = $api->rel_file('foo/bar');
 
-Get combined path of giblog home directory and specified relative path.
+Get combined path of home directory and specified relative path.
 
 If home directory is not set, return specified path.
 
@@ -710,7 +708,7 @@ If home directory is not set, return specified path.
 
 Load command class and create object and execute "run" method.
 
-For example, if command name is "build", then "Giblog::Command::build" is loaded, and the object is created and, "run" method is executed.
+For example, if command name is "build", Coresspoing "Giblog::Command::build" module is loaded, and the object is created and, "run" method is executed.
 
 If module loading fail, exception occur.
 
@@ -722,7 +720,7 @@ Create website home directory and copy files from prototype directory.
 
 Prototype directory is automatically detected from module name.
 
-If module name is "Giblog::Command::new_foo" and loading path is "lib/Giblog/Command/new_foo.pm", path of prototype directory is "lib/Giblog/Command/new_foo/proto".
+If module name is "Giblog::Command::new_foo" and the loading path is "lib/Giblog/Command/new_foo.pm", path of prototype directory is "lib/Giblog/Command/new_foo/proto".
 
   lib/Giblog/Command/new_foo.pm
                     /new_foo/proto
@@ -743,7 +741,7 @@ If proto direcotry corresponding to module name is not found, exception occur.
 
   $api->get_templates_files;
 
-Get file names in "templates" directory in giblog home directory.
+Get file names in "templates" directory in home directory.
 
 Files in "templates/common" directory and hidden files(which start with ".") is not contained.
 
@@ -792,7 +790,7 @@ B<OUTPUT:>
   
 B<Example:>
   
-  # Get content from templates/index.html
+  # Parse input as giblog syntax
   $data->{content} = <<'EOS';
   Hello World!
 
@@ -816,7 +814,7 @@ Giblog syntax is simple syntax to write content easily.
 
 =over 4
 
-=item * Add p tag automatically
+=item 1. Add p tag automatically
 
 Add p tag to inline element starting from the beginning of line.
 
@@ -842,9 +840,9 @@ Add p tag to inline element starting from the beginning of line.
 
 Empty line is deleted.
 
-=item * Escape E<gt>, E<lt> in pre tag
+=item 2. Escape E<gt>, E<lt> in pre tag
 
-If the pre tag starts at the beginning of the line and the end tag of pre starts at the beginning of the line, do HTML escapes ">" and "<" between them.
+If pre tag starts at the beginning of the line and its end tag starts at the beginning of the line, execute HTML escapes ">" and "<" between them.
   
   # Input
   <pre>
@@ -932,7 +930,7 @@ If added link is the path which combine "/" and value of "file".
 
 if $opt->{root} is specifed and this match $data->{file}, added link is "/".
 
-B<Example: entry page>
+B<Example:>
   
   # Add page link
   $data->{file} = 'blog/20181012123456.html';
@@ -946,7 +944,7 @@ Content is changed to
 
   <div class="title"><a href="/blog/20181012123456.html">Perl Tutorial</a></div>
 
-B<Example: top page>
+B<Example: root page>
 
   # Add page link
   $data->{file} = 'index.html';
@@ -998,7 +996,7 @@ Content is changed to
 
   <h1><a href="/blog/20181012123456.html">Perl Tutorial</a></h1>
 
-B<Example: top page>
+B<Example: root>
 
   # Add page link
   $data->{file} = 'index.html';
@@ -1018,7 +1016,7 @@ Content is changed to
 
 Get description from text of tag which class name is "description".
 
-Both of left spaces and right spaces is removed. This is Unicode space.
+Both of left spaces and right spaces are removed. This is Unicode space.
 
 If parser can't get description, description become undef.
 
@@ -1040,6 +1038,8 @@ B<Example:>
   EOS
   $api->parse_description($data);
   my $description = $data->{description};
+
+Output description is "Perl Tutorial is site for beginners of Perl".
 
 =head2 parse_description_from_first_p_tag
 
@@ -1075,7 +1075,7 @@ B<Example:>
   $api->parse_description_from_first_p_tag($data);
   my $description = $data->{description};
 
-Description is "Perl Tutorial is site for beginners of Perl".
+Output description is "Perl Tutorial is site for beginners of Perl".
 
 =head2 parse_keywords
 
@@ -1097,7 +1097,7 @@ B<Example:>
   
   # Get keywords
   $data->{content} = <<'EOS';
-  <div class="keywords">Perl Tutorial</div>
+  <div class="keywords">Perl,Tutorial</div>
   EOS
   $api->parse_keywords($data);
   my $keywords = $data->{keywords};
@@ -1126,6 +1126,8 @@ B<Example:>
   EOS
   $api->parse_first_img_src($data);
   my $img_src = $data->{img_src};
+
+Output img_src is "/path".
 
 =head2 read_common_templates
 
