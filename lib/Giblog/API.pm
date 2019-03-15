@@ -21,7 +21,7 @@ sub giblog { shift->{giblog} }
 
 sub config { shift->giblog->config }
 
-sub giblog_dir { shift->giblog->giblog_dir };
+sub home_dir { shift->giblog->home_dir };
 
 sub read_config {
   my $self = shift;
@@ -165,10 +165,10 @@ sub create_website_from_proto {
 sub rel_file {
   my ($self, $file) = @_;
   
-  my $giblog_dir = $self->giblog->giblog_dir;
+  my $home_dir = $self->giblog->home_dir;
   
-  if (defined $giblog_dir) {
-    return "$giblog_dir/$file";
+  if (defined $home_dir) {
+    return "$home_dir/$file";
   }
   else {
     return $file;
@@ -632,9 +632,9 @@ Config is loaded by C<read_config> method.
 
 If config is not loaded, this method return undef.
 
-=head2 giblog_dir
+=head2 home_dir
 
-  my $giblog_dir = $api->giblog_dir;
+  my $home_dir = $api->home_dir;
 
 Get Giblog home directory.
 

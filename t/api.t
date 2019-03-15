@@ -45,7 +45,7 @@ mkpath $test_dir;
   
   # config - read config
   {
-    my $giblog = Giblog->new(giblog_dir => 't/tmp/api');
+    my $giblog = Giblog->new(home_dir => 't/tmp/api');
     my $api = Giblog::API->new(giblog => $giblog);
     my $config_content = '{foo => 1}';
     $api->write_to_file('t/tmp/api/giblog.conf', $config_content);
@@ -55,13 +55,13 @@ mkpath $test_dir;
   }
 }
 
-# giblog_dir
+# home_dir
 {
-  # giblog_dir - get Giblog directory
+  # home_dir - get Giblog directory
   {
-    my $giblog = Giblog->new(giblog_dir => 't/tmp/api');
+    my $giblog = Giblog->new(home_dir => 't/tmp/api');
     my $api = Giblog::API->new(giblog => $giblog);
-    is($api->giblog_dir, 't/tmp/api');
+    is($api->home_dir, 't/tmp/api');
   }
 }
 
@@ -69,7 +69,7 @@ mkpath $test_dir;
 {
   # read_config - read config
   {
-    my $giblog = Giblog->new(giblog_dir => 't/tmp/api');
+    my $giblog = Giblog->new(home_dir => 't/tmp/api');
     my $api = Giblog::API->new(giblog => $giblog);
     my $config_content = '{foo => 1}';
     $api->write_to_file('t/tmp/api/giblog.conf', $config_content);
@@ -79,7 +79,7 @@ mkpath $test_dir;
   
   # read_config - exception - syntax error
   {
-    my $giblog = Giblog->new(giblog_dir => 't/tmp/api');
+    my $giblog = Giblog->new(home_dir => 't/tmp/api');
     my $api = Giblog::API->new(giblog => $giblog);
     my $config_content = 'use strict; PPPPP;';
     $api->write_to_file('t/tmp/api/giblog.conf', $config_content);
@@ -91,7 +91,7 @@ mkpath $test_dir;
 
   # read_config - exception - not hash reference
   {
-    my $giblog = Giblog->new(giblog_dir => 't/tmp/api');
+    my $giblog = Giblog->new(home_dir => 't/tmp/api');
     my $api = Giblog::API->new(giblog => $giblog);
     my $config_content = '[]';
     $api->write_to_file('t/tmp/api/giblog.conf', $config_content);
@@ -106,7 +106,7 @@ mkpath $test_dir;
 {
   # clear_config - clear config
   {
-    my $giblog = Giblog->new(giblog_dir => 't/tmp/api');
+    my $giblog = Giblog->new(home_dir => 't/tmp/api');
     my $api = Giblog::API->new(giblog => $giblog);
     my $config_content = '{foo => 1}';
     $api->write_to_file('t/tmp/api/giblog.conf', $config_content);
@@ -225,12 +225,12 @@ mkpath $test_dir;
 {
   # rel_file - create path
   {
-    my $giblog_dir = 't/tmp/api';
-    my $giblog = Giblog->new(giblog_dir => $giblog_dir);
+    my $home_dir = 't/tmp/api';
+    my $giblog = Giblog->new(home_dir => $home_dir);
     my $api = Giblog::API->new(giblog => $giblog);
     my $rel_file = 'foo/bar';
     my $file = $api->rel_file($rel_file);
-    is($file, "$giblog_dir/$rel_file");
+    is($file, "$home_dir/$rel_file");
   }
 
   # rel_file - no home dir
@@ -269,30 +269,30 @@ mkpath $test_dir;
 
 # create_website_from_proto
 {
-  my $giblog_dir = 't/tmp/api/create_website';
+  my $home_dir = 't/tmp/api/create_website';
   my $giblog = Giblog->new;
   my $api = Giblog::API->new(giblog => $giblog);
   
   # create_website_from_proto - path
   {
     my $module_name = 'Giblog::Command::new';
-    $api->create_website_from_proto($giblog_dir, $module_name);
+    $api->create_website_from_proto($home_dir, $module_name);
 
-    my @files = sort glob "$giblog_dir/*";
+    my @files = sort glob "$home_dir/*";
 
     is_deeply(
       \@files, 
       [
-        "$giblog_dir/README",
-        "$giblog_dir/giblog.conf",
-        "$giblog_dir/lib",
-        "$giblog_dir/public",
-        "$giblog_dir/serve.pl",
-        "$giblog_dir/templates",
+        "$home_dir/README",
+        "$home_dir/giblog.conf",
+        "$home_dir/lib",
+        "$home_dir/public",
+        "$home_dir/serve.pl",
+        "$home_dir/templates",
       ]
     );
     
-    my $readme_content = $api->slurp_file("$giblog_dir/README");
+    my $readme_content = $api->slurp_file("$home_dir/README");
     like($readme_content, qr|Giblog/Command/new/proto|);
   }
 
@@ -300,14 +300,14 @@ mkpath $test_dir;
   {
     my $module_name = 'Giblog::Command::not_found';
     eval {
-      $api->create_website_from_proto($giblog_dir, $module_name);
+      $api->create_website_from_proto($home_dir, $module_name);
     };
     ok($@);
   }
 
   # create_website_from_proto - exception - home dir is not specified
   {
-    unlink $giblog_dir;
+    unlink $home_dir;
     my $module_name = 'Giblog::Command::new';
     eval {
       $api->create_website_from_proto(undef, $module_name);
@@ -317,30 +317,30 @@ mkpath $test_dir;
 
   # create_website_from_proto - exception - home dir is already exists
   {
-    unlink $giblog_dir;
-    mkdir $giblog_dir;
+    unlink $home_dir;
+    mkdir $home_dir;
     my $module_name = 'Giblog::Command::new';
     eval {
-      $api->create_website_from_proto($giblog_dir, $module_name);
+      $api->create_website_from_proto($home_dir, $module_name);
     };
     ok($@);
   }
 
   # create_website_from_proto - exception - module name is not specified
   {
-    unlink $giblog_dir;
+    unlink $home_dir;
     eval {
-      $api->create_website_from_proto($giblog_dir, undef);
+      $api->create_website_from_proto($home_dir, undef);
     };
     ok($@);
   }
 
   # create_website_from_proto - exception - module is not loaded
   {
-    unlink $giblog_dir;
+    unlink $home_dir;
     my $module_name = 'Giblog::Command::not_found';
     eval {
-      $api->create_website_from_proto($giblog_dir, $module_name);
+      $api->create_website_from_proto($home_dir, $module_name);
     };
     ok($@);
   }
@@ -350,12 +350,12 @@ mkpath $test_dir;
 {
   # get_templates_files - get template files
   {
-    my $giblog_dir = 't/tmp/api/get_templates_files';
-    my $giblog = Giblog->new(giblog_dir => $giblog_dir);
+    my $home_dir = 't/tmp/api/get_templates_files';
+    my $giblog = Giblog->new(home_dir => $home_dir);
     my $api = Giblog::API->new(giblog => $giblog);
     my $module_name = 'Giblog::Command::new';
-    $api->create_website_from_proto($giblog_dir, $module_name);
-    $api->create_file("$giblog_dir/templates/blog/1111.html");
+    $api->create_website_from_proto($home_dir, $module_name);
+    $api->create_file("$home_dir/templates/blog/1111.html");
 
     my $files = $api->get_templates_files;
 
@@ -372,12 +372,12 @@ mkpath $test_dir;
 
   # get_templates_files - get template files
   {
-    my $giblog_dir = 't/tmp/api/get_templates_files';
-    rmtree $giblog_dir;
-    my $giblog = Giblog->new(giblog_dir => $giblog_dir);
+    my $home_dir = 't/tmp/api/get_templates_files';
+    rmtree $home_dir;
+    my $giblog = Giblog->new(home_dir => $home_dir);
     my $api = Giblog::API->new(giblog => $giblog);
     my $module_name = 'Giblog::Command::new';
-    $api->create_website_from_proto($giblog_dir, $module_name);
+    $api->create_website_from_proto($home_dir, $module_name);
 
     my $files = $api->get_templates_files;
   }
@@ -387,13 +387,13 @@ mkpath $test_dir;
 {
   # get_content - get content
   {
-    my $giblog_dir = 't/tmp/api/get_content';
-    rmtree $giblog_dir;
-    my $giblog = Giblog->new(giblog_dir => $giblog_dir);
+    my $home_dir = 't/tmp/api/get_content';
+    rmtree $home_dir;
+    my $giblog = Giblog->new(home_dir => $home_dir);
     my $api = Giblog::API->new(giblog => $giblog);
     my $module_name = 'Giblog::Command::new';
-    $api->create_website_from_proto($giblog_dir, $module_name);
-    $api->write_to_file("$giblog_dir/templates/index.html", "あいう");
+    $api->create_website_from_proto($home_dir, $module_name);
+    $api->write_to_file("$home_dir/templates/index.html", "あいう");
     
     my $data = {file => 'index.html'};
     $api->get_content($data);
@@ -749,19 +749,19 @@ EOS
 {
   # read_common_templates - read common templates in "templates/common" directory.
   {
-    my $giblog_dir = 't/tmp/api/read_common_templates';
-    rmtree $giblog_dir;
-    my $giblog = Giblog->new(giblog_dir => $giblog_dir);
+    my $home_dir = 't/tmp/api/read_common_templates';
+    rmtree $home_dir;
+    my $giblog = Giblog->new(home_dir => $home_dir);
     my $api = Giblog::API->new(giblog => $giblog);
     my $module_name = 'Giblog::Command::new';
-    $api->create_website_from_proto($giblog_dir, $module_name);
+    $api->create_website_from_proto($home_dir, $module_name);
     
-    $api->write_to_file("$giblog_dir/templates/common/meta.html", "あ");
-    $api->write_to_file("$giblog_dir/templates/common/header.html", "い");
-    $api->write_to_file("$giblog_dir/templates/common/footer.html", "う");
-    $api->write_to_file("$giblog_dir/templates/common/side.html", "え");
-    $api->write_to_file("$giblog_dir/templates/common/top.html", "お");
-    $api->write_to_file("$giblog_dir/templates/common/bottom.html", "か");
+    $api->write_to_file("$home_dir/templates/common/meta.html", "あ");
+    $api->write_to_file("$home_dir/templates/common/header.html", "い");
+    $api->write_to_file("$home_dir/templates/common/footer.html", "う");
+    $api->write_to_file("$home_dir/templates/common/side.html", "え");
+    $api->write_to_file("$home_dir/templates/common/top.html", "お");
+    $api->write_to_file("$home_dir/templates/common/bottom.html", "か");
 
     my $data = {};
     $api->read_common_templates($data);
@@ -807,19 +807,19 @@ EOS
 {
   # wrap - wrap content by common templates
   {
-    my $giblog_dir = 't/tmp/api/wrap';
-    rmtree $giblog_dir;
-    my $giblog = Giblog->new(giblog_dir => $giblog_dir);
+    my $home_dir = 't/tmp/api/wrap';
+    rmtree $home_dir;
+    my $giblog = Giblog->new(home_dir => $home_dir);
     my $api = Giblog::API->new(giblog => $giblog);
     my $module_name = 'Giblog::Command::new';
-    $api->create_website_from_proto($giblog_dir, $module_name);
+    $api->create_website_from_proto($home_dir, $module_name);
     
-    $api->write_to_file("$giblog_dir/templates/common/meta.html", "あ");
-    $api->write_to_file("$giblog_dir/templates/common/header.html", "い");
-    $api->write_to_file("$giblog_dir/templates/common/footer.html", "う");
-    $api->write_to_file("$giblog_dir/templates/common/side.html", "え");
-    $api->write_to_file("$giblog_dir/templates/common/top.html", "お");
-    $api->write_to_file("$giblog_dir/templates/common/bottom.html", "か");
+    $api->write_to_file("$home_dir/templates/common/meta.html", "あ");
+    $api->write_to_file("$home_dir/templates/common/header.html", "い");
+    $api->write_to_file("$home_dir/templates/common/footer.html", "う");
+    $api->write_to_file("$home_dir/templates/common/side.html", "え");
+    $api->write_to_file("$home_dir/templates/common/top.html", "お");
+    $api->write_to_file("$home_dir/templates/common/bottom.html", "か");
 
     my $data = {};
     $api->read_common_templates($data);
@@ -876,17 +876,17 @@ EOS
 {
   # write_to_public_file - write content to public directory
   {
-    my $giblog_dir = 't/tmp/api/write_to_public_file';
-    rmtree $giblog_dir;
-    my $giblog = Giblog->new(giblog_dir => $giblog_dir);
+    my $home_dir = 't/tmp/api/write_to_public_file';
+    rmtree $home_dir;
+    my $giblog = Giblog->new(home_dir => $home_dir);
     my $api = Giblog::API->new(giblog => $giblog);
     my $module_name = 'Giblog::Command::new';
-    $api->create_website_from_proto($giblog_dir, $module_name);
+    $api->create_website_from_proto($home_dir, $module_name);
     my $data = {};
     $data->{file} = 'index.html';
     $data->{content} = 'あ';
     $api->write_to_public_file($data);
-    open my $fh, '<', "$giblog_dir/public/index.html"
+    open my $fh, '<', "$home_dir/public/index.html"
       or die "Can't open file";
     my $content = do { local $/; <$fh> };
     $content = decode('UTF-8', $content);

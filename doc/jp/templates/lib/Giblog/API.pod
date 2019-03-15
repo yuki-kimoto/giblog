@@ -80,9 +80,9 @@ protoディレクトリが指定されない場合は、例外が発生します
 
 「read_config」で読み込まれた設定を取得します。「read_confg」が実行される前は、未定義です。
 
-=head2 giblog_dir
+=head2 home_dir
 
-  my $giblog_dir = $api->giblog_dir;
+  my $home_dir = $api->home_dir;
 
 Giblogのホームディレクトリを取得します。
 

@@ -18,7 +18,7 @@ sub new {
   return bless $self, $class;
 }
 
-sub giblog_dir { shift->{'giblog_dir'} }
+sub home_dir { shift->{'home_dir'} }
 sub config { shift->{config} }
 
 sub build_api {
@@ -51,13 +51,13 @@ sub parse_argv {
   local @ARGV = @argv;
   my $getopt_option_save = Getopt::Long::Configure(qw(default no_auto_abbrev no_ignore_case));
   GetOptions(
-    "d|giblog-dir=s" => \my $giblog_dir,
+    "d|giblog-dir=s" => \my $home_dir,
     'I|include=s'  => \my @include,
   );
   Getopt::Long::Configure($getopt_option_save);
   
   my $opt = {
-    giblog_dir => $giblog_dir,
+    home_dir => $home_dir,
     include => \@include,
     command_name => $command_name,
     argv => \@argv
