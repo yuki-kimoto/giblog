@@ -6,7 +6,7 @@ use warnings;
 
 use Getopt::Long 'GetOptions';
 
-our $VERSION = '0.02';
+our $VERSION = '0.50';
 
 sub new {
   my $class = shift;
@@ -76,16 +76,152 @@ Giblog is HTML generator.
 
 Giblog is in beta test before 1.0 release. Note that features is changed without warnings.
 
-=head1 TUTORIAL
+=head1 SYNOPSYS
   
   # New web site
   giblog new mysite
   
   # Add new entry
   giblog add
-  
+
+  # Add new entry with option
+  giblog add --home /my/home
+
   # Build web site
   giblog build
+  
+  # Build web site with option
+  giblog build --home /my/home
+
+=head1 TUTORIAL
+
+=head2 Create web site
+
+You can create web site from 4 prototype
+
+=over 4
+
+=item 1. Empty prototype
+
+  giblog new mysite
+
+If you want to create empty site, choice this prototype.
+
+Templates and CSS is empty and provide basic build process.
+
+=item 2. Home page prototype
+
+  giblog new_hp mysite
+
+If you want to create home page, choice this prototype.
+
+Have empty "templates/index.html". CSS is designed to match smart phone site and provide basic build process.
+
+=item 3. Blog prototype
+
+  giblog new_blog mysite
+
+Have page "templates/index.html" which show 7 days entry.
+
+Have page "templates/list.html" which show all page links.
+
+CSS is designed to match smart phone site and provide basic build process.
+
+=item 4. Perl Zemi prototype
+
+  giblog new_zemi mysite
+
+This an example to create practical web site, such as Perl Zemi L<https://tutorial.perlzemi.com/>.
+
+=head2 Add entry page
+
+You can add entry page of blog by C<add> command.
+  
+  cd mysite
+  giblog add mysite
+
+For example, created file name is
+
+  templates/blog/20080108132865.html
+
+=head2 Build web site
+
+You can build web site.
+
+  giblog build
+
+What is build process?
+
+Build process is writen in "run" method of "lib/Giblog/Command/build.pm".
+
+Main part of build process is combination of L<Giblog::API>.
+
+  # This is create by new prototype
+  package Giblog::Command::build;
+
+  use base 'Giblog::Command';
+
+  use strict;
+  use warnings;
+
+  sub run {
+    my ($self, @args) = @_;
+    
+    # API
+    my $api = $self->api;
+    
+    # Read config
+    my $config = $api->read_config;
+    
+    # Get files in templates directory
+    my $files = $api->get_templates_files;
+    
+    for my $file (@$files) {
+      
+      my $data = {file => $file};
+      
+      # Get content from file in templates directory
+      $api->get_content($data);
+
+      # Parse Giblog syntax
+      $api->parse_giblog_syntax($data);
+
+      # Parse title
+      $api->parse_title($data);
+
+      # Add page link
+      $api->add_page_link($data, {root => 'index.html'});
+
+      # Read common templates
+      $api->read_common_templates($data);
+      
+      # Add meta title
+      $api->add_meta_title($data);
+
+      # Wrap content by header, footer, etc
+      $api->wrap($data);
+      
+      # Write to public file
+      $api->write_to_public_file($data);
+    }
+  }
+
+  1;
+
+You can edit this build process by yourself if you need.
+
+=head2 Serve web site
+
+If you have L<Mojolicious>, you can build and serve web site.
+
+   morbo serve.pl
+
+You see the following message.
+
+   Server available at http://127.0.0.1:3000
+   Server start
+
+If files in "templates" directory is updated, this server is automatically reloaded.
 
 =head1 AUTHOR
 
