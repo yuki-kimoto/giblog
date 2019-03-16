@@ -13,6 +13,20 @@
   .container {
     background:#F2EFE2;
   }
+  .main {
+    max-width:960px;
+    width:100%;
+    overflow:hidden;
+    margin: 0 auto;
+  }
+  .entry {
+    float:left;
+    width:70%;
+  }
+  .side {
+    float:left;
+    width:30%;
+  }
   
   h1 {
     font-size:18px;
@@ -22,6 +36,21 @@
   }
   h3 {
   
+  }
+  
+  .header {
+    background:#212121;
+  }
+  .site-title {
+    max-width:960px;
+    width:100%;
+    color:white;
+    font-size:30px;
+    padding:10px;
+    margin: 0 auto;
+  }
+  .entry {
+    
   }
 
 /* Tablet and Smart phone */
