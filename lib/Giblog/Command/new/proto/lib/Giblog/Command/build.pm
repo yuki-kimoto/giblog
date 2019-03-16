@@ -28,10 +28,10 @@ sub run {
     $api->parse_giblog_syntax($data);
 
     # Parse title
-    $api->parse_title($data);
+    $api->parse_title_from_first_h_tag($data);
 
     # Add page link
-    $api->add_page_link($data, {root => 'index.html'});
+    $api->add_page_link_to_first_h_tag($data, {root => 'index.html'});
 
     # Read common templates
     $api->read_common_templates($data);
