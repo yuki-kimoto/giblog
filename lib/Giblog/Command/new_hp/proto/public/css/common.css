@@ -17,11 +17,15 @@
     max-width:960px;
     width:100%;
     overflow:hidden;
-    margin: 0 auto;
+    margin: 0 auto 15px auto;
   }
   .entry {
     float:left;
     width:70%;
+    border:1px solid #C0C0C0;
+    background:white;
+    box-shadow: 0 0 15px rgba(0,0,0,.3);
+    padding:30px;
   }
   .side {
     float:left;
@@ -29,19 +33,6 @@
   }
   
   h1 {
-    font-size:18px;
-  }
-  h2 {
-  
-  }
-  h3 {
-  
-  }
-  
-  .header {
-    background:#212121;
-  }
-  .site-title {
     max-width:960px;
     width:100%;
     color:white;
@@ -49,8 +40,26 @@
     padding:10px;
     margin: 0 auto;
   }
-  .entry {
-    
+  h2 {
+    font-size:23px;
+    border-left:7px solid #ddd;
+    padding:5px 10px;
+  }
+  h3 {
+  
+  }
+  
+  .header {
+    background:#212121;
+    margin-bottom:15px;
+  }
+  .footer {
+    background:white;
+    margin-top:15px;
+    text-align:center;
+    padding:15px 0;
+  }
+  .site-title {
   }
 
 /* Tablet and Smart phone */
