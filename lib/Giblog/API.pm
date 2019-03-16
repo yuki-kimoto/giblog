@@ -93,6 +93,16 @@ sub slurp_file {
 sub run_command {
   my ($self, $command_name, @argv) = @_;
   
+  # Add "lib" in home directory to include path 
+  my $home_dir = $self->home_dir;
+  local @INC = @INC;
+  if (defined $home_dir) {
+    unshift @INC, "$home_dir/lib";
+  }
+  else {
+    unshift @INC, "lib";
+  }
+  
   # Command is implemented in command
   my $command_class = "Giblog::Command::$command_name";
   eval "use $command_class;";

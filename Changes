@@ -1,7 +1,10 @@
+0.51 2019/03/16
+  - remove -I, --include option
+  - add "lib" in home directory to include path before running command
 0.50 2019/03/15
-  rename giblog-dir option to home
-  add tutorial
+  - rename giblog-dir option to home
+  - add tutorial
 0.02 2019/03/14
-  Change several apis
+  - Change several apis
 0.01 2019/03/7
-  First release
+  - First release

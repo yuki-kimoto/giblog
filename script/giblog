@@ -8,11 +8,8 @@ use Giblog::API;
 
 my $opt = Giblog->parse_argv(@ARGV);
 
-my $include = $opt->{include};
 my $command_name = $opt->{command_name};
 my $argv = $opt->{argv};
-
-unshift @INC, @$include, 'lib';
 
 my $api = Giblog->build_api(%$opt);
 
