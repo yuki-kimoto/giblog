@@ -1,0 +1,25 @@
+/* Common */
+
+  h1 {
+  
+  }
+  h2 {
+  
+  }
+  h3 {
+  
+  }
+
+/* Tablet and Smart phone */
+@media only screen and (max-width:960px) {
+  h1 {
+  
+  }
+  h2 {
+  
+  }
+  h3 {
+  
+  }
+}
+
