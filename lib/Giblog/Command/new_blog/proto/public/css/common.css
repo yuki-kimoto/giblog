@@ -6,6 +6,36 @@
     -webkit-text-size-adjust:100%;
   }
   
+  p {
+    color:#111;
+    margin:10px 0;
+  }
+  
+  .side-list {
+    box-shadow: 0 0 3px rgba(0,0,0,.1);
+  }
+  .side-list-title {
+    background:#222;
+    color:white;
+    font-weight:bold;
+    padding: 7px 0px 5px 0px;
+    text-align:center;
+    border:1px solid #ccc;
+    border-bottom:none;
+  }
+  .side-list ul {
+    border:1px solid #ccc;
+  }
+  .side-list li {
+    list-style:none;
+    background:white;
+    border-bottom:1px solid #ccc;
+    padding:7px 10px 5px 10px;
+  }
+  .side li:last-child {
+    border-bottom:none;
+  }
+  
   body {
     font-size:16px;
     line-height:1.5;
@@ -16,20 +46,25 @@
   .main {
     max-width:960px;
     width:100%;
-    overflow:hidden;
     margin: 0 auto 15px auto;
   }
+	.main:after {
+		content:"";
+		display:block;
+		clear:both;
+	}
   .entry {
     float:left;
-    width:70%;
+    width:72%;
     border:1px solid #C0C0C0;
     background:white;
-    box-shadow: 0 0 15px rgba(0,0,0,.3);
-    padding:30px;
+    box-shadow: 0 0 3px rgba(0,0,0,.1);
+    padding:15px 25px;
   }
   .side {
     float:left;
-    width:30%;
+    width:27%;
+    margin-left:1%;
   }
   
   h1 {
@@ -37,16 +72,27 @@
     width:100%;
     color:white;
     font-size:30px;
-    padding:10px;
+    padding:12px 10px 10px 10px;
     margin: 0 auto;
   }
   h2 {
     font-size:23px;
-    border-left:7px solid #ddd;
-    padding:5px 10px;
+    padding:10px 0;
+    letter-spacing:0.5px;
   }
   h3 {
-  
+    font-size:18px;
+    border-left:7px solid #ddd;
+    padding:6px 0px 4px 12px;
+    letter-spacing:0.5px;
+    margin:15px 0 10px 0;
+  }
+  h4 {
+    font-size:17px;
+    font-weight:bold;
+    padding:6px 0px 4px 5px;
+    letter-spacing:0.5px;
+    margin:15px 0 10px 0;
   }
   
   .header {
@@ -58,20 +104,50 @@
     margin-top:15px;
     text-align:center;
     padding:15px 0;
+    border-top:1px solid #ccc;
+  }
+  .footer a {
+    color:#000;
   }
   .site-title {
+  }
+  
+  pre {
+    background:#FCFCFC;
+    border:1px solid #CCCCCC;
+    border-radius:5px;
+    padding:10px 15px;
+    margin:10px 0;
+  }
+
+  blockquote {
+    background:#FCFCFC;
+    border:1px solid #CCCCCC;
+    border-radius:5px;
+    padding:10px 15px;
+    margin:10px 0;
   }
 
 /* Tablet and Smart phone */
 @media only screen and (max-width:960px) {
   h1 {
-  
   }
   h2 {
   
   }
   h3 {
   
+  }
+  .entry {
+    float:none;
+    width:97%;
+    margin:0 auto;
+    margin-bottom:15px;
+  }
+  .side {
+    float:none;
+    width:97%;
+    margin:0 auto;
   }
 }
 
