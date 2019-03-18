@@ -22,15 +22,15 @@ sub slurp {
   return $content;
 }
 
-# proto/new
+# proto/new_hp
 {
-  # proto/new - new, add, build
+  # proto/new_hp - new_hp, add, build
   {
-    my $home_dir = "$test_dir/mysite_new";
+    my $home_dir = "$test_dir/mysite_new_hp";
     rmtree $home_dir;
-    my $new_cmd = "$^X -Mblib blib/script/giblog new $home_dir";
-    system($new_cmd) == 0
-      or die "Can't execute command $new_cmd:$!";
+    my $new_hp_cmd = "$^X -Mblib blib/script/giblog new_hp $home_dir";
+    system($new_hp_cmd) == 0
+      or die "Can't execute command $new_hp_cmd:$!";
     my $save_cur_dir = getcwd;
     {
       my $add_cmd = "$^X -Mblib blib/script/giblog add --home $home_dir";
@@ -55,16 +55,15 @@ sub slurp {
     like($index_content, qr/top/);
     like($index_content, qr/bottom/);
     like($index_content, qr/meta/);
-    like($index_content, qr/<p>/);
-    like($index_content, qr|</p>|);
-    like($index_content, qr/Content1/);
-    like($index_content, qr/Content2/);
+    like($index_content, qr|<p>\s*How to use Giblog\.\s*</p>|);
     like($index_content, qr/&gt;/);
     like($index_content, qr/&lt;/);
     like($index_content, qr/&lt;/);
-    like($index_content, qr|<title>Title</title>|);
-    like($index_content, qr|<h2><a href="/">Title</a></h2>|);
-
+    like($index_content, qr|<title>How to use Giblog</title>|);
+    like($index_content, qr|<h2><a href="/">How to use Giblog</a></h2>|);
+    like($index_content, qr|\Qside-list|);
+    like($index_content, qr|\Q<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">|);
+    like($index_content, qr|\Q<meta name="description" content="How to use Giblog.">|);
     like($blog_content, qr/header/);
     like($blog_content, qr/footer/);
     like($blog_content, qr/top/);
@@ -72,4 +71,3 @@ sub slurp {
     like($blog_content, qr/meta/);
   }
 }
-
