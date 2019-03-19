@@ -53,13 +53,16 @@
 		display:block;
 		clear:both;
 	}
-  .entry {
+	.content {
     float:left;
     width:72%;
+	}
+  .entry {
     border:1px solid #C0C0C0;
     background:white;
     box-shadow: 0 0 3px rgba(0,0,0,.1);
     padding:15px 25px;
+    margin-bottom:10px;
   }
   .side {
     float:left;
@@ -79,6 +82,10 @@
     font-size:23px;
     padding:10px 0;
     letter-spacing:0.5px;
+  }
+  h2 a {
+    text-decoration:none;
+    color:inherit;
   }
   h3 {
     font-size:18px;
@@ -130,15 +137,7 @@
 
 /* Tablet and Smart phone */
 @media only screen and (max-width:960px) {
-  h1 {
-  }
-  h2 {
-  
-  }
-  h3 {
-  
-  }
-  .entry {
+  .content {
     float:none;
     width:97%;
     margin:0 auto;
