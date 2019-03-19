@@ -5,12 +5,13 @@
     box-sizing: border-box;
     -webkit-text-size-adjust:100%;
   }
-  
+  a, a:visited {
+    color:#0000EE;
+  }
   p {
     color:#111;
     margin:10px 0;
   }
-  
   .side-list {
     box-shadow: 0 0 3px rgba(0,0,0,.1);
   }
@@ -73,23 +74,23 @@
   h1 {
     max-width:960px;
     width:100%;
-    color:white;
     font-size:30px;
     padding:12px 10px 10px 10px;
     margin: 0 auto;
   }
-  h1 a {
+  h1 a, h1 a:visited {
+    color:white;
     text-decoration:none;
-    color:inherit;
+    color:white;
   }
   h2 {
     font-size:23px;
     padding:10px 0;
     letter-spacing:0.5px;
   }
-  h2 a {
+  h2 a, h2 a:visited {
     text-decoration:none;
-    color:inherit;
+    color:#000;
   }
   h3 {
     font-size:18px;
