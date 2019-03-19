@@ -1,6 +1,8 @@
-0.51 2019/03/16
+0.51 2019/03/19
   - remove -I, --include option
   - add "lib" in home directory to include path before running command
+  - remove new_zemi command
+  - improve new_hp prototype
 0.50 2019/03/15
   - rename giblog-dir option to home
   - add tutorial
