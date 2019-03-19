@@ -5,6 +5,8 @@ use base 'Giblog::Command';
 use strict;
 use warnings;
 
+use File::Basename 'basename';
+
 sub run {
   my ($self, @args) = @_;
   
@@ -55,12 +57,12 @@ sub run {
     $api->write_to_public_file($data);
   }
 
+  $self->create_index;
   $self->create_list;
-  $self->create_latest;
 }
 
 # Create latest entries page
-sub create_latest {
+sub create_index {
   my $self = shift;
   
   my $api = $self->api;
@@ -69,11 +71,12 @@ sub create_latest {
   
   @template_files = reverse sort @template_files;
   
-  my $latest_content;
-  
   my $before_year = 0;
+  my @entry_contents;
   for (my $i = 0; $i < 7; $i++) {
     my $template_file = $template_files[$i];
+    
+    last unless defined $template_file;
     
     my $base_name = basename $template_file;
     my ($year, $month, $mday) = $base_name =~ /^(\d{4})(\d{2})(\d{2})/;
@@ -87,31 +90,38 @@ sub create_latest {
     # Add page link
     $api->add_page_link_to_first_h_tag($data, {root => 'index.html'});
     
-    $content = $data->{content};
-
-    $latest_content .= <<"EOS";
-<div style="font-weight:bold;font-size:18px;letter-spacing:2px;margin:35px 0 0px 0;padding-left:5px;padding-top:5px;border-top:2px solid #ddd">${year}/${month}/${mday}</div>
-$content
+    $data->{content} = <<"EOS";
+<div style="text-align:right;color:#999">${year}/${month}/${mday}</div>
+$data->{content}
 EOS
+    
+    # Build entry html
+    $data->{top} = '';
+    $data->{bottom} = '';
+    $api->build_entry($data);
+    
+    push @entry_contents, $data->{content};
   }
+  
+  my $latest_content = join("\n", @entry_contents);
+  my $data = {content => $latest_content};
+  
+  warn $latest_content;
 
-  my $data = {content => $latest_content, file => 'latest.html'};
+  $data->{content} .= qq(\n<div style="text-align:center"><a href="/list.html">Before Days</a></div>);
   
   $data->{title} = 'New';
   $data->{description} = 'New Information';
 
   # Read common templates
   $api->read_common_templates($data);
-
-  # Build entry html
-  $api->build_entry($data);
   
   # Build whole html
   $api->build_html($data);
   
   my $html = $data->{content};
 
-  my $latest_file = $api->rel_file('public/latest.html');
+  my $latest_file = $api->rel_file('public/index.html');
   $api->write_to_file($latest_file, $html);
 }
 
@@ -136,7 +146,7 @@ sub create_list {
     $mday =~ s/^0//;
     if ($year != $before_year) {
       $list_content .= <<"EOS";
-  <li style="list-style:none;margin-left:-20px;">
+  <li style="list-style:none;">
     <b>${year}</b>
   </li>
 EOS
@@ -176,7 +186,7 @@ EOS
   $list_content .= "</ul>\n";
   
   my $data = {content => $list_content, file => 'list.html'};
-
+  
   # Read common templates
   $api->read_common_templates($data);
   
