@@ -39,13 +39,14 @@ lib/Giblog/Command/new_blog/proto/public/js/.gitkeep
 lib/Giblog/Command/new_blog/proto/README
 lib/Giblog/Command/new_blog/proto/serve.pl
 lib/Giblog/Command/new_blog/proto/templates/blog/.gitkeep
+lib/Giblog/Command/new_blog/proto/templates/blog/20190318121234.html
+lib/Giblog/Command/new_blog/proto/templates/blog/20190319120130.html
 lib/Giblog/Command/new_blog/proto/templates/common/bottom.html
 lib/Giblog/Command/new_blog/proto/templates/common/footer.html
 lib/Giblog/Command/new_blog/proto/templates/common/header.html
 lib/Giblog/Command/new_blog/proto/templates/common/meta.html
 lib/Giblog/Command/new_blog/proto/templates/common/side.html
 lib/Giblog/Command/new_blog/proto/templates/common/top.html
-lib/Giblog/Command/new_blog/proto/templates/index.html
 lib/Giblog/Command/new_hp.pm
 lib/Giblog/Command/new_hp/proto/giblog.conf
 lib/Giblog/Command/new_hp/proto/lib/Giblog/Command/build.pm
