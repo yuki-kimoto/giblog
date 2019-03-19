@@ -831,7 +831,7 @@ EOS
   <div class="top">
     お
   </div>
-  <div class="content">
+  <div class="middle">
     コンテンツ
   </div>
   <div class="bottom">
@@ -888,11 +888,12 @@ EOS
         い
       </div>
       <div class="main">
-<div class="entry">
+        <div class="content">
+          <div class="entry">
   <div class="top">
     お
   </div>
-  <div class="content">
+  <div class="middle">
     コンテンツ
   </div>
   <div class="bottom">
@@ -900,6 +901,7 @@ EOS
   </div>
 </div>
 
+        </div>
         <div class="side">
           え
         </div>

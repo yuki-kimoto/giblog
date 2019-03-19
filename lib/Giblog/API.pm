@@ -486,7 +486,7 @@ sub build_entry {
   <div class="top">
     $data->{top}
   </div>
-  <div class="content">
+  <div class="middle">
     $data->{content}
   </div>
   <div class="bottom">
@@ -515,7 +515,9 @@ sub build_html {
         $data->{header}
       </div>
       <div class="main">
-$data->{content}
+        <div class="content">
+          $data->{content}
+        </div>
         <div class="side">
           $data->{side}
         </div>
@@ -1220,7 +1222,7 @@ Output is the following HTML.
     <div class="top">
       $data->{top}
     </div>
-    <div class="content">
+    <div class="middle">
       $data->{content}
     </div>
     <div class="bottom">
@@ -1257,7 +1259,9 @@ Output is the following HTML.
           $data->{header}
         </div>
         <div class="main">
-          $data->{content}
+          <div class="content">
+            $data->{content}
+          </div>
           <div class="side">
             $data->{side}
           </div>
