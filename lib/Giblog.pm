@@ -6,7 +6,7 @@ use warnings;
 
 use Getopt::Long 'GetOptions';
 
-our $VERSION = '0.50';
+our $VERSION = '0.51';
 
 sub new {
   my $class = shift;
