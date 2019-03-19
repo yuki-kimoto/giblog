@@ -63,24 +63,6 @@ lib/Giblog/Command/new_hp/proto/templates/common/meta.html
 lib/Giblog/Command/new_hp/proto/templates/common/side.html
 lib/Giblog/Command/new_hp/proto/templates/common/top.html
 lib/Giblog/Command/new_hp/proto/templates/index.html
-lib/Giblog/Command/new_zemi.pm
-lib/Giblog/Command/new_zemi/proto/giblog.conf
-lib/Giblog/Command/new_zemi/proto/lib/Giblog/Command/build.pm
-lib/Giblog/Command/new_zemi/proto/public/blog/.gitkeep
-lib/Giblog/Command/new_zemi/proto/public/css/common.css
-lib/Giblog/Command/new_zemi/proto/public/images/.gitkeep
-lib/Giblog/Command/new_zemi/proto/public/js/.gitkeep
-lib/Giblog/Command/new_zemi/proto/public/js/jquery-v3.3.1.js
-lib/Giblog/Command/new_zemi/proto/README
-lib/Giblog/Command/new_zemi/proto/serve.pl
-lib/Giblog/Command/new_zemi/proto/templates/blog/.gitkeep
-lib/Giblog/Command/new_zemi/proto/templates/common/bottom.html
-lib/Giblog/Command/new_zemi/proto/templates/common/footer.html
-lib/Giblog/Command/new_zemi/proto/templates/common/header.html
-lib/Giblog/Command/new_zemi/proto/templates/common/meta.html
-lib/Giblog/Command/new_zemi/proto/templates/common/side.html
-lib/Giblog/Command/new_zemi/proto/templates/common/top.html
-lib/Giblog/Command/new_zemi/proto/templates/index.html
 Makefile.PL
 MANIFEST			This list of files
 README
@@ -93,3 +75,6 @@ t/lib/Giblog/Command/test.pm
 t/manifest.t
 t/pod-coverage.t
 t/pod.t
+t/proto-new.t
+t/proto-new_blog.t
+t/proto-new_hp.t

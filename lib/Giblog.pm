@@ -127,12 +127,6 @@ Have page "templates/list.html" which show all page links.
 
 CSS is designed to match smart phone site and provide basic build process.
 
-=item 4. Perl Zemi prototype
-
-  giblog new_zemi mysite
-
-This an example to create practical web site, such as Perl Zemi L<https://tutorial.perlzemi.com/>.
-
 =head2 Add entry page
 
 You can add entry page of blog by C<add> command.

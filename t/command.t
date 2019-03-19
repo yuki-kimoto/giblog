@@ -98,31 +98,6 @@ sub slurp {
     my $readme_content = slurp "$home_dir/README";
     like($readme_content, qr|Giblog/Command/new_blog/proto|);
   }
-
-  # new_zemi command
-  {
-    my $home_dir = "$test_dir/mysite_new_zemi";
-    my $cmd = "$^X -Mblib blib/script/giblog new_zemi $home_dir";
-    system($cmd) == 0
-      or die "Can't execute command $cmd:$!";
-    
-    my @files = sort glob "$home_dir/*";
-    
-    is_deeply(
-      \@files, 
-      [
-        "$home_dir/README",
-        "$home_dir/giblog.conf",
-        "$home_dir/lib",
-        "$home_dir/public",
-        "$home_dir/serve.pl",
-        "$home_dir/templates",
-      ]
-    );
-    
-    my $readme_content = slurp "$home_dir/README";
-    like($readme_content, qr|Giblog/Command/new_zemi/proto|);
-  }
 }
 
 # add
