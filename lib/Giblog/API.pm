@@ -7,7 +7,6 @@ use File::Basename 'dirname', 'basename';
 use File::Path 'mkpath';
 use Carp 'confess';
 use Encode 'encode', 'decode';
-use File::Copy 'copy';
 
 sub new {
   my $class = shift;
@@ -163,8 +162,13 @@ sub create_website_from_proto {
         my $user_dir = dirname $user_file;
         mkpath $user_dir;
         
-        copy $proto_file, $user_file
-          or confess "Can't copy $proto_file to $user_file: $!";
+        open my $in_fh, '<', $proto_file
+          or confess "Can't open $user_file: $!";
+        my $proto_content = do { local $/; <$in_fh> };
+        
+        open my $out_fh, '>', $user_file
+          or confess "Can't open $user_file: $!";
+        print $out_fh $proto_content;
       },
       no_chdir => 1,
     },
