@@ -45,8 +45,11 @@ sub run {
     # Add meta description
     $api->add_meta_description($data);
 
-    # Wrap content by header, footer, etc
-    $api->wrap($data);
+    # Build entry html
+    $api->build_entry($data);
+    
+    # Build whole html
+    $api->build_html($data);
     
     # Write to public file
     $api->write_to_public_file($data);
@@ -100,7 +103,11 @@ EOS
   # Read common templates
   $api->read_common_templates($data);
 
-  $api->wrap($data);
+  # Build entry html
+  $api->build_entry($data);
+  
+  # Build whole html
+  $api->build_html($data);
   
   my $html = $data->{content};
 
@@ -177,7 +184,11 @@ EOS
   my $site_title = $config->{site_title};
   $data->{meta} .= "<title>Entries - $site_title</title>\n";
 
-  $api->wrap($data);
+  # Build entry html
+  $api->build_entry($data);
+  
+  # Build whole html
+  $api->build_html($data);
   
   my $html = $data->{content};
   

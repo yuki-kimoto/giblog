@@ -476,7 +476,29 @@ sub parse_first_img_src {
   }
 }
 
-sub wrap {
+sub build_entry {
+  my ($self, $data) = @_;
+  
+  my $giblog = $self->giblog;
+
+  my $content = <<"EOS";
+<div class="entry">
+  <div class="top">
+    $data->{top}
+  </div>
+  <div class="content">
+    $data->{content}
+  </div>
+  <div class="bottom">
+    $data->{bottom}
+  </div>
+</div>
+EOS
+  
+  $data->{content} = $content;
+}
+
+sub build_html {
   my ($self, $data) = @_;
   
   my $giblog = $self->giblog;
@@ -493,17 +515,7 @@ sub wrap {
         $data->{header}
       </div>
       <div class="main">
-        <div class="entry">
-          <div class="top">
-            $data->{top}
-          </div>
-          <div class="content">
-            $data->{content}
-          </div>
-          <div class="bottom">
-            $data->{bottom}
-          </div>
-        </div>
+$data->{content}
         <div class="side">
           $data->{side}
         </div>
@@ -1188,13 +1200,45 @@ B<OUTPUT:>
 
 If value of "meta" is "foo" and "description" is "Perl is good", output value of "meta" become "foo\n<meta name="description" content="Perl is good">"
 
-=head2 wrap
+=head2 build_entry
 
-Wrap content by common templates.
+Build entry HTML by "content" and "top", "bottom".
 
 B<INPUT:>
 
   $data->{content}
+  $data->{top}
+  $data->{bottom}
+
+B<OUTPUT:>
+
+  $data->{content}
+
+Output is the following HTML.
+
+  <div class="entry">
+    <div class="top">
+      $data->{top}
+    </div>
+    <div class="content">
+      $data->{content}
+    </div>
+    <div class="bottom">
+      $data->{bottom}
+    </div>
+  </div>
+
+=head2 build_html
+
+Build whole HTML by "content" and "header", "bottom", "side", "footer".
+
+B<INPUT:>
+
+  $data->{content}
+  $data->{header}
+  $data->{bottom}
+  $data->{side}
+  $data->{footer}
 
 B<OUTPUT:>
 
@@ -1213,17 +1257,7 @@ Output is the following HTML.
           $data->{header}
         </div>
         <div class="main">
-          <div class="entry">
-            <div class="top">
-              $data->{top}
-            </div>
-            <div class="content">
-              $data->{content}
-            </div>
-            <div class="bottom">
-              $data->{bottom}
-            </div>
-          </div>
+          $data->{content}
           <div class="side">
             $data->{side}
           </div>

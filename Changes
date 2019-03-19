@@ -1,3 +1,7 @@
+0.52 2019/03/19
+  - add Giblog::API::build_entry method
+  - add Giblog::API::build_html method
+  - remove Giblog::API::wrap method
 0.51 2019/03/19
   - remove -I, --include option
   - add "lib" in home directory to include path before running command

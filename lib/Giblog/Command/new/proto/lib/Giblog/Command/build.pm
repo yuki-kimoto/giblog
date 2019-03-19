@@ -38,9 +38,12 @@ sub run {
     
     # Add meta title
     $api->add_meta_title($data);
-
-    # Wrap content by header, footer, etc
-    $api->wrap($data);
+    
+    # Build entry html
+    $api->build_entry($data);
+    
+    # Build whole html
+    $api->build_html($data);
     
     # Write to public file
     $api->write_to_public_file($data);

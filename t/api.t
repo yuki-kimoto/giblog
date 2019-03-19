@@ -803,11 +803,51 @@ EOS
   }
 }
 
-# wrap
+# build_entry
 {
-  # wrap - wrap content by common templates
+  # build_entry - build_entry content by common templates
   {
-    my $home_dir = 't/tmp/api/wrap';
+    my $home_dir = 't/tmp/api/build_entry';
+    rmtree $home_dir;
+    my $giblog = Giblog->new(home_dir => $home_dir);
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $module_name = 'Giblog::Command::new';
+    $api->create_website_from_proto($home_dir, $module_name);
+    
+    $api->write_to_file("$home_dir/templates/common/top.html", "お");
+    $api->write_to_file("$home_dir/templates/common/bottom.html", "か");
+
+    my $data = {};
+    $api->read_common_templates($data);
+    
+    is($data->{top}, "お");
+    is($data->{bottom}, "か");
+    
+    $data->{content} = 'コンテンツ';
+    $api->build_entry($data);
+    
+    my $expect =<<'EOS';
+<div class="entry">
+  <div class="top">
+    お
+  </div>
+  <div class="content">
+    コンテンツ
+  </div>
+  <div class="bottom">
+    か
+  </div>
+</div>
+EOS
+    is($data->{content}, $expect);
+  }
+}
+
+# build_html
+{
+  # build_html - build_html content by common templates
+  {
+    my $home_dir = 't/tmp/api/build_html';
     rmtree $home_dir;
     my $giblog = Giblog->new(home_dir => $home_dir);
     my $api = Giblog::API->new(giblog => $giblog);
@@ -832,7 +872,9 @@ EOS
     is($data->{bottom}, "か");
     
     $data->{content} = 'コンテンツ';
-    $api->wrap($data);
+
+    $api->build_entry($data);
+    $api->build_html($data);
     
     my $expect =<<'EOS';
 <!DOCTYPE html>
@@ -846,17 +888,18 @@ EOS
         い
       </div>
       <div class="main">
-        <div class="entry">
-          <div class="top">
-            お
-          </div>
-          <div class="content">
-            コンテンツ
-          </div>
-          <div class="bottom">
-            か
-          </div>
-        </div>
+<div class="entry">
+  <div class="top">
+    お
+  </div>
+  <div class="content">
+    コンテンツ
+  </div>
+  <div class="bottom">
+    か
+  </div>
+</div>
+
         <div class="side">
           え
         </div>
