@@ -22,15 +22,15 @@ sub slurp {
   return $content;
 }
 
-# proto/new
+# proto/new_blog
 {
-  # proto/new - new, add, build
+  # proto/new_blog - new_blog, add, build
   {
-    my $home_dir = "$test_dir/mysite_new";
+    my $home_dir = "$test_dir/mysite_new_blog";
     rmtree $home_dir;
-    my $new_cmd = "$^X -Mblib blib/script/giblog new $home_dir";
-    system($new_cmd) == 0
-      or die "Can't execute command $new_cmd:$!";
+    my $new_blog_cmd = "$^X -Mblib blib/script/giblog new_blog $home_dir";
+    system($new_blog_cmd) == 0
+      or die "Can't execute command $new_blog_cmd:$!";
     my $save_cur_dir = getcwd;
     {
       my $add_cmd = "$^X -Mblib blib/script/giblog add --home $home_dir";
@@ -42,34 +42,29 @@ sub slurp {
       system($build_cmd) == 0
         or die "Can't execute command $build_cmd:$!";
     }
-    
-    my $index_file = "$home_dir/public/index.html";
-    my @blog_files = glob "$home_dir/public/blog/*";
-    is(scalar @blog_files, 1);
-    
-    my $index_content = slurp $index_file;
-    my $blog_content = slurp $blog_files[0];
-    
-    like($index_content, qr/header/);
-    like($index_content, qr/footer/);
-    like($index_content, qr/top/);
-    like($index_content, qr/bottom/);
-    like($index_content, qr/meta/);
-    like($index_content, qr/<p>/);
-    like($index_content, qr|</p>|);
-    like($index_content, qr/Content1/);
-    like($index_content, qr/Content2/);
-    like($index_content, qr/&gt;/);
-    like($index_content, qr/&lt;/);
-    like($index_content, qr/&lt;/);
-    like($index_content, qr|<title>Title</title>|);
-    like($index_content, qr|<h2><a href="/">Title</a></h2>|);
 
-    like($blog_content, qr/header/);
-    like($blog_content, qr/footer/);
-    like($blog_content, qr/top/);
-    like($blog_content, qr/bottom/);
-    like($blog_content, qr/meta/);
+    my @blog_files = glob "$home_dir/public/blog/*";
+    is(scalar @blog_files, 9);
+    
+    {
+      my $blog_file = "$home_dir/public/blog/20190319121234.html";
+      my $blog_content = slurp $blog_file;
+      
+      like($blog_content, qr/header/);
+      like($blog_content, qr/footer/);
+      like($blog_content, qr/top/);
+      like($blog_content, qr/bottom/);
+      like($blog_content, qr/meta/);
+      like($blog_content, qr|<p>\s*How to use Giblog\.\s*</p>|);
+      like($blog_content, qr/&gt;/);
+      like($blog_content, qr/&lt;/);
+      like($blog_content, qr|<title>How to use Giblog</title>|);
+      like($blog_content, qr|<h2><a href="/blog/20190319121234.html">How to use Giblog</a></h2>|);
+      like($blog_content, qr|\Qside-list|);
+      like($blog_content, qr|\Q<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">|);
+      like($blog_content, qr|\Q<meta name="description" content="How to use Giblog.">|);
+      like($blog_content, qr|\Q<link rel="stylesheet" type="text/css" href="/css/common.css">|);
+    }
   }
 }
 
