@@ -78,6 +78,10 @@
     padding:12px 10px 10px 10px;
     margin: 0 auto;
   }
+  h1 a {
+    text-decoration:none;
+    color:inherit;
+  }
   h2 {
     font-size:23px;
     padding:10px 0;
