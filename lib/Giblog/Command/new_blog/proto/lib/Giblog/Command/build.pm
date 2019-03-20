@@ -164,63 +164,66 @@ sub create_list {
   # Template files
   my @template_files = glob $api->rel_file('templates/blog/*');
   @template_files = reverse sort @template_files;
+
+  # Data
+  my $data = {file => 'list.html'};
   
-  # Content
-  my $content;
-  $content = <<'EOS';
+  # Entries
+  {
+    my $content;
+    $content = <<'EOS';
 <h2>Entries</h2>
 EOS
-  $content .= "<ul>\n";
-  my $before_year = 0;
-  for my $template_file (@template_files) {
-    my $base_name = basename $template_file;
-    
-    my ($year, $month, $mday) = $base_name =~ /^(\d{4})(\d{2})(\d{2})/;
-    $month =~ s/^0//;
-    $mday =~ s/^0//;
-    if ($year != $before_year) {
-      $content .= <<"EOS";
+    $content .= "<ul>\n";
+    my $before_year = 0;
+    for my $template_file (@template_files) {
+      # Day
+      my $base_name = basename $template_file;
+      my ($year, $month, $mday) = $base_name =~ /^(\d{4})(\d{2})(\d{2})/;
+      $month =~ s/^0//;
+      $mday =~ s/^0//;
+      
+      # Year
+      if ($year != $before_year) {
+        $content .= <<"EOS";
   <li style="list-style:none;">
     <b>${year}</b>
   </li>
 EOS
-    }
-    $before_year = $year;
-    
-    my $file = "blog/$base_name";
-    
-    my $data = {file => $file};
-    
-    $api->get_content($data);
-    
-    $api->parse_title_from_first_h_tag($data);
-    
-    my $title = $data->{title};
-    
-    my $path;
-    if ($file eq 'index.html') {
-      $path = '/';
-    }
-    else {
-      $path = "/$file";
-    }
-    
-    unless(defined $title) {
-      $title = 'No title';
-    }
-    
-    $content .= <<"EOS";
+      }
+      $before_year = $year;
+      
+      # File
+      my $file_entry = "blog/$base_name";
+      
+      # Data
+      my $data_entry = {file => $file_entry};
+      
+      # Get content
+      $api->get_content($data_entry);
+      
+      # Parse title from first h tag
+      $api->parse_title_from_first_h_tag($data_entry);
+      
+      # Title
+      my $title = $data_entry->{title};
+      unless(defined $title) {
+        $title = 'No title';
+      }
+      
+      # Add list
+      $content .= <<"EOS";
   <li style="list-style:none">
-    $month/$mday <a href="$path">$title</a>
+    $month/$mday <a href="/$file_entry">$title</a>
   </li>
 EOS
+    }
+
+    $content .= "</ul>\n";
+    
+    $data->{content} = $content;
   }
-
-  $content .= "</ul>\n";
   
-  # Data
-  my $data = {content => $content, file => 'list.html'};
-
   # Add page link
   $api->add_page_link_to_first_h_tag($data);
 
