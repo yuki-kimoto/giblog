@@ -89,6 +89,7 @@ sub slurp {
       like($index_content, qr|\Q<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">|);
       like($index_content, qr|\Q<meta name="description" content="Site description">|);
       like($index_content, qr|\Q<link rel="stylesheet" type="text/css" href="/css/common.css">|);
+      like($index_content, qr|\Q<a href="https://github.com/yuki-kimoto/giblog">Giblog</a>|);
       
       like($index_content, qr/Hello Giblog 7/);
       like($index_content, qr/Hello Giblog 6/);

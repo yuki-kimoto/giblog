@@ -67,5 +67,6 @@ sub slurp {
     like($blog_content, qr/top/);
     like($blog_content, qr/bottom/);
     like($blog_content, qr/meta/);
+    like($index_content, qr|\Q<a href="https://github.com/yuki-kimoto/giblog">Giblog</a>|);
   }
 }
