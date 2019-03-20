@@ -146,6 +146,7 @@ EOS
   # Build whole html
   $api->build_html($data);
   
+  # Write content to public file
   my $public_file = $api->rel_file('public/index.html');
   $api->write_to_file($public_file, $data->{content});
 }
@@ -164,12 +165,12 @@ sub create_list {
   my @template_files = glob $api->rel_file('templates/blog/*');
   @template_files = reverse sort @template_files;
   
-  my $list_content;
-  $list_content = <<'EOS';
+  # Content
+  my $content;
+  $content = <<'EOS';
 <h2>Entries</h2>
 EOS
-
-  $list_content .= "<ul>\n";
+  $content .= "<ul>\n";
   my $before_year = 0;
   for my $template_file (@template_files) {
     my $base_name = basename $template_file;
@@ -178,7 +179,7 @@ EOS
     $month =~ s/^0//;
     $mday =~ s/^0//;
     if ($year != $before_year) {
-      $list_content .= <<"EOS";
+      $content .= <<"EOS";
   <li style="list-style:none;">
     <b>${year}</b>
   </li>
@@ -208,16 +209,17 @@ EOS
       $title = 'No title';
     }
     
-    $list_content .= <<"EOS";
+    $content .= <<"EOS";
   <li style="list-style:none">
     $month/$mday <a href="$path">$title</a>
   </li>
 EOS
   }
 
-  $list_content .= "</ul>\n";
+  $content .= "</ul>\n";
   
-  my $data = {content => $list_content, file => 'list.html'};
+  # Data
+  my $data = {content => $content, file => 'list.html'};
 
   # Add page link
   $api->add_page_link_to_first_h_tag($data);
@@ -236,10 +238,6 @@ EOS
 
   # Add meta description
   $api->add_meta_description($data);
-  
-  my $site_title = $config->{site_title};
-  
-  $data->{meta} .= "<title>Entries - $site_title</title>\n";
 
   # Build entry html
   $api->build_entry($data);
@@ -247,10 +245,9 @@ EOS
   # Build whole html
   $api->build_html($data);
   
-  my $html = $data->{content};
-  
-  my $list_file = $api->rel_file('public/list.html');
-  $api->write_to_file($list_file, $html);
+  # Write content to public file
+  my $public_file = $api->rel_file('public/list.html');
+  $api->write_to_file($public_file, $data->{content});
 }
 
 1;
