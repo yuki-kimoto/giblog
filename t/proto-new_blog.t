@@ -4,6 +4,7 @@ use Test::More 'no_plan';
 
 use File::Path 'mkpath', 'rmtree';
 use Cwd 'getcwd';
+use File::Basename 'basename';
 
 my $giblog_dir = '../../../..';
 my $test_dir = 't/tmp/command';
@@ -43,8 +44,12 @@ sub slurp {
         or die "Can't execute command $build_cmd:$!";
     }
 
-    my @blog_files = glob "$home_dir/public/blog/*";
+    my @blog_files = reverse glob "$home_dir/public/blog/*";
     is(scalar @blog_files, 9);
+    
+    # Added Blog
+    my $added_blog_file = $blog_files[0];
+    my $added_blog_file_base = basename $added_blog_file;
     
     # Blog
     {
@@ -111,7 +116,8 @@ sub slurp {
       like($list_content, qr|\Q<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">|);
       like($list_content, qr|\Q<meta name="description" content="Entries of mysite">|);
       like($list_content, qr|\Q<link rel="stylesheet" type="text/css" href="/css/common.css">|);
-
+      
+      like($list_content, qr|\Q$added_blog_file_base|);
       like($list_content, qr|3/19 <a href="/blog/20190319121234.html">How to use Giblog</a>|);
       like($list_content, qr|3/18 <a href="/blog/20190318121234.html">Hello Giblog 7</a>|);
       like($list_content, qr|3/17 <a href="/blog/20190317121234.html">Hello Giblog 6</a>|);

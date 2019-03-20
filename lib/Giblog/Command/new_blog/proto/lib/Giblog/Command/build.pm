@@ -157,6 +157,7 @@ EOS
   my $before_year = 0;
   for my $template_file (@template_files) {
     my $base_name = basename $template_file;
+    
     my ($year, $month, $mday) = $base_name =~ /^(\d{4})(\d{2})(\d{2})/;
     $month =~ s/^0//;
     $mday =~ s/^0//;
@@ -187,16 +188,15 @@ EOS
       $path = "/$file";
     }
     
-    if ($title) {
-      $list_content .= <<"EOS";
+    unless(defined $title) {
+      $title = 'No title';
+    }
+    
+    $list_content .= <<"EOS";
   <li style="list-style:none">
     $month/$mday <a href="$path">$title</a>
   </li>
 EOS
-    }
-    else {
-      warn "Warnings:Can't find title $template_file";
-    }
   }
 
   $list_content .= "</ul>\n";
