@@ -218,9 +218,9 @@ EOS
   </li>
 EOS
     }
-
     $content .= "</ul>\n";
     
+    # Set content
     $data->{content} = $content;
   }
   
