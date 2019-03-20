@@ -9,9 +9,6 @@ use File::Basename 'basename';
 my $giblog_dir = '../../../..';
 my $test_dir = 't/tmp/command';
 
-rmtree $test_dir;
-mkpath $test_dir;
-
 sub slurp {
   my $file = shift;
   
