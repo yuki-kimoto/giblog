@@ -138,14 +138,21 @@ EOS
 sub create_list {
   my $self = shift;
   
+  # API
   my $api = $self->api;
-
-  my @template_files = glob $api->rel_file('templates/blog/*');
   
+  # Config
+  my $config = $api->config;
+  
+  # Template files
+  my @template_files = glob $api->rel_file('templates/blog/*');
   @template_files = reverse sort @template_files;
   
   my $list_content;
-  
+  $list_content = <<'EOS';
+<h2>Entries</h2>
+EOS
+
   $list_content .= "<ul>\n";
   my $before_year = 0;
   for my $template_file (@template_files) {
@@ -195,12 +202,27 @@ EOS
   $list_content .= "</ul>\n";
   
   my $data = {content => $list_content, file => 'list.html'};
+
+  # Add page link
+  $api->add_page_link_to_first_h_tag($data);
+
+  # Title
+  $data->{title} = "Entries - $config->{site_title}";
   
+  # Description
+  $data->{description} = "Entries of $config->{site_title}";
+
   # Read common templates
   $api->read_common_templates($data);
+
+  # Add meta title
+  $api->add_meta_title($data);
+
+  # Add meta description
+  $api->add_meta_description($data);
   
-  my $config = $api->config;
   my $site_title = $config->{site_title};
+  
   $data->{meta} .= "<title>Entries - $site_title</title>\n";
 
   # Build entry html

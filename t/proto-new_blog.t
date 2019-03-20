@@ -95,6 +95,32 @@ sub slurp {
       unlike($index_content, qr/Hello Giblog 2/);
       unlike($index_content, qr/Hello Giblog 1/);
     }
+
+    # List
+    {
+      my $list_file = "$home_dir/public/list.html";
+      my $list_content = slurp $list_file;
+      like($list_content, qr/header/);
+      like($list_content, qr/footer/);
+      like($list_content, qr/top/);
+      like($list_content, qr/bottom/);
+      like($list_content, qr/meta/);
+      like($list_content, qr|<title>Entries - mysite</title>|);
+      like($list_content, qr|<h2><a href="/list.html">Entries</a></h2>|);
+      like($list_content, qr|\Qside-list|);
+      like($list_content, qr|\Q<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">|);
+      like($list_content, qr|\Q<meta name="description" content="Entries of mysite">|);
+      like($list_content, qr|\Q<link rel="stylesheet" type="text/css" href="/css/common.css">|);
+
+      like($list_content, qr|3/19 <a href="/blog/20190319121234.html">How to use Giblog</a>|);
+      like($list_content, qr|3/18 <a href="/blog/20190318121234.html">Hello Giblog 7</a>|);
+      like($list_content, qr|3/17 <a href="/blog/20190317121234.html">Hello Giblog 6</a>|);
+      like($list_content, qr|3/16 <a href="/blog/20190316121234.html">Hello Giblog 5</a>|);
+      like($list_content, qr|3/15 <a href="/blog/20190315121234.html">Hello Giblog 4</a>|);
+      like($list_content, qr|3/14 <a href="/blog/20190314121234.html">Hello Giblog 3</a>|);
+      like($list_content, qr|3/13 <a href="/blog/20190313121234.html">Hello Giblog 2</a>|);
+      like($list_content, qr|3/12 <a href="/blog/20190312121234.html">Hello Giblog 1</a>|);
+    }
   }
 }
 
