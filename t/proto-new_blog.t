@@ -119,7 +119,7 @@ sub slurp {
       like($list_content, qr|3/15 <a href="/blog/20190315121234.html">Hello Giblog 4</a>|);
       like($list_content, qr|3/14 <a href="/blog/20190314121234.html">Hello Giblog 3</a>|);
       like($list_content, qr|3/13 <a href="/blog/20190313121234.html">Hello Giblog 2</a>|);
-      like($list_content, qr|3/12 <a href="/blog/20190312121234.html">Hello Giblog 1</a>|);
+      like($list_content, qr|12/1 <a href="/blog/20181201121234.html">Hello Giblog 1</a>|);
     }
   }
 }
