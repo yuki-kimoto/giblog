@@ -46,6 +46,7 @@ sub slurp {
     my @blog_files = glob "$home_dir/public/blog/*";
     is(scalar @blog_files, 9);
     
+    # Blog
     {
       my $blog_file = "$home_dir/public/blog/20190319121234.html";
       my $blog_content = slurp $blog_file;
@@ -64,6 +65,35 @@ sub slurp {
       like($blog_content, qr|\Q<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">|);
       like($blog_content, qr|\Q<meta name="description" content="How to use Giblog.">|);
       like($blog_content, qr|\Q<link rel="stylesheet" type="text/css" href="/css/common.css">|);
+    }
+    
+    # Index
+    {
+      my $index_file = "$home_dir/public/index.html";
+      my $index_content = slurp $index_file;
+      
+      like($index_content, qr/header/);
+      like($index_content, qr/footer/);
+      like($index_content, qr/top/);
+      like($index_content, qr/bottom/);
+      like($index_content, qr/meta/);
+      like($index_content, qr|<p>\s*How to use Giblog\.\s*</p>|);
+      like($index_content, qr/&gt;/);
+      like($index_content, qr/&lt;/);
+      like($index_content, qr|<title>mysite</title>|);
+      like($index_content, qr|<h2><a href="/blog/20190319121234.html">How to use Giblog</a></h2>|);
+      like($index_content, qr|\Qside-list|);
+      like($index_content, qr|\Q<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">|);
+      like($index_content, qr|\Q<meta name="description" content="Site description">|);
+      like($index_content, qr|\Q<link rel="stylesheet" type="text/css" href="/css/common.css">|);
+      
+      like($index_content, qr/Hello Giblog 7/);
+      like($index_content, qr/Hello Giblog 6/);
+      like($index_content, qr/Hello Giblog 5/);
+      like($index_content, qr/Hello Giblog 4/);
+      like($index_content, qr/Hello Giblog 3/);
+      unlike($index_content, qr/Hello Giblog 2/);
+      unlike($index_content, qr/Hello Giblog 1/);
     }
   }
 }

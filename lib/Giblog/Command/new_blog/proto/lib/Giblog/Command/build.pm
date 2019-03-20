@@ -67,6 +67,8 @@ sub create_index {
   
   my $api = $self->api;
 
+  my $config = $api->config;
+
   my @template_files = glob $api->rel_file('templates/blog/*');
   
   @template_files = reverse sort @template_files;
@@ -105,17 +107,24 @@ EOS
   
   my $latest_content = join("\n", @entry_contents);
   my $data = {content => $latest_content};
-  
-  warn $latest_content;
 
   $data->{content} .= qq(\n<div style="text-align:center"><a href="/list.html">Before Days</a></div>);
   
-  $data->{title} = 'New';
-  $data->{description} = 'New Information';
+  # Title
+  $data->{title} = $config->{site_title};
+  
+  # Description
+  $data->{description} = 'Site description';
 
   # Read common templates
   $api->read_common_templates($data);
-  
+
+  # Add meta title
+  $api->add_meta_title($data);
+
+  # Add meta description
+  $api->add_meta_description($data);
+
   # Build whole html
   $api->build_html($data);
   
