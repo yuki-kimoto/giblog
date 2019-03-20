@@ -140,6 +140,15 @@
     margin:10px 0;
   }
 
+  .day {
+    text-align:right;
+    color:#999;
+  }
+
+  .before-days {
+    text-align:center;
+  }
+
 /* Tablet and Smart phone */
 @media only screen and (max-width:960px) {
   .content {

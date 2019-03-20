@@ -56,8 +56,11 @@ sub run {
     # Write to public file
     $api->write_to_public_file($data);
   }
-
+  
+  # Create index page
   $self->create_index;
+  
+  # Create list page
   $self->create_list;
 }
 
@@ -93,7 +96,7 @@ sub create_index {
     $api->add_page_link_to_first_h_tag($data, {root => 'index.html'});
     
     $data->{content} = <<"EOS";
-<div style="text-align:right;color:#999">${year}/${month}/${mday}</div>
+<div class="day">${year}/${month}/${mday}</div>
 $data->{content}
 EOS
     
@@ -108,7 +111,7 @@ EOS
   my $latest_content = join("\n", @entry_contents);
   my $data = {content => $latest_content};
 
-  $data->{content} .= qq(\n<div style="text-align:center"><a href="/list.html">Before Days</a></div>);
+  $data->{content} .= qq(\n<div class="before-days"><a href="/list.html">Before Days</a></div>);
   
   # Title
   $data->{title} = $config->{site_title};
