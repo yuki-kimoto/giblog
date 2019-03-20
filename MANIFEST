@@ -39,8 +39,14 @@ lib/Giblog/Command/new_blog/proto/public/js/.gitkeep
 lib/Giblog/Command/new_blog/proto/README
 lib/Giblog/Command/new_blog/proto/serve.pl
 lib/Giblog/Command/new_blog/proto/templates/blog/.gitkeep
+lib/Giblog/Command/new_blog/proto/templates/blog/20181201121234.html
+lib/Giblog/Command/new_blog/proto/templates/blog/20190313121234.html
+lib/Giblog/Command/new_blog/proto/templates/blog/20190314121234.html
+lib/Giblog/Command/new_blog/proto/templates/blog/20190315121234.html
+lib/Giblog/Command/new_blog/proto/templates/blog/20190316121234.html
+lib/Giblog/Command/new_blog/proto/templates/blog/20190317121234.html
 lib/Giblog/Command/new_blog/proto/templates/blog/20190318121234.html
-lib/Giblog/Command/new_blog/proto/templates/blog/20190319120130.html
+lib/Giblog/Command/new_blog/proto/templates/blog/20190319121234.html
 lib/Giblog/Command/new_blog/proto/templates/common/bottom.html
 lib/Giblog/Command/new_blog/proto/templates/common/footer.html
 lib/Giblog/Command/new_blog/proto/templates/common/header.html
