@@ -7,6 +7,9 @@
     box-sizing: border-box;
     -webkit-text-size-adjust:100%;
   }
+  a, a:visited {
+    color:#0000EE;
+  }
   
   /* header */
   .header {
@@ -22,7 +25,7 @@
     padding:15px 0;
     border-top:1px solid #ccc;
   }
-  .footer a {
+  .footer a, .footer a:visited {
     color:#000;
   }
   
@@ -104,9 +107,6 @@
     padding:6px 0px 4px 5px;
     letter-spacing:0.5px;
     margin:15px 0 10px 0;
-  }
-  a, a:visited {
-    color:#0000EE;
   }
   p {
     font-size:16px;
