@@ -147,29 +147,35 @@ Giblog have the following features.
 
 =head2 Create web site
 
-You can create web site from 4 prototype
+You can create web site from 3 prototype.
 
-=over 4
+B<1. Empty website>
 
-=item 1. Empty prototype
+"new" command create empty website. "mysite" is a exapmle name of your web site.
 
   giblog new mysite
 
 If you want to create empty site, choice this prototype.
 
-Templates and CSS is empty and provide basic build process.
+Templates and CSS is empty and provide minimal build process.
 
-=item 2. Home page prototype
+B<2. Website>
+
+"new_website" command create empty website. 
 
   giblog new_website mysite
 
-If you want to create home page, choice this prototype.
+If you want to create simple website, choice this prototype.
 
-Have empty "templates/index.html". CSS is designed to match smart phone site and provide basic build process.
+Template of top page "templates/index.html" is created. CSS is designed to match smart phone site and provide basic build process.
 
-=item 3. Blog prototype
+B<3. Blog>
+
+"new_blog" command create empty website. 
 
   giblog new_blog mysite
+
+If you want to create blog, choice this prototype.
 
 Have page "templates/index.html" which show 7 days entry.
 
