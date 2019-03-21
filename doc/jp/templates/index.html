@@ -1,10 +1,47 @@
 <h2 class="title">Giblog - git世代のためのHTMLジェネレーター</h2>
 
-Giblogは、HTMLを静的に生成するPerl製のHTMLジェネレーターです。
+Giblogは、Perlで書かれたHTMLジェネレーターです。
+
+あなた独自のWebサイトとブログを簡単に作成することができます。
+
+<h3>使い方</h3>
+
+<pre>
+  # 新しく空のWebサイトを作成
+  giblog new mysite
+
+  # 新しく簡単なWebサイトを作成
+  giblog new_website mysite
+
+  # 新しくブログを作成
+  giblog new_blog mysite
+  
+  # ディレクトリ変更
+  cd mysite
+  
+  # 新しいエントリーを追加
+  giblog add
+
+  # Webサイトを構築
+  giblog build
+
+  # Webサイトをサーブ(Mojoliciousが必要です)
+  morbo serve.pl
+
+  # ホームディレクトリを指定して新しいエントリーを追加
+  giblog add --home /home/kimoto/mysite
+  
+  # ホームディレクトリを指定して、Webサイトを構築
+  giblog build --home /home/kimoto/mysite
+</pre>
+
+<h3>解説</h3>
+
+Giblogは、以下の機能を持っています。
 
 <ul>
   <li>
-    ホームページ作成とブログ作成の両方に対応。
+    Webサイトとブログ作成の両方に対応。
   </li>
   <li>
     Linux、Mac OS、Windows対応。Windowsでは、msys2のインストールを推奨。
@@ -13,25 +50,16 @@ Giblogは、HTMLを静的に生成するPerl製のHTMLジェネレーターで�
     スマートフォン対応を意識した、デフォルトのCSSを提供。
   </li>
   <li>
-    コンテンツを、ヘッダー、フッター、HTMLヘッダ、サイドバーで囲んで出力。
+    コンテンツを、トップ、ボトム、サイドバー、ヘッダー、フッター、HTMLヘッダで囲んで出力。
   </li>
   <li>
     pタグをを自動追加。preタグの中で「&lt」「&gt」を、自動的にエスケープ。
   </li>
   <li>
-    titleにしたいテキストを選んで、titleタグに設定可能。
+    最初の見出しタグ(h1～h6)から自動的にtitleに設定。
   </li>
   <li>
-    最初の見出しタグ(h1～h6)から自動的にtitleに設定可能。
-  </li>
-  <li>
-    descriptionにしたいテキストを選んで、メタ情報にdescriptionを設定可能。
-  </li>
-  <li>
-    最初の段落を自動的にdescriptionに設定することも可能。
-  </li>
-  <li>
-    コンテンツの中に最初に登場する画像のsrcを取得可能。
+    最初の段落を自動的にdescriptionに設定。
   </li>
   <li>
     機能のカスタマイズは、自由自在。すべてをなくすことも、自由に選ぶことも、機能を追加することも可能。
@@ -43,7 +71,7 @@ Giblogは、HTMLを静的に生成するPerl製のHTMLジェネレーターで�
     Mojoliciousのmorboコマンドを使って、Webサーバーを起動してWebサイトを確認可能。コンテンツやヘッダなどの変更を検知して、自動的に再構築されます。
   </li>
   <li>
-    ベンチマークでは、645ページを、0.5秒で構築。
+    ベンチマークでは、645ページを、0.78秒で構築。
   </li>
   <li>
     JavaScriptの利用制限なし。アフェリエイト広告を張ることも自由。
@@ -73,7 +101,7 @@ giblog new
 <h3>ホームページを作成する</h3>
 
 <pre>
-giblog new_website
+giblog new_hp
 </pre>
 
 <h3>ブログを作成する</h3>

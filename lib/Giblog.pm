@@ -80,20 +80,68 @@ Giblog is in beta test before 1.0 release. Note that features is changed without
 
 =head1 SYNOPSYS
   
-  # New web site
+  # New empty web site
   giblog new mysite
+
+  # New simple web site
+  giblog new_website mysite
+
+  # New simple blog
+  giblog new_blog mysite
+  
+  # Change directory
+  cd mysite
   
   # Add new entry
   giblog add
 
-  # Add new entry with option
-  giblog add --home /my/home
-
   # Build web site
   giblog build
   
-  # Build web site with option
-  giblog build --home /my/home
+  # Serve web site(need Mojolicious)
+  morbo serve.pl
+
+  # Add new entry with home directory
+  giblog add --home /home/kimoto/mysite
+  
+  # Build web site with home directory
+  giblog build --home /home/kimoto/mysite
+
+=head1 DESCRIPTION
+
+Giblog have the following features.
+
+=over 4
+
+=item * Build both website and blog.
+
+=item * Linux, Mac OS, Windows Support. (In Windows, recommend installation of msys2)
+
+=item * Default CSS for smart phone site
+
+=item * Content is wrapped by top section, bottom section, header, footer, HTML head, and side var.
+
+=item * Add p tag automatically. Escape E<lt>, E<gt> automatically in pre tag
+
+=item * Set title tag automatically from text of first h1-h6 tag.
+
+=item * Set meta description tag automatically from text of first p tag.
+
+=item * You can use above all features or choice some of them, and can add more advanced features.
+
+=item * In advanced features, you can customize list of entries page, use markdown syntax, and add twitter card, etc.
+
+=item * Build 645 pages by 0.78 seconds in my starndard linux environment.
+
+=item * Use JavaScript. Display the ad
+
+=item * You can manage files by git easily, and deploy them to rental server.
+
+=item * If you use Github Pages, you can create https web site for free.
+
+=item * Giblog is used to build Perl Zemi web site.
+
+=back
 
 =head1 TUTORIAL
 
