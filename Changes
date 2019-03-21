@@ -1,9 +1,10 @@
-0.70 2019/03/19
+0.70 2019/03/21
   - add Giblog::API::build_entry method
   - add Giblog::API::build_html method
   - remove Giblog::API::wrap method
   - fix windows file permission bugs.
   - improve new_hp, new_blog prototype
+  - rename new_hp command to new_website
 0.51 2019/03/19
   - remove -I, --include option
   - add "lib" in home directory to include path before running command

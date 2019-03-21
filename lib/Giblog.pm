@@ -113,7 +113,7 @@ Templates and CSS is empty and provide basic build process.
 
 =item 2. Home page prototype
 
-  giblog new_hp mysite
+  giblog new_website mysite
 
 If you want to create home page, choice this prototype.
 

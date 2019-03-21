@@ -49,10 +49,10 @@ sub slurp {
     like($readme_content, qr|Giblog/Command/new/proto|);
   }
 
-  # new_hp command
+  # new_website command
   {
-    my $home_dir = "$test_dir/mysite_new_hp";
-    my $cmd = "$^X -Mblib blib/script/giblog new_hp $home_dir";
+    my $home_dir = "$test_dir/mysite_new_website";
+    my $cmd = "$^X -Mblib blib/script/giblog new_website $home_dir";
     system($cmd) == 0
       or die "Can't execute command $cmd:$!";
     
@@ -71,7 +71,7 @@ sub slurp {
     );
     
     my $readme_content = slurp "$home_dir/README";
-    like($readme_content, qr|Giblog/Command/new_hp/proto|);
+    like($readme_content, qr|Giblog/Command/new_website/proto|);
   }
 
   # new_blog command

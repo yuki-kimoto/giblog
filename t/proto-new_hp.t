@@ -19,15 +19,15 @@ sub slurp {
   return $content;
 }
 
-# proto/new_hp
+# proto/new_website
 {
-  # proto/new_hp - new_hp, add, build
+  # proto/new_website - new_website, add, build
   {
-    my $home_dir = "$test_dir/mysite_new_hp";
+    my $home_dir = "$test_dir/mysite_new_website";
     rmtree $home_dir;
-    my $new_hp_cmd = "$^X -Mblib blib/script/giblog new_hp $home_dir";
-    system($new_hp_cmd) == 0
-      or die "Can't execute command $new_hp_cmd:$!";
+    my $new_website_cmd = "$^X -Mblib blib/script/giblog new_website $home_dir";
+    system($new_website_cmd) == 0
+      or die "Can't execute command $new_website_cmd:$!";
     my $save_cur_dir = getcwd;
     {
       my $add_cmd = "$^X -Mblib blib/script/giblog add --home $home_dir";

@@ -3,7 +3,7 @@
 # Create new website
 rm -rf mysite && make && perl -Mblib script/giblog new mysite
 rm -rf mysite_blog && make && perl -Mblib script/giblog new_blog mysite_blog
-rm -rf mysite_hp && make && perl -Mblib script/giblog new_hp mysite_hp
+rm -rf mysite_hp && make && perl -Mblib script/giblog new_website mysite_hp
 
 # Create new entry
 make && perl -Mblib script/giblog add --home=mysite
