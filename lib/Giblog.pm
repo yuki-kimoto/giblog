@@ -68,11 +68,13 @@ sub parse_argv {
 
 =head1 NAME
 
-Giblog - HTML Generator
+Giblog - HTML Generator for git generation
 
 =head1 DESCRIPTION
 
-Giblog is HTML generator.
+Giblog is B<HTML generator> written by Perl language.
+
+You can create B<your onw website and blog> easily.
 
 Giblog is in beta test before 1.0 release. Note that features is changed without warnings.
 
