@@ -185,34 +185,53 @@ CSS is designed to match smart phone site and provide basic build process.
 
 =head2 Add entry page
 
-You can add entry page of blog by C<add> command.
+"add" command add blog entry page.
   
-  cd mysite
-  giblog add mysite
+  giblog add
 
-For example, created file name is
+You need to change directory to "mysite" before run "add" command.
+
+  cd mysite
+
+If you use "--home" option, you don't need to change directory
+
+  giblog add --home /home/kimoto/mysite
+
+Created file name is, for example,
 
   templates/blog/20080108132865.html
 
+This file name contains current date and time.
+
 =head2 Build web site
 
-You can build web site.
+"build" command build web site.
 
   giblog build
+
+You need to change directory to "mysite" before run "build" command.
+
+  cd mysite
+
+If you use "--home" option, you don't need to change directory.
+
+  giblog build --home /home/kimoto/mysite
 
 What is build process?
 
 Build process is writen in "run" method of "lib/Giblog/Command/build.pm".
 
 Main part of build process is combination of L<Giblog::API>.
-
-  # This is create by new prototype
+  
+  # "lib/Giblog/Command/build.pm" in web site created by "new_blog" command
   package Giblog::Command::build;
 
   use base 'Giblog::Command';
 
   use strict;
   use warnings;
+
+  use File::Basename 'basename';
 
   sub run {
     my ($self, @args) = @_;
@@ -227,7 +246,7 @@ Main part of build process is combination of L<Giblog::API>.
     my $files = $api->get_templates_files;
     
     for my $file (@$files) {
-      
+      # Data
       my $data = {file => $file};
       
       # Get content from file in templates directory
@@ -237,10 +256,13 @@ Main part of build process is combination of L<Giblog::API>.
       $api->parse_giblog_syntax($data);
 
       # Parse title
-      $api->parse_title($data);
+      $api->parse_title_from_first_h_tag($data);
 
       # Add page link
-      $api->add_page_link($data, {root => 'index.html'});
+      $api->add_page_link_to_first_h_tag($data, {root => 'index.html'});
+
+      # Parse description
+      $api->parse_description_from_first_p_tag($data);
 
       # Read common templates
       $api->read_common_templates($data);
@@ -248,17 +270,31 @@ Main part of build process is combination of L<Giblog::API>.
       # Add meta title
       $api->add_meta_title($data);
 
-      # Wrap content by header, footer, etc
-      $api->wrap($data);
+      # Add meta description
+      $api->add_meta_description($data);
+
+      # Build entry html
+      $api->build_entry($data);
+      
+      # Build whole html
+      $api->build_html($data);
       
       # Write to public file
       $api->write_to_public_file($data);
     }
+    
+    # Create index page
+    $self->create_index;
+    
+    # Create list page
+    $self->create_list;
   }
 
-  1;
+"run" method read all template files in "templates" directory, and edit them, and wrtie output to file in "public" directory.
 
 You can edit this build process by yourself if you need.
+
+If you need to understand APIs in run method, see L<Giblog::API>.
 
 =head2 Serve web site
 
@@ -271,7 +307,7 @@ You see the following message.
    Server available at http://127.0.0.1:3000
    Server start
 
-If files in "templates" directory is updated, this server is automatically reloaded.
+If files in "templates" directory is updated, web site is build and this server is reloaded automatically.
 
 =head1 AUTHOR
 

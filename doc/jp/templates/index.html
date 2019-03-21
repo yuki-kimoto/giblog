@@ -135,6 +135,132 @@ CSSは、スマートフォンサイトに適合しており、基本的な構�
 
 CSSは、スマートフォンサイトに適合しており、基本的な構築プロセスが提供されます。
 
+<h2>Add entry page</h2>
+
+「add」コマンドを使って、ブログのエントリページを追加することができます。
+  
+  giblog add
+
+「add」コマンドを実行する前に、「mysite」にディレクトリを変更する必要があります。
+
+  cd mysite
+
+「--home」オプションを使う場合は、ディレクトリを変更する必要はありません。
+
+  giblog add --home /home/kimoto/mysite
+
+作成されたファイル名は、例えば、以下のようになります。
+
+  templates/blog/20080108132865.html
+
+このファイル名は、日付と時刻を含みます。
+
+<h3>Webサイトの構築</h3>
+
+"build"コマンドを使うと、Webサイトを構築できます。
+
+  giblog build
+
+「build」コマンドを実行する前に、「mysite」にディレクトリを変更する必要があります。
+
+  cd mysite
+
+「--home」オプションを使用した場合は、ディレクトリを変更する必要はありません。
+
+  giblog build --home /home/kimoto/mysite
+
+構築プロセスとは、いったい何でしょうか。
+
+構築プロセスは「lib/Giblog/Command/build.pm」の中の「run」メソッドに書かれています。
+
+構築プロセスの主な部分は、Giblog::APIの組み合わせです。
+  
+  # "lib/Giblog/Command/build.pm" in web site created by "new_blog" command
+  package Giblog::Command::build;
+
+  use base 'Giblog::Command';
+
+  use strict;
+  use warnings;
+
+  use File::Basename 'basename';
+
+  sub run {
+    my ($self, @args) = @_;
+    
+    # API
+    my $api = $self->api;
+    
+    # Read config
+    my $config = $api->read_config;
+    
+    # Get files in templates directory
+    my $files = $api->get_templates_files;
+    
+    for my $file (@$files) {
+      # Data
+      my $data = {file => $file};
+      
+      # Get content from file in templates directory
+      $api->get_content($data);
+
+      # Parse Giblog syntax
+      $api->parse_giblog_syntax($data);
+
+      # Parse title
+      $api->parse_title_from_first_h_tag($data);
+
+      # Add page link
+      $api->add_page_link_to_first_h_tag($data, {root => 'index.html'});
+
+      # Parse description
+      $api->parse_description_from_first_p_tag($data);
+
+      # Read common templates
+      $api->read_common_templates($data);
+      
+      # Add meta title
+      $api->add_meta_title($data);
+
+      # Add meta description
+      $api->add_meta_description($data);
+
+      # Build entry html
+      $api->build_entry($data);
+      
+      # Build whole html
+      $api->build_html($data);
+      
+      # Write to public file
+      $api->write_to_public_file($data);
+    }
+    
+    # Create index page
+    $self->create_index;
+    
+    # Create list page
+    $self->create_list;
+  }
+
+「run」メソッドは、「templates」ディレクトリの中のすべてのテンプレートファイルを読み込み、編集し、「public」ディレクトリの中のファイルへ、出力を書き込みます。
+
+もし必要であれば、自分自身でこの構築プロセスを編集できます。
+
+runメソッドの中のAPIを理解する必要がある場合は、Giblog::APIを見てください。
+
+<h2>Serve web site</h2>
+
+もしMojoliciousを持っていれば、Webサイトの構築とサーブができます。
+
+   morbo serve.pl
+
+以下のメッセージが表示されます。
+
+   Server available at http://127.0.0.1:3000
+   Server start
+
+「templates」ディレクトリの中のファイルが、更新されると、ビルドされ、サーバーは自動的にリロードされます。
+
 <h2>FAQ</h2>
 
 <h3>buildコマンドをカスタマイズするときに注意することはありますか</h3>
