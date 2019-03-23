@@ -223,7 +223,10 @@ sub copy_static_files_to_public {
     else {
       my $public_dir = dirname $public_file;
       mkpath $public_dir;
-      my $static_content = $self->slurp_file($static_file);
+      open my $in_fh, '<', $static_file
+        or confess "Can't open file $static_file: $!";
+      local $/;
+      my $static_content = <$in_fh>;
       open my $out_fh, '>', $public_file
         or confess "Can't open file $public_file: $!";
       binmode $out_fh;
