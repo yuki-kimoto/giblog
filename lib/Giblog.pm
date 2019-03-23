@@ -5,8 +5,10 @@ use strict;
 use warnings;
 
 use Getopt::Long 'GetOptions';
+use Giblog::API;
+use Carp 'confess';
 
-our $VERSION = '0.51';
+our $VERSION = '0.70';
 
 sub new {
   my $class = shift;
@@ -16,6 +18,43 @@ sub new {
   };
   
   return bless $self, $class;
+}
+
+sub run_command {
+  my $class = shift;
+  
+  my $opt = Giblog->parse_argv(@ARGV);
+
+  my $command_name = $opt->{command_name};
+  my $argv = $opt->{argv};
+
+  my $api = Giblog->build_api(%$opt);
+
+  $class->_run_command($api, $command_name, @$argv);
+}
+
+sub _run_command {
+  my ($self, $api, $command_name, @argv) = @_;
+  
+  # Add "lib" in home directory to include path 
+  my $home_dir = $api->home_dir;
+  local @INC = @INC;
+  if (defined $home_dir) {
+    unshift @INC, "$home_dir/lib";
+  }
+  else {
+    unshift @INC, "lib";
+  }
+  
+  # Command is implemented in command
+  my $command_class = "Giblog::Command::$command_name";
+  eval "use $command_class;";
+  if ($@) {
+    confess "Can't load command $command_class:\n$!\n$@";
+  }
+  my $command = $command_class->new(api => $api);
+
+  $command->run(@argv);
 }
 
 sub home_dir { shift->{'home_dir'} }
@@ -68,13 +107,15 @@ sub parse_argv {
 
 =head1 NAME
 
-Giblog - HTML Generator for git generation
+Giblog - Blog builder for git generation
 
 =head1 DESCRIPTION
 
-Giblog is B<HTML generator> written by Perl language.
+Giblog is B<Blog builder> written by Perl language.
 
 You can create B<your onw website and blog> easily.
+
+All created files is static HTML, so you can manage them using git.
 
 Giblog is in beta test before 1.0 release. Note that features is changed without warnings.
 
@@ -83,10 +124,10 @@ Giblog is in beta test before 1.0 release. Note that features is changed without
   # New empty web site
   giblog new mysite
 
-  # New simple web site
+  # New web site
   giblog new_website mysite
 
-  # New simple blog
+  # New blog
   giblog new_blog mysite
   
   # Change directory
@@ -107,7 +148,7 @@ Giblog is in beta test before 1.0 release. Note that features is changed without
   # Build web site with home directory
   giblog build --home /home/kimoto/mysite
 
-=head1 DESCRIPTION
+=head1 FEATURES
 
 Giblog have the following features.
 
@@ -130,6 +171,8 @@ Giblog have the following features.
 =item * You can use above all features or choice some of them, and can add more advanced features.
 
 =item * In advanced features, you can customize list of entries page, use markdown syntax, and add twitter card, etc.
+
+=imte * Check web site using morbo command of Mojolicious. Contents changes is detected and build automatically.
 
 =item * Build 645 pages by 0.78 seconds in my starndard linux environment.
 

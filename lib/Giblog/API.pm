@@ -89,30 +89,6 @@ sub slurp_file {
   return $content;
 }
 
-sub run_command {
-  my ($self, $command_name, @argv) = @_;
-  
-  # Add "lib" in home directory to include path 
-  my $home_dir = $self->home_dir;
-  local @INC = @INC;
-  if (defined $home_dir) {
-    unshift @INC, "$home_dir/lib";
-  }
-  else {
-    unshift @INC, "lib";
-  }
-  
-  # Command is implemented in command
-  my $command_class = "Giblog::Command::$command_name";
-  eval "use $command_class;";
-  if ($@) {
-    confess "Can't load command $command_class:\n$!\n$@";
-  }
-  my $command = $command_class->new(api => $self);
-
-  $command->run(@argv);
-}
-
 sub _get_proto_dir {
   my ($self, $module_name) = @_;
   
@@ -135,7 +111,7 @@ sub create_website_from_proto {
   my $proto_dir = $self->_get_proto_dir($module_name);
   
   unless (defined $proto_dir) {
-    confess "proto diretory can't specified\n";
+    confess "proto diretory can't specific\n";
   }
 
   unless (-d $proto_dir) {
@@ -680,7 +656,7 @@ Parse "giblog.conf" in home directory and return hash reference.
     site_url => 'http://somesite.example',
   }
 
-After calling read_config, You can also get config by C<config> method.
+After calling "read_config", You can also get config by C<config> method.
 
 =head2 clear_config
 
@@ -726,19 +702,9 @@ If file is not exists, exception occur.
 
   my $file = $api->rel_file('foo/bar');
 
-Get combined path of home directory and specified relative path.
+Get combined path of home directory and specific relative path.
 
-If home directory is not set, return specified path.
-
-=head2 run_command
-
-  $api->run_command($command_name, @args);
-
-Load command class and create object and execute "run" method.
-
-For example, if command name is "build", Coresspoing "Giblog::Command::build" module is loaded, and the object is created and, "run" method is executed.
-
-If module loading fail, exception occur.
+If home directory is not set, return specific path.
 
 =head2 create_website_from_proto
 
@@ -755,13 +721,13 @@ If module name is "Giblog::Command::new_foo" and the loading path is "lib/Giblog
 
 Module must be loaded before calling "create_website_from_proto". otherwise exception occur.
 
-If home directory is not specified, exception occur.
+If home directory is not specific, exception occur.
 
 If home directory already exists, exception occur.
 
 If creating directory fail, exception occur.
 
-If proto directory corresponding to module name is not specified, exception occur.
+If proto directory corresponding to module name is not specific, exception occur.
 
 If proto direcotry corresponding to module name is not found, exception occur.
 

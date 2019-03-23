@@ -4,13 +4,21 @@ use strict;
 use warnings;
 
 use Giblog;
-use Giblog::API;
 
-my $opt = Giblog->parse_argv(@ARGV);
+Giblog->run_command(@ARGV);
 
-my $command_name = $opt->{command_name};
-my $argv = $opt->{argv};
+=encoding utf8
 
-my $api = Giblog->build_api(%$opt);
+=head1 NAME
 
-$api->run_command($command_name, @$argv);
+giblog - Giblog command system
+
+=head1 SYNOPSIS
+
+  $ giblog --help
+
+=head1 DESCRIPTION
+
+List and run L<Giblog> commands as described in L<Giblog::Command>.
+
+=cut

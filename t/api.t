@@ -243,30 +243,6 @@ mkpath $test_dir;
   }
 }
 
-# run_command
-{
-  # run_command - run command
-  {
-    my $giblog = Giblog->new;
-    my $api = Giblog::API->new(giblog => $giblog);
-    my $command = 'test';
-    my $num = 0;
-    $api->run_command($command, \$num);
-    is($num, 3);
-  }
-
-  # run_command - exeption - can't find command
-  {
-    my $giblog = Giblog->new;
-    my $api = Giblog::API->new(giblog => $giblog);
-    my $command = 'not_exists';
-    eval {
-      $api->run_command($command);
-    };
-    ok($@);
-  }
-}
-
 # create_website_from_proto
 {
   my $home_dir = 't/tmp/api/create_website';

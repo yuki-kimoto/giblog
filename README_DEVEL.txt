@@ -1,5 +1,7 @@
 # Development
 
+rm -rf mysite && make && perl -Mblib script/giblog
+
 # Create new website
 rm -rf mysite && make && perl -Mblib script/giblog new mysite
 rm -rf mysite_blog && make && perl -Mblib script/giblog new_blog mysite_blog
