@@ -30,12 +30,6 @@ sub run_command {
 
   my $api = Giblog->build_api(%$opt);
 
-  $class->_run_command($api, $command_name, @$argv);
-}
-
-sub _run_command {
-  my ($self, $api, $command_name, @argv) = @_;
-  
   # Add "lib" in home directory to include path 
   my $home_dir = $api->home_dir;
   local @INC = @INC;
@@ -54,7 +48,7 @@ sub _run_command {
   }
   my $command = $command_class->new(api => $api);
 
-  $command->run(@argv);
+  $command->run(@$argv);
 }
 
 sub home_dir { shift->{'home_dir'} }

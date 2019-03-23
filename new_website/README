@@ -1,0 +1,13 @@
+Create new entry
+
+  giblog add
+  
+Build web site
+
+  giblog build
+
+Serve web site. You need to install Mojolicious from CPAN.
+
+  morbo serve.pl
+
+These file is copied from Giblog/Command/new_website/proto directory.
