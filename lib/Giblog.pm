@@ -28,7 +28,9 @@ sub run_command {
   my $command_name = $opt->{command_name};
   my $argv = $opt->{argv};
 
-  my $api = Giblog->build_api(%$opt);
+  my $giblog = Giblog->new(%$opt);
+
+  my $api = Giblog::API->new(giblog => $giblog);
 
   # Add "lib" in home directory to include path 
   my $home_dir = $api->home_dir;
@@ -53,16 +55,6 @@ sub run_command {
 
 sub home_dir { shift->{'home_dir'} }
 sub config { shift->{config} }
-
-sub build_api {
-  my ($class, %opt) = @_;
-  
-  my $giblog = Giblog->new(%opt);
-
-  my $api = Giblog::API->new(giblog => $giblog);
-  
-  return $api;
-}
 
 sub parse_argv {
   my ($class, @argv) = @_;
