@@ -21,42 +21,6 @@ sub new {
 }
 
 sub run_command {
-  my $class = shift;
-  
-  my $opt = Giblog->parse_argv(@ARGV);
-
-  my $command_name = $opt->{command_name};
-  my $argv = $opt->{argv};
-
-  my $giblog = Giblog->new(%$opt);
-
-  my $api = Giblog::API->new(giblog => $giblog);
-
-  # Add "lib" in home directory to include path 
-  my $home_dir = $api->home_dir;
-  local @INC = @INC;
-  if (defined $home_dir) {
-    unshift @INC, "$home_dir/lib";
-  }
-  else {
-    unshift @INC, "lib";
-  }
-  
-  # Command is implemented in command
-  my $command_class = "Giblog::Command::$command_name";
-  eval "use $command_class;";
-  if ($@) {
-    confess "Can't load command $command_class:\n$!\n$@";
-  }
-  my $command = $command_class->new(api => $api);
-
-  $command->run(@$argv);
-}
-
-sub home_dir { shift->{'home_dir'} }
-sub config { shift->{config} }
-
-sub parse_argv {
   my ($class, @argv) = @_;
   
   # If first argument don't start with -, it is command
@@ -87,9 +51,35 @@ sub parse_argv {
     command_name => $command_name,
     argv => \@argv
   };
+
+  my $argv = $opt->{argv};
+
+  my $giblog = Giblog->new(%$opt);
+
+  my $api = Giblog::API->new(giblog => $giblog);
+
+  # Add "lib" in home directory to include path 
+  local @INC = @INC;
+  if (defined $home_dir) {
+    unshift @INC, "$home_dir/lib";
+  }
+  else {
+    unshift @INC, "lib";
+  }
   
-  return $opt;
+  # Command is implemented in command
+  my $command_class = "Giblog::Command::$command_name";
+  eval "use $command_class;";
+  if ($@) {
+    confess "Can't load command $command_class:\n$!\n$@";
+  }
+  my $command = $command_class->new(api => $api);
+
+  $command->run(@$argv);
 }
+
+sub home_dir { shift->{'home_dir'} }
+sub config { shift->{config} }
 
 =head1 NAME
 
