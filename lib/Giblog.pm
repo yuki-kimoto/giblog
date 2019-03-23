@@ -35,31 +35,24 @@ sub _extract_usage {
 sub run_command {
   my ($class, @argv) = @_;
   
-  # If first argument don't start with -, it is command
-  my $command_name;
-  if (@argv && $argv[0] !~ /^-/) {
-    $command_name = shift @argv;
-  }
-
-  # Command
-  unless (defined $command_name) {
-    die "Command must be specifed\n";
-  }
-  if ($command_name =~ /^-/) {
-    die "Command \"$command_name\" is not found\n";
-  }
-  
+  # Command line option
   local @ARGV = @argv;
   my $getopt_option_save = Getopt::Long::Configure(qw(default no_auto_abbrev no_ignore_case));
   GetOptions(
+    "h|help" => \my $help,
     "H|home=s" => \my $home_dir,
   );
   Getopt::Long::Configure($getopt_option_save);
   
+  # Show help
+  die _extract_usage if $help || !(my $command_name = shift @ARGV);
+  
+  # Giblog
   my $giblog = Giblog->new(home_dir => $home_dir);
-
+  
+  # API
   my $api = Giblog::API->new(giblog => $giblog);
-
+  
   # Add "lib" in home directory to include path 
   local @INC = @INC;
   if (defined $home_dir) {
@@ -76,7 +69,8 @@ sub run_command {
     confess "Can't load command $command_class:\n$!\n$@";
   }
   my $command = $command_class->new(api => $api);
-
+  
+  @argv = @ARGV;
   $command->run(@argv);
 }
 
