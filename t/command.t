@@ -22,6 +22,23 @@ sub slurp {
   return $content;
 }
 
+# Help
+{
+  # help
+  {
+    my $stderr = `$^X -Mblib blib/script/giblog 2>&1`;
+    like($stderr, qr/Usage/);
+  }
+  {
+    my $stderr = `$^X -Mblib blib/script/giblog -h 2>&1`;
+    like($stderr, qr/Usage/);
+  }
+  {
+    my $stderr = `$^X -Mblib blib/script/giblog --help 2>&1`;
+    like($stderr, qr/Usage/);
+  }
+}
+
 # New
 {
   # new command
