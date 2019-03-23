@@ -1,6 +1,10 @@
 # Development
 
+# Help
 rm -rf mysite && make && perl -Mblib script/giblog
+rm -rf mysite && make && perl -Mblib script/giblog -h
+rm -rf mysite && make && perl -Mblib script/giblog --help
+
 
 # Create new website
 rm -rf mysite && make && perl -Mblib script/giblog new mysite

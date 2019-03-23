@@ -8,6 +8,7 @@ use Getopt::Long 'GetOptions';
 use Giblog::API;
 use Carp 'confess';
 use Pod::Usage 'pod2usage';
+use List::Util 'min';
 
 our $VERSION = '0.70';
 
@@ -22,14 +23,21 @@ sub new {
 }
 
 sub _extract_usage {
-  my $file = @_ ? "$_[0]" : (caller)[1];
+  my $file = @_ ? "$_[0]" : (caller 1)[1];
 
   open my $handle, '>', \my $output;
   pod2usage -exitval => 'noexit', -input => $file, -output => $handle;
   $output =~ s/^.*\n|\n$//;
   $output =~ s/\n$//;
 
-  return unindent($output);
+  return _unindent($output);
+}
+
+sub _unindent {
+  my $str = shift;
+  my $min = min map { m/^([ \t]*)/; length $1 || () } split "\n", $str;
+  $str =~ s/^[ \t]{0,$min}//gm if $min;
+  return $str;
 }
 
 sub run_command {
@@ -44,8 +52,11 @@ sub run_command {
   );
   Getopt::Long::Configure($getopt_option_save);
   
+  # Command name
+  my $command_name = shift @ARGV;
+  
   # Show help
-  die _extract_usage if $help || !(my $command_name = shift @ARGV);
+  die _extract_usage if $help || !$command_name;
   
   # Giblog
   my $giblog = Giblog->new(home_dir => $home_dir);
