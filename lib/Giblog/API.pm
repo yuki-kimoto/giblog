@@ -224,7 +224,10 @@ sub copy_static_files_to_public {
       my $public_dir = dirname $public_file;
       mkpath $public_dir;
       my $static_content = $self->slurp_file($static_file);
-      $self->write_to_file($public_file, $static_content);
+      open my $out_fh, '>', $public_file
+        or confess "Can't open file $public_file: $!";
+      binmode $out_fh;
+      print $out_fh $static_content;
     }
   }
 }

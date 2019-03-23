@@ -331,6 +331,16 @@ mkpath $test_dir;
     my $api = Giblog::API->new(giblog => $giblog);
     my $module_name = 'Giblog::Command::new';
     $api->create_website_from_proto($home_dir, $module_name);
+    
+    # Binary
+    {
+      my $binary = pack "l4", 1, 2, 3, 4;
+      my $file = "$home_dir/templates/static/foo.png";
+      open my $out_fh, '>', $file
+        or die "Can't file $file : $!";
+      binmode $out_fh;
+      print $out_fh $binary;
+    }
 
     my $files = $api->copy_static_files_to_public;
     
@@ -338,6 +348,18 @@ mkpath $test_dir;
     ok(-f "$home_dir/public/images/.gitkeep");
     ok(-f "$home_dir/public/css/common.css");
     ok(-f "$home_dir/public/blog/.gitkeep");
+    ok(-f "$home_dir/public/foo.png");
+    
+    {
+      my $file = "$home_dir/templates/static/foo.png";
+      open my $in_fh, '<', $file
+        or die "Can't file $file : $!";
+      local $/;
+      my $binary = <$in_fh>;
+      my $binary_expected = pack "l4", 1, 2, 3, 4;
+      
+      is($binary, $binary_expected);
+    }
   }
 }
 
