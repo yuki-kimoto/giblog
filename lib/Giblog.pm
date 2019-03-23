@@ -328,6 +328,46 @@ You see the following message.
 
 If files in "templates" directory is updated, web site is build and this server is reloaded automatically.
 
+=head1 METHODS
+
+These methods is internally methods.
+
+Don't need to know these methods except for Giblog developer.
+
+See L<Giblog::API> to manipulate HTML contents.
+
+=head2 new
+
+  my $api = Giblog->new(%params);
+
+Create L<Giblog> object.
+
+B<Parameters:>
+
+=over 4
+
+=item * home_dir - home directory
+
+=item * config - config
+
+=head2 run_command
+
+  $giblog->run_command(@argv);
+
+Run command system.
+
+=head2 config
+
+  my $config = $giblog->config;
+
+Get Giblog config.
+
+=head2 home_dir
+
+  my $home_dir = $giblog->home_dir;
+
+Get home directory.
+
 =head1 AUTHOR
 
 Yuki Kimoto, C<< <kimoto.yuki at gmail.com> >>
