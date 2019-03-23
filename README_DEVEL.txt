@@ -11,7 +11,7 @@ rm -rf mysite_hp && make && perl -Mblib script/giblog new_website mysite_hp
 make && perl -Mblib script/giblog add --home=mysite
 
 # Build
-make && perl -Mblib script/giblog build -I=mysite/lib --home=mysite
+make && perl -Mblib script/giblog build -I=mysite/lib -H=mysite
 
 # Serve
 export PERL5LIB=blib/lib morbo mysite/webapp

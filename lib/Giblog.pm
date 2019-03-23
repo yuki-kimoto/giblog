@@ -52,7 +52,7 @@ sub run_command {
   local @ARGV = @argv;
   my $getopt_option_save = Getopt::Long::Configure(qw(default no_auto_abbrev no_ignore_case));
   GetOptions(
-    "h|home=s" => \my $home_dir,
+    "H|home=s" => \my $home_dir,
   );
   Getopt::Long::Configure($getopt_option_save);
   

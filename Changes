@@ -1,3 +1,5 @@
+0.71 2019/03/23
+  - rename -h option to -H
 0.70 2019/03/21
   - add Giblog::API::build_entry method
   - add Giblog::API::build_html method

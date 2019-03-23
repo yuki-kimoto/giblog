@@ -208,7 +208,7 @@ sub slurp {
     like($blog_content, qr/meta/);
   }
 
-  # build - --home -h
+  # build - --home -H
   {
     my $home_dir = "$test_dir/mysite_new";
     rmtree $home_dir;
@@ -222,7 +222,7 @@ sub slurp {
         or die "Can't execute command $add_cmd:$!";
     }
     {
-      my $build_cmd = "$^X -Mblib blib/script/giblog build -h $home_dir";
+      my $build_cmd = "$^X -Mblib blib/script/giblog build -H $home_dir";
       system($build_cmd) == 0
         or die "Can't execute command $build_cmd:$!";
     }

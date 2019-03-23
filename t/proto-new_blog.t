@@ -36,7 +36,7 @@ sub slurp {
         or die "Can't execute command $add_cmd:$!";
     }
     {
-      my $build_cmd = "$^X -Mblib blib/script/giblog build -h $home_dir";
+      my $build_cmd = "$^X -Mblib blib/script/giblog build -H $home_dir";
       system($build_cmd) == 0
         or die "Can't execute command $build_cmd:$!";
     }
