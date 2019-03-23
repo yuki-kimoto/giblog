@@ -11,7 +11,7 @@ Giblog->run_command(@ARGV);
 
 =head1 NAME
 
-giblog - Giblog command system
+giblog - giblog command
 
 =head1 SYNOPSIS
 
@@ -31,6 +31,6 @@ giblog - Giblog command system
 
 =head1 DESCRIPTION
 
-Run Giblog command which is defined as subclass of L<Giblog::Command>.
+Run Giblog command which is implemented as subclass of L<Giblog::Command>.
 
 =cut

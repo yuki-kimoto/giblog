@@ -186,6 +186,49 @@ sub _module_rel_file {
   return $file;
 }
 
+sub copy_static_files_to_public {
+  my $self = shift;
+
+  my $static_dir = $self->rel_file('templates/static');
+
+  # Get static files
+  my @static_rel_files;
+  find(
+    {
+      wanted => sub {
+        my $static_file = $File::Find::name;
+        
+        # Skip directory
+        my $static_file_base = basename $_;
+        
+        my $static_rel_file = $static_file;
+        $static_rel_file =~ s/^$static_dir//;
+        $static_rel_file =~ s/^[\\\/]//;
+        
+        push @static_rel_files, $static_rel_file;
+      },
+      no_chdir => 1,
+    },
+    $static_dir
+  );
+  
+  # Copy static content to public
+  for my $static_rel_file (@static_rel_files) {
+    my $static_file = $self->rel_file("templates/static/$static_rel_file");
+    my $public_file = $self->rel_file("public/$static_rel_file");
+    
+    if (-d $static_file) {
+      mkpath $public_file;
+    }
+    else {
+      my $public_dir = dirname $public_file;
+      mkpath $public_dir;
+      my $static_content = $self->slurp_file($static_file);
+      $self->write_to_file($public_file, $static_content);
+    }
+  }
+}
+
 sub get_templates_files {
   my $self = shift;
 
@@ -203,6 +246,9 @@ sub get_templates_files {
 
         # Skip common files
         return if $template_file =~ /^\Q$templates_dir\/common/;
+
+        # Skip static files
+        return if $template_file =~ /^\Q$templates_dir\/static/;
         
         my $template_file_base = basename $_;
         
@@ -731,13 +777,19 @@ If proto directory corresponding to module name is not specific, exception occur
 
 If proto direcotry corresponding to module name is not found, exception occur.
 
+=head2 copy_static_files_to_public
+
+  $api->copy_static_files_to_public;
+
+Copy static files in "templates/static" directory to "public" directory.
+
 =head2 get_templates_files
 
-  $api->get_templates_files;
+  my $files = $api->get_templates_files;
 
 Get file names in "templates" directory in home directory.
 
-Files in "templates/common" directory and hidden files(which start with ".") is not contained.
+Files in "templates/common" directory and "templates/static" directory and hidden files(which start with ".") is not contained.
 
 Got file name is relative name from "templates" directory.
 

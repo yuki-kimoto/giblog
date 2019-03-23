@@ -322,6 +322,25 @@ mkpath $test_dir;
   }
 }
 
+# copy_static_files_to_public
+{
+  # copy_static_files_to_public - copy static files to public directory
+  {
+    my $home_dir = 't/tmp/api/copy_static_files_to_public';
+    my $giblog = Giblog->new(home_dir => $home_dir);
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $module_name = 'Giblog::Command::new';
+    $api->create_website_from_proto($home_dir, $module_name);
+
+    my $files = $api->copy_static_files_to_public;
+    
+    ok(-f "$home_dir/public/js/.gitkeep");
+    ok(-f "$home_dir/public/images/.gitkeep");
+    ok(-f "$home_dir/public/css/common.css");
+    ok(-f "$home_dir/public/blog/.gitkeep");
+  }
+}
+
 # get_templates_files
 {
   # get_templates_files - get template files

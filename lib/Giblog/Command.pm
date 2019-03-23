@@ -2,6 +2,7 @@ package Giblog::Command;
 
 use strict;
 use warnings;
+use Carp 'confess';
 
 sub new {
   my $class = shift;
@@ -13,11 +14,13 @@ sub new {
 
 sub api { shift->{api} }
 
+sub run { confess 'Method "run" not implemented by subclass' }
+
 1;
 
 =head1 NAME
 
-Giblog::Command - command
+Giblog::Command - command base class
 
 =head1 METHODS
 
@@ -32,3 +35,9 @@ Create command object.
   $command->api;
 
 Get L<Giblog::API> object.
+
+=head2 run
+
+  $command->run(@args);
+
+Run command. This method is implemented by subclass

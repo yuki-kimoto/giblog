@@ -1,3 +1,5 @@
+0.72 2019/03/23
+  - static file place is changed from public to templates/static
 0.71 2019/03/23
   - rename -h option to -H
   - add command help
