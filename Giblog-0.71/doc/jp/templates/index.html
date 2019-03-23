@@ -1,0 +1,284 @@
+<h2 class="title">Giblog - git世代のためのHTMLジェネレーター</h2>
+
+Giblogは、Perlで書かれたHTMLジェネレーターです。
+
+あなた独自のWebサイトとブログを簡単に作成することができます。
+
+<h3>使い方</h3>
+
+<pre>
+  # 新しく空のWebサイトを作成
+  giblog new mysite
+
+  # 新しく簡単なWebサイトを作成
+  giblog new_website mysite
+
+  # 新しくブログを作成
+  giblog new_blog mysite
+  
+  # ディレクトリ変更
+  cd mysite
+  
+  # 新しいエントリーを追加
+  giblog add
+
+  # Webサイトを構築
+  giblog build
+
+  # Webサイトをサーブ(Mojoliciousが必要です)
+  morbo serve.pl
+
+  # ホームディレクトリを指定して新しいエントリーを追加
+  giblog add --home /home/kimoto/mysite
+  
+  # ホームディレクトリを指定して、Webサイトを構築
+  giblog build --home /home/kimoto/mysite
+</pre>
+
+<h3>解説</h3>
+
+Giblogは、以下の機能を持っています。
+
+<ul>
+  <li>
+    Webサイトとブログ作成の両方に対応。
+  </li>
+  <li>
+    Linux、Mac OS、Windows対応。Windowsでは、msys2のインストールを推奨。
+  </li>
+  <li>
+    スマートフォン対応を意識した、デフォルトのCSSを提供。
+  </li>
+  <li>
+    コンテンツを、トップ、ボトム、サイドバー、ヘッダー、フッター、HTMLヘッダで囲んで出力。
+  </li>
+  <li>
+    pタグをを自動追加。preタグの中で「&lt」「&gt」を、自動的にエスケープ。
+  </li>
+  <li>
+    最初の見出しタグ(h1～h6)から自動的にtitleに設定。
+  </li>
+  <li>
+    最初の段落を自動的にdescriptionに設定。
+  </li>
+  <li>
+    機能のカスタマイズは、自由自在。すべてをなくすことも、自由に選ぶことも、機能を追加することも可能。
+  </li>
+  <li>
+    機能の追加では、一覧ページを作成したり、マークダウンを使ったり、Twitterカードを設定したりできます。
+  </li>
+  <li>
+    Mojoliciousのmorboコマンドを使って、Webサーバーを起動してWebサイトを確認可能。コンテンツやヘッダなどの変更を検知して、自動的に再構築されます。
+  </li>
+  <li>
+    ベンチマークでは、私の標準的なLinux環境において、645ページを、0.78秒で構築。
+  </li>
+  <li>
+    JavaScriptの利用制限なし。アフェリエイト広告を張ることも自由。
+  </li>
+  <li>
+    gitでファイルを管理して、さくらのレンタルサーバーなどに、配置すれば、HTTPSに対応した情報発信サイトを、個数無制限・低価格(ディスク容量100Gで515円)で作成できます。
+  </li>
+  <li>
+    Github Pagesなどを利用すれば、手順が難しく、制限は多いですが、HTTPSに対応した情報発信サイトを無料で作成できます。
+  </li>
+  <li>
+    Perlゼミのサイト構築に実際に利用されています。
+  </li>
+</ul>
+
+<h2>チュートリアル</h2>
+
+<h3>Webサイトの作成</h3>
+
+３つのプロトタイプからWebサイトを作成できます。
+
+<b>1. 空のWebサイト</b>
+
+「new」コマンドで、空のWebサイトを作成します。「mysite」はWebサイトの名前の一例です。
+
+<pre>
+  giblog new mysite
+</pre>
+
+もし空のWebサイトを作成したい場合は、このプロトタイプを選んでください。
+
+テンプレートとCSSは空で、最低限の構築プロセスのみを提供します。
+
+<b>2. Webサイト</b>
+
+「new_website」コマンドで、空のWebサイトを作成します。
+
+<pre>
+  giblog new_website mysite
+</pre>
+
+もし、Webサイトを作成したい場合は、このプロトタイプを選んでください。
+
+トップページのテンプレート「templates/index.html」が作成されます。
+
+CSSは、スマートフォンサイトに適合しており、基本的な構築プロセスが提供されます。
+
+<b>3. ブログ</b>
+
+「new_blog」コマンドで、ブログを作成します。
+
+<pre>
+  giblog new_blog mysite
+</pre>
+
+ブログを作成したい場合は、このプロトタイプを選んでください。
+
+7日間のエントリーを表示したトップページ「templates/index.html」が作成されます。
+
+すべてのページへのリンクを表示した「templates/list.html」が作成されます。
+
+CSSは、スマートフォンサイトに適合しており、基本的な構築プロセスが提供されます。
+
+<h2>Add entry page</h2>
+
+「add」コマンドを使って、ブログのエントリページを追加することができます。
+  
+  giblog add
+
+「add」コマンドを実行する前に、「mysite」にディレクトリを変更する必要があります。
+
+  cd mysite
+
+「--home」オプションを使う場合は、ディレクトリを変更する必要はありません。
+
+  giblog add --home /home/kimoto/mysite
+
+作成されたファイル名は、例えば、以下のようになります。
+
+  templates/blog/20080108132865.html
+
+このファイル名は、日付と時刻を含みます。
+
+<h3>Webサイトの構築</h3>
+
+"build"コマンドを使うと、Webサイトを構築できます。
+
+  giblog build
+
+「build」コマンドを実行する前に、「mysite」にディレクトリを変更する必要があります。
+
+  cd mysite
+
+「--home」オプションを使用した場合は、ディレクトリを変更する必要はありません。
+
+  giblog build --home /home/kimoto/mysite
+
+構築プロセスとは、いったい何でしょうか。
+
+構築プロセスは「lib/Giblog/Command/build.pm」の中の「run」メソッドに書かれています。
+
+構築プロセスの主な部分は、Giblog::APIの組み合わせです。
+  
+  # "lib/Giblog/Command/build.pm" in web site created by "new_blog" command
+  package Giblog::Command::build;
+
+  use base 'Giblog::Command';
+
+  use strict;
+  use warnings;
+
+  use File::Basename 'basename';
+
+  sub run {
+    my ($self, @args) = @_;
+    
+    # API
+    my $api = $self->api;
+    
+    # Read config
+    my $config = $api->read_config;
+    
+    # Get files in templates directory
+    my $files = $api->get_templates_files;
+    
+    for my $file (@$files) {
+      # Data
+      my $data = {file => $file};
+      
+      # Get content from file in templates directory
+      $api->get_content($data);
+
+      # Parse Giblog syntax
+      $api->parse_giblog_syntax($data);
+
+      # Parse title
+      $api->parse_title_from_first_h_tag($data);
+
+      # Add page link
+      $api->add_page_link_to_first_h_tag($data, {root => 'index.html'});
+
+      # Parse description
+      $api->parse_description_from_first_p_tag($data);
+
+      # Read common templates
+      $api->read_common_templates($data);
+      
+      # Add meta title
+      $api->add_meta_title($data);
+
+      # Add meta description
+      $api->add_meta_description($data);
+
+      # Build entry html
+      $api->build_entry($data);
+      
+      # Build whole html
+      $api->build_html($data);
+      
+      # Write to public file
+      $api->write_to_public_file($data);
+    }
+    
+    # Create index page
+    $self->create_index;
+    
+    # Create list page
+    $self->create_list;
+  }
+
+「run」メソッドは、「templates」ディレクトリの中のすべてのテンプレートファイルを読み込み、編集し、「public」ディレクトリの中のファイルへ、出力を書き込みます。
+
+もし必要であれば、自分自身でこの構築プロセスを編集できます。
+
+runメソッドの中のAPIを理解する必要がある場合は、Giblog::APIを見てください。
+
+<h2>Serve web site</h2>
+
+もしMojoliciousを持っていれば、Webサイトの構築とサーブができます。
+
+   morbo serve.pl
+
+以下のメッセージが表示されます。
+
+   Server available at http://127.0.0.1:3000
+   Server start
+
+「templates」ディレクトリの中のファイルが、更新されると、ビルドされ、サーバーは自動的にリロードされます。
+
+<h2>FAQ</h2>
+
+<h3>buildコマンドをカスタマイズするときに注意することはありますか</h3>
+
+ひとつの注意点は、ファイルを生成するときは、puplicディレクトリの中に生成する必要があることです。
+
+templatesディレクトリの下にファイルを生成してはいません。
+
+templatesディレクトリの中にファイルを生成すると、自動ビルド機能が正しく動かなくなります。
+
+<h3>問い合わせフォームを設置することはできますか。</h3>
+
+Giblogは静的なHTMLを出力するので、動的な機能が必要な問い合わせフォームを、Webサイト内に設置することはできません。
+
+問い合わせを受け取るには、<a href="https://www.google.com/intl/ja_jp/forms/about/">googleフォーム</a>などのフォーム作成のWebサービスをうまく活用してください。
+
+<h3>コメント欄を設置することはできますか。</h3>
+
+Giblogは静的なHTMLを出力するので、動的な機能が必要なコメント欄を、Webサイト内に設置することはできません。
+
+FacebookやTwitterやインスタグラムなど、メッセージを受け取れるサービスをうまく活用してください。

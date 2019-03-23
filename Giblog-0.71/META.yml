@@ -1,0 +1,24 @@
+---
+abstract: 'Blog builder for git generation'
+author:
+  - 'Yuki Kimoto <kimoto.yuki@gmail.com>'
+build_requires:
+  Test::More: '0'
+configure_requires:
+  ExtUtils::MakeMaker: '0'
+dynamic_config: 1
+generated_by: 'ExtUtils::MakeMaker version 7.34, CPAN::Meta::Converter version 2.143240'
+license: artistic_2
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: '1.4'
+name: Giblog
+no_index:
+  directory:
+    - t
+    - inc
+requires:
+  perl: '5.006'
+resources:
+  repository: https://github.com/yuki-kimoto/giblog.git
+version: '0.71'

@@ -1,0 +1,22 @@
+0.71 2019/03/23
+  - rename -h option to -H
+  - add command help
+0.70 2019/03/21
+  - add Giblog::API::build_entry method
+  - add Giblog::API::build_html method
+  - remove Giblog::API::wrap method
+  - fix windows file permission bugs.
+  - improve new_hp, new_blog prototype
+  - rename new_hp command to new_website
+0.51 2019/03/19
+  - remove -I, --include option
+  - add "lib" in home directory to include path before running command
+  - remove new_zemi command
+  - improve new_hp prototype
+0.50 2019/03/15
+  - rename giblog-dir option to home
+  - add tutorial
+0.02 2019/03/14
+  - Change several apis
+0.01 2019/03/7
+  - First release
