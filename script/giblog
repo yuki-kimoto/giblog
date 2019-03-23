@@ -15,7 +15,33 @@ giblog - Giblog command system
 
 =head1 SYNOPSIS
 
-  $ giblog --help
+  Usage: giblog [OPTIONS] [COMMAND] [ARGS]
+
+    giblog new mysite
+    giblog new_website mysite
+    giblog new_blog mysite
+    giblog add
+    giblog build
+    giblog -h add
+    giblog --home build
+
+  Options:
+    -b, --backend <name>           Morbo backend to use for reloading, defaults
+                                   to "Poll"
+    -h, --help                     Show this message
+    -l, --listen <location>        One or more locations you want to listen on,
+                                   defaults to the value of MOJO_LISTEN or
+                                   "http://*:3000"
+    -m, --mode <name>              Operating mode for your application,
+                                   defaults to the value of
+                                   MOJO_MODE/PLACK_ENV or "development"
+    -v, --verbose                  Print details about what files changed to
+                                   STDOUT
+    -w, --watch <directory/file>   One or more directories and files to watch
+                                   for changes, defaults to the application
+                                   script as well as the "lib" and "templates"
+                                   directories in the current working
+                                   directory
 
 =head1 DESCRIPTION
 

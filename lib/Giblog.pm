@@ -7,6 +7,7 @@ use warnings;
 use Getopt::Long 'GetOptions';
 use Giblog::API;
 use Carp 'confess';
+use Pod::Usage 'pod2usage';
 
 our $VERSION = '0.70';
 
@@ -18,6 +19,17 @@ sub new {
   };
   
   return bless $self, $class;
+}
+
+sub _extract_usage {
+  my $file = @_ ? "$_[0]" : (caller)[1];
+
+  open my $handle, '>', \my $output;
+  pod2usage -exitval => 'noexit', -input => $file, -output => $handle;
+  $output =~ s/^.*\n|\n$//;
+  $output =~ s/\n$//;
+
+  return unindent($output);
 }
 
 sub run_command {
@@ -41,20 +53,10 @@ sub run_command {
   my $getopt_option_save = Getopt::Long::Configure(qw(default no_auto_abbrev no_ignore_case));
   GetOptions(
     "h|home=s" => \my $home_dir,
-    'I|include=s'  => \my @include,
   );
   Getopt::Long::Configure($getopt_option_save);
   
-  my $opt = {
-    home_dir => $home_dir,
-    include => \@include,
-    command_name => $command_name,
-    argv => \@argv
-  };
-
-  my $argv = $opt->{argv};
-
-  my $giblog = Giblog->new(%$opt);
+  my $giblog = Giblog->new(home_dir => $home_dir);
 
   my $api = Giblog::API->new(giblog => $giblog);
 
@@ -75,7 +77,7 @@ sub run_command {
   }
   my $command = $command_class->new(api => $api);
 
-  $command->run(@$argv);
+  $command->run(@argv);
 }
 
 sub home_dir { shift->{'home_dir'} }
@@ -349,6 +351,8 @@ B<Parameters:>
 =item * home_dir - home directory
 
 =item * config - config
+
+=back
 
 =head2 run_command
 
