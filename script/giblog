@@ -22,29 +22,15 @@ giblog - Giblog command system
     giblog new_blog mysite
     giblog add
     giblog build
-    giblog -h add
-    giblog --home build
+    giblog -H /home/kimoto/mysite add
+    giblog --home /home/kimoto/mysite build
 
   Options:
-    -b, --backend <name>           Morbo backend to use for reloading, defaults
-                                   to "Poll"
+    -H, --home <directory>         Home directory
     -h, --help                     Show this message
-    -l, --listen <location>        One or more locations you want to listen on,
-                                   defaults to the value of MOJO_LISTEN or
-                                   "http://*:3000"
-    -m, --mode <name>              Operating mode for your application,
-                                   defaults to the value of
-                                   MOJO_MODE/PLACK_ENV or "development"
-    -v, --verbose                  Print details about what files changed to
-                                   STDOUT
-    -w, --watch <directory/file>   One or more directories and files to watch
-                                   for changes, defaults to the application
-                                   script as well as the "lib" and "templates"
-                                   directories in the current working
-                                   directory
 
 =head1 DESCRIPTION
 
-List and run L<Giblog> commands as described in L<Giblog::Command>.
+Run Giblog command which is defined as subclass of L<Giblog::Command>.
 
 =cut
