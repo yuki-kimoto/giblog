@@ -62,6 +62,12 @@ sub slurp {
       ]
     );
     
+    ok(-d "$home_dir/templates/static");
+    ok(-d "$home_dir/templates/common");
+    ok(-d "$home_dir/templates/blog");
+    ok(-f "$home_dir/templates/test.cgi");
+    ok(-f "$home_dir/templates/index.html");
+    
     my $readme_content = slurp "$home_dir/README";
     like($readme_content, qr|Giblog/Command/new/proto|);
   }
@@ -86,6 +92,12 @@ sub slurp {
         "$home_dir/templates",
       ]
     );
+
+    ok(-d "$home_dir/templates/static");
+    ok(-d "$home_dir/templates/common");
+    ok(-d "$home_dir/templates/blog");
+    ok(-f "$home_dir/templates/test.cgi");
+    ok(-f "$home_dir/templates/index.html");
     
     my $readme_content = slurp "$home_dir/README";
     like($readme_content, qr|Giblog/Command/new_website/proto|);
@@ -111,6 +123,11 @@ sub slurp {
         "$home_dir/templates",
       ]
     );
+
+    ok(-d "$home_dir/templates/static");
+    ok(-d "$home_dir/templates/common");
+    ok(-d "$home_dir/templates/blog");
+    ok(-f "$home_dir/templates/test.cgi");
     
     my $readme_content = slurp "$home_dir/README";
     like($readme_content, qr|Giblog/Command/new_blog/proto|);
