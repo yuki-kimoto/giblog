@@ -240,6 +240,22 @@ sub slurp {
     like($blog_content, qr/top/);
     like($blog_content, qr/bottom/);
     like($blog_content, qr/meta/);
+    
+    # CGI content
+    {
+      if ($^O eq 'linux') {
+        ok(-x "$home_dir/public/test.cgi");
+      }
+      
+      my $html = `$^X $home_dir/public/test.cgi`;
+      like($html, qr/Title/);
+      like($html, qr/Content/);
+      like($html, qr/header/);
+      like($html, qr/footer/);
+      like($html, qr/top/);
+      like($html, qr/bottom/);
+      like($html, qr/meta/);
+    }
   }
 
   # build - --home -H
