@@ -1,7 +1,5 @@
-0.73 2019/03/27
-  - support CGI build
 0.73 2019/03/26
-  - add .gitignore files which contains public to new, new_blog, new_website prototype
+  add .gitignore files which contains public to new, new_blog, new_website prototype
 0.72 2019/03/23
   - static file place is changed from public to templates/static
 0.71 2019/03/23
