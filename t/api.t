@@ -383,7 +383,6 @@ mkpath $test_dir;
       [
         "blog/1111.html",
         "index.html",
-        "test.cgi",
       ]
     );
   }
