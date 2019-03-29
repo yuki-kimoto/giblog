@@ -10,7 +10,7 @@ use Carp 'confess';
 use Pod::Usage 'pod2usage';
 use List::Util 'min';
 
-our $VERSION = '0.74';
+our $VERSION = '0.75';
 
 sub new {
   my $class = shift;
