@@ -126,6 +126,11 @@ sub slurp {
       like($list_content, qr|3/13 <a href="/blog/20190313121234.html">Hello Giblog 2</a>|);
       like($list_content, qr|12/1 <a href="/blog/20181201121234.html">Hello Giblog 1</a>|);
     }
+    # CGI file
+    if ($^O eq 'linux') {
+      ok(-x "$home_dir/templates/static/test.cgi");
+      ok(-x "$home_dir/public/test.cgi");
+    }
   }
 }
 

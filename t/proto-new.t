@@ -67,6 +67,12 @@ sub slurp {
     like($blog_content, qr/top/);
     like($blog_content, qr/bottom/);
     like($blog_content, qr/meta/);
+    
+    # CGI file
+    if ($^O eq 'linux') {
+      ok(-x "$home_dir/templates/static/test.cgi");
+      ok(-x "$home_dir/public/test.cgi");
+    }
   }
 }
 

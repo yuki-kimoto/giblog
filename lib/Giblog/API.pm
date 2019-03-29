@@ -7,6 +7,7 @@ use File::Basename 'dirname', 'basename';
 use File::Path 'mkpath';
 use Carp 'confess';
 use Encode 'encode', 'decode';
+use File::Copy 'copy';
 
 sub new {
   my $class = shift;
@@ -138,13 +139,19 @@ sub create_website_from_proto {
         my $user_dir = dirname $user_file;
         mkpath $user_dir;
         
-        open my $in_fh, '<', $proto_file
-          or confess "Can't open $user_file: $!";
-        my $proto_content = do { local $/; <$in_fh> };
+        copy $proto_file, $user_file
+          or die "Can't copy $proto_file to $user_file: $!";
         
-        open my $out_fh, '>', $user_file
-          or confess "Can't open $user_file: $!";
-        print $out_fh $proto_content;
+        my @stat = stat $proto_file;
+        my $permission = substr((sprintf "%03o", $stat[2]), -3);
+        if (substr($permission, 0, 1) == 5) {
+          substr($permission, 0, 1) = 7;
+        }
+        elsif (substr($permission, 0, 1) == 4) {
+          substr($permission, 0, 1) = 6;
+        }
+        chmod oct($permission), $user_file
+          or confess "Can't change permission: $!";
       },
       no_chdir => 1,
     },
@@ -217,21 +224,17 @@ sub copy_static_files_to_public {
     my $static_file = $self->rel_file("templates/static/$static_rel_file");
     my $public_file = $self->rel_file("public/$static_rel_file");
     
-    if (-d $static_file) {
-      mkpath $public_file;
-    }
-    else {
-      my $public_dir = dirname $public_file;
-      mkpath $public_dir;
-      open my $in_fh, '<', $static_file
-        or confess "Can't open file $static_file: $!";
-      local $/;
-      my $static_content = <$in_fh>;
-      open my $out_fh, '>', $public_file
-        or confess "Can't open file $public_file: $!";
-      binmode $out_fh;
-      print $out_fh $static_content;
-    }
+    next unless -f $static_file;
+
+    my $public_dir = dirname $public_file;
+    mkpath $public_dir;
+    
+    copy $static_file, $public_file
+      or confess "Can't copy $static_file to $public_file: $!";
+    my @stat = stat $static_file;
+    my $permission = substr((sprintf "%03o", $stat[2]), -3);
+    chmod oct($permission), $public_file
+      or confess "Can't change permission: $!";
   }
 }
 
