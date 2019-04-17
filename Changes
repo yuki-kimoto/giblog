@@ -1,5 +1,16 @@
+0.76 2019/04/17
+  - title tag is edited in new_blog, new_website
+    # Edit title
+    my $site_title = $config->{site_title};
+    if ($data->{file} eq 'index.html') {
+      $data->{title} = $site_title;
+    }
+    else {
+      $data->{title} = "$data->{title} - $site_title";
+    }
+  
 0.75 2019/03/29
-  - Remove script tag from inline element of parse_giblog_syntax 
+  - Remove script tag from inline element of parse_giblog_syntax
 0.74 2019/03/29
   - Keep cgi permission when file is copied from proto directory to public directory.
   - Keep cgi permission when file is copied from static directory to public directory.

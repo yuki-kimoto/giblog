@@ -85,4 +85,4 @@ t/pod-coverage.t
 t/pod.t
 t/proto-new.t
 t/proto-new_blog.t
-t/proto-new_hp.t
+t/proto-new_website.t

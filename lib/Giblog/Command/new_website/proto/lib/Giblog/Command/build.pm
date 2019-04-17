@@ -33,6 +33,15 @@ sub run {
     # Parse title
     $api->parse_title_from_first_h_tag($data);
 
+    # Edit title
+    my $site_title = $config->{site_title};
+    if ($data->{file} eq 'index.html') {
+      $data->{title} = $site_title;
+    }
+    else {
+      $data->{title} = "$data->{title} - $site_title";
+    }
+
     # Add page link
     $api->add_page_link_to_first_h_tag($data, {root => 'index.html'});
 
