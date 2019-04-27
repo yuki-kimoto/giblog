@@ -132,7 +132,24 @@
     margin:10px 0;
     line-height:1.5;
   }
-  
+
+	table {
+		border-collapse: collapse;
+		margin-left:15px;
+	}
+
+	table th {
+		border:1px solid #ddd;
+	  padding:7px;
+	  background:#eee;
+	  font-weight:bold;
+	}
+
+	table td {
+		border:1px solid #ddd;
+	  padding:7px;
+	}
+
   /* advanced */
   .day {
     text-align:right;
