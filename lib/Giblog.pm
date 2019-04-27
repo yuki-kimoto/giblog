@@ -155,7 +155,7 @@ Giblog have the following features.
 
 =item * In advanced features, you can customize list of entries page, use markdown syntax, and add twitter card, etc.
 
-=imte * Check web site using morbo command of Mojolicious. Contents changes is detected and build automatically.
+=item * Check web site using morbo command of Mojolicious. Contents changes is detected and build automatically.
 
 =item * Build 645 pages by 0.78 seconds in my starndard linux environment.
 
