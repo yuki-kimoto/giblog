@@ -1,3 +1,6 @@
+0.77 2019/05/02
+  - add css table default design to new_blog and new_website prototype
+  - add css setting "white-space:pre-wrap" to new_blog and new_website prototype
 0.76 2019/04/17
   - title tag is edited in new_blog, new_website
     # Edit title
