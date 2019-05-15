@@ -1,9 +1,9 @@
 /* Default settings */
   
   /* all */
-	* {
-	  margin:0;
-	  padding:0;
+  * {
+    margin:0;
+    padding:0;
     box-sizing: border-box;
     -webkit-text-size-adjust:100%;
   }
@@ -40,19 +40,19 @@
     width:100%;
     margin: 0 auto 15px auto;
   }
-	.main:after {
-		content:"";
-		display:block;
-		clear:both;
-	}
-	
-	/* content */
-	.content {
+  .main:after {
+    content:"";
+    display:block;
+    clear:both;
+  }
+  
+  /* content */
+  .content {
     float:left;
     width:74%;
-	}
-	
-	/* entry */
+  }
+  
+  /* entry */
   .entry {
     border:1px solid #C0C0C0;
     background:white;
@@ -134,22 +134,22 @@
     line-height:1.5;
   }
 
-	table {
-		border-collapse: collapse;
-		margin-left:15px;
-	}
+  table {
+    border-collapse: collapse;
+    margin-left:15px;
+  }
 
-	table th {
-		border:1px solid #ddd;
-	  padding:7px;
-	  background:#eee;
-	  font-weight:bold;
-	}
+  table th {
+    border:1px solid #ddd;
+    padding:7px;
+    background:#eee;
+    font-weight:bold;
+  }
 
-	table td {
-		border:1px solid #ddd;
-	  padding:7px;
-	}
+  table td {
+    border:1px solid #ddd;
+    padding:7px;
+  }
   
   /* advanced */
   .day {
