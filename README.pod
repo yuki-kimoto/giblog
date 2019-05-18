@@ -26,7 +26,7 @@ You can create B<your website and blog> easily.
 
 All created files is B<static HTML>, so you can manage them using B<git>.
 
-You can B<customize your website> by Perl language if you need.
+You can B<customize your website by Perl>.
 
 Giblog is in beta test before 1.0 release. Note that features is changed without warnings.
 
