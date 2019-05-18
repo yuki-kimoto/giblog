@@ -6,7 +6,7 @@ B<Build Website:>
 
 =begin html
 
-<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/p/perlcodesample/20180808/20180808073552.png?1533681423"><br>
+<img src="/images/giblog-website.png" style="widht:98%;border:1px solid #ddd"><br>
 
 =end html
 
@@ -14,7 +14,7 @@ B<Build Blog:>
 
 =begin html
 
-<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/p/perlcodesample/20180808/20180808073552.png?1533681423"><br>
+<img src="/images/giblog-blog.png" style="widht:98%;border:1px solid #ddd"><br>
 
 =end html
 
