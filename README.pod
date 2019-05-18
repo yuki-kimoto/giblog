@@ -4,17 +4,17 @@
 
 <h2>Website Initial Example</h2>
 
-<a href="https://new-website-example.giblog.net/">Website Initial Example</a><br>
+<a href="https://new-website-example.giblog.net/">Website Initial Example</a><br><br>
 
-<img src="/images/giblog-website.png" style="widht:98%;border:1px solid #ddd"><br>
+<a href="https://new-website-example.giblog.net/"><img src="/images/giblog-website.png" style="widht:98%;border:1px solid #ddd"></a><br>
 
 <h2>Build Initial Example</h2>
 
-<a href="https://new-blog-example.giblog.net/">Blog Initial Example</a><br>
+<a href="https://new-blog-example.giblog.net/">Blog Initial Example</a><br><br>
 
-<img src="/images/giblog-blog.png" style="widht:98%;border:1px solid #ddd"><br>
+<a href="https://new-blog-example.giblog.net/"><img src="/images/giblog-blog.png" style="widht:98%;border:1px solid #ddd"></a><br>
 
-<b>Do you need to create personal site or blog, or corporate site or blog?</b><br>
+<b>Do you need to create personal site or blog, or corporate site or blog?</b><br><br>
 
 If you are so, let's read the following description, features, tutorials.
 
