@@ -1,8 +1,8 @@
 =head1 NAME
 
-B<Giblog> - B<Website> and B<Blog> builder for git generation
+B<Giblog> - B<Website and Blog builder> for git generation
 
-B<Website:>
+B<Build Website:>
 
 =begin html
 
@@ -10,7 +10,7 @@ B<Website:>
 
 =end html
 
-B<Blog:>
+B<Build Blog:>
 
 =begin html
 
