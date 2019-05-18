@@ -1,18 +1,24 @@
 =begin html
 
-<h1>Giblog - Website and Blog builder written by Perl</h1>
+<h1>Giblog - Website and Blog builder</h1>
 
-<h2>Website Initial Example</h2>
+Giblog is Website and Blog builder written by Perl.
 
-<a href="https://new-website-example.giblog.net/">Website Initial Example</a><br><br>
+<h2>Website Example</h2>
+
+This is Website initial example.
+
+<a href="https://new-website-example.giblog.net/">Website Example</a><br><br>
 
 <a href="https://new-website-example.giblog.net/"><img src="/images/giblog-website.png" style="widht:98%;border:1px solid #ddd"></a><br>
 
-<h2>Build Initial Example</h2>
+<h2>Build Example</h2>
 
-<a href="https://new-blog-example.giblog.net/">Blog Initial Example</a><br><br>
+This is Blog initial example.
 
-<a href="https://new-blog-example.giblog.net/"><img src="/images/giblog-blog.png" style="widht:98%;border:1px solid #ddd"></a><br>
+<a href="https://new-blog-example.giblog.net/">Blog Example</a><br><br>
+
+<a href="https://new-blog-example.giblog.net/"><img src="/images/giblog-blog.png" style="widht:98%;border:1px solid #ddd"></a><br><br>
 
 <b>Do you need to create personal site or blog, or corporate site or blog?</b><br><br>
 
