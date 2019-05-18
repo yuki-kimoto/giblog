@@ -1,10 +1,8 @@
-=head1 NAME
-
-B<Giblog> - B<Website and Blog builder>
-
-B<Build Website:>
-
 =begin html
+
+<h1>Giblog - Website and Blog builder</h1>
+
+<h2>Build Website</h2>
 
 <a href="https://new-website-example.giblog.net/">Website Initial Template</a><br>
 
@@ -12,7 +10,7 @@ B<Build Website:>
 
 =end html
 
-B<Build Blog:>
+<h2>Build Blog</h2>
 
 =begin html
 
