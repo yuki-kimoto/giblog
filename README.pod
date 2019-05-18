@@ -1,22 +1,22 @@
 =begin html
 
-<h1>Giblog - Website and Blog builder</h1>
+<h1>Giblog - Website and Blog builder written by Perl</h1>
 
-<h2>Build Website</h2>
+<h2>Website Initial Example</h2>
 
-<a href="https://new-website-example.giblog.net/">Website Initial Template</a><br>
+<a href="https://new-website-example.giblog.net/">Website Initial Example</a><br>
 
 <img src="/images/giblog-website.png" style="widht:98%;border:1px solid #ddd"><br>
 
-=end html
+<h2>Build Initial Example</h2>
 
-<h2>Build Blog</h2>
-
-=begin html
-
-<a href="https://new-blog-example.giblog.net/">Blog Initial Template</a><br>
+<a href="https://new-blog-example.giblog.net/">Blog Initial Example</a><br>
 
 <img src="/images/giblog-blog.png" style="widht:98%;border:1px solid #ddd"><br>
+
+<b>Do you need to create personal site or blog, or corporate site or blog?</b><br>
+
+If you are so, let's read the following description, features, tutorials.
 
 =end html
 
