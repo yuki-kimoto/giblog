@@ -6,9 +6,9 @@ B<Build Website:>
 
 =begin html
 
-<img src="/images/giblog-website.png" style="widht:98%;border:1px solid #ddd"><br>
-
 <a href="https://new-website-example.giblog.net/">Website Initial Template</a><br>
+
+<img src="/images/giblog-website.png" style="widht:98%;border:1px solid #ddd"><br>
 
 =end html
 
@@ -16,9 +16,9 @@ B<Build Blog:>
 
 =begin html
 
-<img src="/images/giblog-blog.png" style="widht:98%;border:1px solid #ddd"><br>
-
 <a href="https://new-blog-example.giblog.net/">Blog Initial Template</a><br>
+
+<img src="/images/giblog-blog.png" style="widht:98%;border:1px solid #ddd"><br>
 
 =end html
 
