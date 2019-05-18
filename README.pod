@@ -1,6 +1,6 @@
 =head1 NAME
 
-B<Giblog - Website and Blog builder for git generation>
+B<Giblog> - B<Website> and B<Blog> builder for git generation
 
 B<Website:>
 
