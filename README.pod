@@ -12,7 +12,7 @@ This is Website initial example.
 
 <a href="https://new-website-example.giblog.net/"><img src="/images/giblog-website.png" style="widht:98%;border:1px solid #ddd"></a><br>
 
-<h2>Build Example</h2>
+<h2>Blog Example</h2>
 
 This is Blog initial example.
 
