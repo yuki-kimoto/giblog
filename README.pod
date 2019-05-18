@@ -1,6 +1,22 @@
 =head1 NAME
 
-Giblog - Blog builder for git generation
+B<Giblog - Website and Blog builder for git generation>
+
+B<Website:>
+
+=begin html
+
+<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/p/perlcodesample/20180808/20180808073552.png?1533681423"><br>
+
+=end html
+
+B<Blog:>
+
+=begin html
+
+<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/p/perlcodesample/20180808/20180808073552.png?1533681423"><br>
+
+=end html
 
 =head1 DESCRIPTION
 
@@ -12,12 +28,7 @@ All created files is static HTML, so you can manage them using git.
 
 Giblog is in beta test before 1.0 release. Note that features is changed without warnings.
 
-=begin html
-
-<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/p/perlcodesample/20180808/20180808073552.png?1533681423"><br>
-
-=end html
-  
+ 
 =head1 SYNOPSYS
   
   # New empty web site
