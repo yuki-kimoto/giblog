@@ -20,11 +20,13 @@ B<Build Blog:>
 
 =head1 DESCRIPTION
 
-Giblog is B<Website and Blog builder> written by Perl language.
+Giblog is B<Website and Blog builder> written by Perl.
 
 You can create B<your website and blog> easily.
 
 All created files is B<static HTML>, so you can manage them using B<git>.
+
+You can B<customize your website> by Perl language if you need.
 
 Giblog is in beta test before 1.0 release. Note that features is changed without warnings.
 
