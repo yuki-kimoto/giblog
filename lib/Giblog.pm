@@ -90,15 +90,17 @@ sub config { shift->{config} }
 
 =head1 NAME
 
-Giblog - Blog builder for git generation
+Giblog - Website and Blog builder
 
 =head1 DESCRIPTION
 
-Giblog is B<Blog builder> written by Perl language.
+Giblog is B<Website and Blog builder> written by Perl.
 
-You can create B<your onw website and blog> easily.
+You can create B<your website and blog> easily.
 
-All created files is static HTML, so you can manage them using git.
+All created files is B<static HTML>, so you can manage them using B<git>.
+
+You can B<customize your website by Perl>.
 
 Giblog is in beta test before 1.0 release. Note that features is changed without warnings.
 
@@ -137,35 +139,31 @@ Giblog have the following features.
 
 =over 4
 
-=item * Build both website and blog.
+=item * Build Website and Blog.
 
 =item * Linux, Mac OS, Windows Support. (In Windows, recommend installation of msys2)
 
-=item * Default CSS for smart phone site
+=item * Reponsible web site support. Default CSS is setup for PC and Smart phone.
 
-=item * Content is wrapped by top section, bottom section, header, footer, HTML head, and side var.
+=item * Header, Hooter and Side bar support
 
-=item * Add p tag automatically. Escape E<lt>, E<gt> automatically in pre tag
+=item * You can customize Top and Bottom section of content.
 
-=item * Set title tag automatically from text of first h1-h6 tag.
+=item * Automatical Line break. p tag is automatically added.
 
-=item * Set meta description tag automatically from text of first p tag.
+=item * Escape E<lt>, E<gt> automatically in pre tag
 
-=item * You can use above all features or choice some of them, and can add more advanced features.
+=item * Title tag is automatically added from first h1-h6 tag.
 
-=item * In advanced features, you can customize list of entries page, use markdown syntax, and add twitter card, etc.
+=item * Description meta tag is automatically added from first p tag.
 
-=item * Check web site using morbo command of Mojolicious. Contents changes is detected and build automatically.
+=item * You can customize your web site by Perl programming laugnage.
 
-=item * Build 645 pages by 0.78 seconds in my starndard linux environment.
+=item * You can serve your web site in local environment. Contents changes is detected and build automatically(need L<Mojolicious>).
 
-=item * Use JavaScript. Display the ad
+=item * Build 645 pages by 0.78 seconds in starndard linux environment.
 
-=item * You can manage files by git easily, and deploy them to rental server.
-
-=item * If you use Github Pages, you can create https web site for free.
-
-=item * Giblog is used to build Perl Zemi web site.
+=item * All build files is Static. you can manage files by Git.
 
 =back
 
