@@ -20,6 +20,14 @@ This is Blog initial example.
 
 <a href="https://new-blog-example.giblog.net/"><img src="/images/giblog-blog.png" style="widht:98%;border:1px solid #ddd"></a><br><br>
 
+<h2>Information Site</h2>
+
+This is Information site example.
+
+<a href="https://tutorial.perlzemi.com/">Blog Example</a><br><br>
+
+<a href="https://tutorial.perlzemi.com/"><img src="/images/perlzemi.png" style="widht:98%;border:1px solid #ddd"></a><br><br>
+
 <b>Do you need to create personal site or blog, or corporate site or blog?</b><br><br>
 
 If you are so, let's read the following description, features, tutorials.
