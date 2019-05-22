@@ -244,6 +244,13 @@ Then open these file, write h2 head and content.
 
 Header and footer is automatically added.
 
+You can create sub directory.
+
+  templates/profile/more.html
+
+Note that "templates/static" and "templates/common" is special directories.
+Don't use these directories for content page.
+
 =head2 Add static page
 
 If you want to add static files like css, images, JavaScript, You put these file into "templates/static" directory.
