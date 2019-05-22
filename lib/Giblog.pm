@@ -205,7 +205,7 @@ List page "templates/list.html" is created, which show all entries links.
 
 CSS supports responsive design and provide basic build script.
 
-=head2 Add entry page
+=head2 Add blog entry page
 
 You need to change directory to "mysite" before run "add" command if you are in other directory.
 
@@ -220,6 +220,39 @@ Created file name is, for example,
   templates/blog/20080108132865.html
 
 This file name contains current date and time.
+
+Then open this file, write h2 head and content.
+
+  <h2>How to use Giblog</h2>
+
+  How to use Giblog. This is ...
+
+Header and footer is automatically added.
+
+=head2 Add content page
+
+If you want to create content page, put file, for example "access.html", or "profile.html" into "templates" directory.
+
+  templates/access.html
+  templates/profile.html
+
+Then open these file, write h2 head and content.
+
+  <h2>How to use Giblog</h2>
+
+  How to use Giblog. This is ...
+
+Header and footer is automatically added.
+
+=head2 Add static page
+
+If you want to add static files like css, images, JavaScript, You put these file into "templates/static" directory.
+
+Files in "templates/static" directory is only copied to public files by build script.
+
+  templates/static/js/jquery.js
+  templates/static/images/logo.png
+  templates/static/css/more.css
 
 =head2 Build web site
 
@@ -332,6 +365,49 @@ You see the following message.
    Server start
 
 If files in "templates" directory is changed, Web site is automatically rebuild.
+
+=head2 Customize header or footer, etc
+
+You can customize header, footer, side bar, top of content, bottom of content.
+  
+  ------------------------
+  Header
+  ------------------------
+  Top of content   |
+  -----------------|
+                   |Side
+  Content          |bar
+                   |
+  -----------------|
+  Bottom of content|
+  ------------------------
+  Footer
+  ------------------------
+
+If you want to edit these section, you edit these files.
+
+  templates/common/bottom.html
+  templates/common/footer.html
+  templates/common/header.html
+  templates/common/side.html
+  templates/common/top.html
+
+=head2 Customize HTML header
+
+You can customize HTML header.
+
+  <html>
+    <head>
+      <!-- HTML header -->
+    </head>
+    <body>
+    
+    </body>
+  </html>
+
+If you want to edit HTML header, you edit the following file.
+
+  templates/common/meta.html
 
 =head1 METHODS
 
