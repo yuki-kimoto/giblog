@@ -1,4 +1,4 @@
-0.77 2019/05/15
+0.90 2019/05/15
   - add css table default design to new_blog and new_website prototype
   - add css setting "white-space:pre-wrap" to new_blog and new_website prototype
   - remove tab in common.css
