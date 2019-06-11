@@ -19,9 +19,17 @@ sub run {
 
 1;
 
+=encoding utf8
+
 =head1 NAME
 
-Giblog::Command::new - new command
+Giblog::Command::new - Empty website creating command
+
+=head1 DESCRIPTION
+
+L<Giblog::Command::new> is a command to create empty website.
+
+You can also create your website creating command inheriting L<Giblog::Command::new> like L<Giblog::Command::new_blog> or L<Giblog::Command::new_website>.
 
 =head1 METHODS
 
@@ -30,6 +38,10 @@ implements the following new ones.
 
 =head2 run
 
-  $command->run(@argv);
+  $command->run($website_name);
 
-Execute new command.
+Create website with website name.
+
+All contents is copied from C<proto> directory.
+
+C<proto> directory path is "/path/Giblog/Command/new/proto", if module loaded path is "/path/Giblog/Command/new.pm".

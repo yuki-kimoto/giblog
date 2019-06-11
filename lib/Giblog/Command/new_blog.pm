@@ -7,9 +7,15 @@ use warnings;
 
 1;
 
+=encoding utf8
+
 =head1 NAME
 
-Giblog::Command::new_blog - new_blog command
+Giblog::Command::new_blog - Blog creating command
+
+=head1 DESCRIPTION
+
+L<Giblog::Command::new_blog> is a command to create blog.
 
 =head1 METHODS
 

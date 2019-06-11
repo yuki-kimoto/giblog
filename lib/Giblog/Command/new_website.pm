@@ -7,9 +7,15 @@ use warnings;
 
 1;
 
+=encoding utf8
+
 =head1 NAME
 
-Giblog::Command::new_website - new_website command
+Giblog::Command::new_website - Website creating command
+
+=head1 DESCRIPTION
+
+L<Giblog::Command::new_website> is a command to create a website.
 
 =head1 METHODS
 
