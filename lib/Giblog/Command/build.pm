@@ -13,17 +13,22 @@ sub run {
 
 1;
 
-=head1 NAME
+=head1 名前
 
-Giblog::Command::build - build command
+Giblog::Command::build - Webサイト構築コマンド
 
-=head1 METHODS
+=head1 説明
 
-L<Giblog::Command::build> inherits all methods from L<Giblog::Command> and
-implements the following new ones.
+L<Giblog::Command::build>はWebサイトを構築するためのコマンドです。
+
+=head1 メソッド
+
+L<Giblog::Command::build>はL<Giblog::Command>のすべてのメソッドを継承しており、次の新しいメソッドを実装しています。
 
 =head2 run
 
-  $command->run(@argv);
+  $command->run;
 
-Execute build command.
+Webサイトを構築します。
+
+このメソッドは、サブクラスでオーバーライドされることが予定されています。
