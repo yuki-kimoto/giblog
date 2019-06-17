@@ -90,19 +90,37 @@ sub config { shift->{config} }
 
 =head1 NAME
 
-Giblog - Website and Blog builder
+Giblog - Web site and Blog builders you can manage with Git
+
+=begin html
+
+<p>
+  <b>Website</b>
+</p>
+<p>
+  <a href="https://new-website-example.giblog.net/"><img src="https://github.com/yuki-kimoto/giblog/raw/master/images/giblog-website.png"></a>
+</p>
+<p>
+  <a href="https://new-website-example.giblog.net/">Website Example</a>
+</p>
+<p>
+  <b>Blog</b>
+</p>
+<p>
+  <a href="https://new-blog-example.giblog.net/"><img src="https://github.com/yuki-kimoto/giblog/raw/master/images/giblog-blog.png"></a>
+</p>
+<p>
+  <a href="https://new-blog-example.giblog.net/">Blog Example</a>
+</p>
+
+=end html
 
 =head1 DESCRIPTION
 
 Giblog is B<Website and Blog builder> written by Perl.
-
 You can create B<your website and blog> easily.
-
-All created files is B<static HTML>, so you can manage them using B<git>.
-
+All created files is B<static files>, so you can manage them using B<git>.
 You can B<customize your website by Perl>.
-
-Giblog is in beta test before 1.0 release. Note that features is changed without warnings.
 
 =head1 SYNOPSYS
   
@@ -141,13 +159,17 @@ Giblog have the following features.
 
 =item * Build Website and Blog.
 
-=item * Linux, Mac OS, Windows Support. (In Windows, recommend installation of msys2)
+=item * Git mangement. All created files is Static. you can manage files by git.
 
-=item * Responsive web site support. Default CSS is setup for PC and Smart phone.
+=item * Linux, macOS, Windows Support. (In Windows, recommend installation of msys2)
+
+=item * Provide default CSS for Smart phone site.
 
 =item * Header, Hooter and Side bar support
 
 =item * You can customize Top and Bottom section of content.
+
+=item * You can customize HTML head.
 
 =item * Automatical Line break. p tag is automatically added.
 
@@ -157,13 +179,11 @@ Giblog have the following features.
 
 =item * Description meta tag is automatically added from first p tag.
 
-=item * You can customize your web site by Perl programming laugnage.
+=item * You can customize your web site by Perl.
 
 =item * You can serve your web site in local environment. Contents changes is detected and build automatically(need L<Mojolicious>).
 
-=item * Build 645 pages by 0.78 seconds in starndard linux environment.
-
-=item * All build files is Static. you can manage files by Git.
+=item * Fast. Build 645 pages by 0.78 seconds in starndard linux environment.
 
 =back
 
