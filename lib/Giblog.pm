@@ -142,7 +142,7 @@ You can B<customize your website by Perl>.
   # Build web site
   giblog build
   
-  # Serve web site(need Mojolicious)
+  # Check web site in local environment(need Mojolicious)
   morbo serve.pl
 
   # Add new entry with home directory
@@ -191,39 +191,37 @@ Giblog have the following features.
 
 =head2 Create web site
 
-B<1. Empty website>
+B<1. Create Empty website>
 
 "new" command create empty website. "mysite" is a name of your web site.
 
   giblog new mysite
 
 If you want to create empty site, choice this command.
+Templates and CSS is empty and provide minimal site building process.
 
-Templates and CSS is empty and provide minimal build script.
-
-B<2. Website>
+B<2. Create Website>
 
 "new_website" command create simple website.  "mysite" is a name of your web site.
 
   giblog new_website mysite
 
 If you want to create simple website, choice this command.
+Top page "templates/index.html" is created.
 
-Top page "templates/index.html" is created. CSS supports responsive design and provide basic build script.
+CSS is responsive design and supports smart phone and provide basic site building process.
 
-B<3. Blog>
+B<3. Create Blog>
 
 "new_blog" command create empty website.  "mysite" is a name of your web site.
 
   giblog new_blog mysite
 
 If you want to create blog, choice this prototype.
-
 Top page "templates/index.html" is created, which show 7 days entries.
-
 List page "templates/list.html" is created, which show all entries links.
 
-CSS supports responsive design and provide basic build script.
+CSS is responsive design and supports smart phone and provide basic blog building process.
 
 =head2 Add blog entry page
 
@@ -241,13 +239,13 @@ Created file name is, for example,
 
 This file name contains current date and time.
 
-Then open this file, write h2 head and content.
+To write new entry, You open it, write h2 head and content.
 
   <h2>How to use Giblog</h2>
 
   How to use Giblog. This is ...
 
-Header and footer is automatically added.
+Other parts wrapping content like Header and footer is automatically added.
 
 =head2 Add content page
 
@@ -275,7 +273,7 @@ Don't use these directories for content page.
 
 If you want to add static files like css, images, JavaScript, You put these file into "templates/static" directory.
 
-Files in "templates/static" directory is only copied to public files by build script.
+Files in "templates/static" directory is only copied to public files by build process.
 
   templates/static/js/jquery.js
   templates/static/images/logo.png
@@ -293,7 +291,7 @@ You need to change directory to "mysite" before run "build" command if you are i
 
 What is build process?
 
-Build script is writen in "lib/Giblog/Command/build.pm".
+build process is writen in "lib/Giblog/Command/build.pm".
 
 "build" command only execute "run" method in "Giblog::Command::build.pm" .
 
@@ -376,7 +374,7 @@ Build script is writen in "lib/Giblog/Command/build.pm".
     $self->create_list;
   }
 
-You can customize build script if you need.
+You can customize build process if you need.
 
 If you need to know Giblog API, see L<Giblog::API>.
 
