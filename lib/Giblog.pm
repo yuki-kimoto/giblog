@@ -245,11 +245,11 @@ To write new entry, You open it, write h2 head and content.
 
   How to use Giblog. This is ...
 
-Other parts wrapping content like Header and footer is automatically added.
+Other parts wrapping content like Header and footer is automatically added in building process.
 
 =head2 Add content page
 
-If you want to create content page, put file, for example "access.html", or "profile.html" into "templates" directory.
+If you want to create content page, put file into "templates" directory.
 
   templates/access.html
   templates/profile.html
@@ -260,14 +260,18 @@ Then open these file, write h2 head and content.
 
   How to use Giblog. This is ...
 
-Header and footer is automatically added.
+Other parts wrapping content like Header and footer is automatically added in building process.
 
-You can create sub directory.
+You can put file into sub directory.
 
   templates/profile/more.html
 
 Note that "templates/static" and "templates/common" is special directories.
-Don't use these directories for content page.
+Don't push content page files into these directories.
+
+  # Special directories you don't put content page files into
+  templates/static
+  templates/common
 
 =head2 Add static page
 
@@ -278,6 +282,49 @@ Files in "templates/static" directory is only copied to public files by build pr
   templates/static/js/jquery.js
   templates/static/images/logo.png
   templates/static/css/more.css
+
+=head2 Customize header or footer, side bar, top of content, bottom of content
+
+You can customize header, footer, side bar, top of content, bottom of content.
+  
+  ------------------------
+  Header
+  ------------------------
+  Top of content   |
+  -----------------|
+                   |Side
+  Content          |bar
+                   |
+  -----------------|
+  Bottom of content|
+  ------------------------
+  Footer
+  ------------------------
+
+If you want to edit these section, you edit these files.
+
+  templates/common/header.html     Header
+  templates/common/top.html        Top of content
+  templates/common/side.html       Side bar
+  templates/common/bottom.html     Bottom of content
+  templates/common/footer.html     Footer
+
+=head2 Customize HTML header
+
+You can customize HTML header.
+
+  <html>
+    <head>
+      <!-- HTML header -->
+    </head>
+    <body>
+    
+    </body>
+  </html>
+
+If you want to edit HTML header, you edit the following file.
+
+  templates/common/meta.html
 
 =head2 Build web site
 
@@ -390,49 +437,6 @@ You see the following message.
    Server start
 
 If files in "templates" directory is changed, Web site is automatically rebuild.
-
-=head2 Customize header or footer, etc
-
-You can customize header, footer, side bar, top of content, bottom of content.
-  
-  ------------------------
-  Header
-  ------------------------
-  Top of content   |
-  -----------------|
-                   |Side
-  Content          |bar
-                   |
-  -----------------|
-  Bottom of content|
-  ------------------------
-  Footer
-  ------------------------
-
-If you want to edit these section, you edit these files.
-
-  templates/common/bottom.html
-  templates/common/footer.html
-  templates/common/header.html
-  templates/common/side.html
-  templates/common/top.html
-
-=head2 Customize HTML header
-
-You can customize HTML header.
-
-  <html>
-    <head>
-      <!-- HTML header -->
-    </head>
-    <body>
-    
-    </body>
-  </html>
-
-If you want to edit HTML header, you edit the following file.
-
-  templates/common/meta.html
 
 =head1 METHODS
 
