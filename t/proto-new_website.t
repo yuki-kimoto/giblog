@@ -42,7 +42,7 @@ sub slurp {
     
     my $index_file = "$home_dir/public/index.html";
     my @blog_files = glob "$home_dir/public/blog/*";
-    is(scalar @blog_files, 1);
+    is(scalar @blog_files, 9);
     
     my $index_content = slurp $index_file;
     my $blog_content = slurp $blog_files[0];

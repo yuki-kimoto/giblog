@@ -1,0 +1,93 @@
+<h2>How to use Giblog😁</h2>
+
+How to use Giblog.
+
+<h3>Create web site</h3>
+
+Create web site by new command.
+
+<pre>
+giblog new mysite
+</pre>
+
+Other prototypes is also available.
+
+<pre>
+giblog new_website mysite
+giblog new_blog mysite
+</pre>
+
+After creating web site, change directory to mysite
+
+<pre>
+cd mysite
+</pre>
+
+<h3>Add new entry</h3>
+
+Add new entry by add command.
+
+<pre>
+giblog add
+</pre>
+
+<h3>Build</h3>
+
+Build web site.
+
+<pre>
+giblog build
+</pre>
+
+If you want to customize build process, you open lib/Giblog/Command/Build.pm and edit run subroutine.
+
+<h3>Serve</h3>
+
+You can serve your web site by morbo command if you have Mojolicious.
+
+<pre>
+morbo serve.pl
+</pre>
+
+build command is automatically executed after editting files in templates directory.
+
+<h3>Examples</h3>
+
+Some examples.
+
+<blockquote>
+  This is a quote.
+</blockquote>
+
+<div>
+  Hello
+</div>
+
+<h4>Sub header</h4>
+
+<pre>
+<><><>
+</pre>
+
+<pre>
+1 > 2;
+1 < 3;
+</pre>
+
+<ul>
+  <li>Item1</li>
+  <li>Item2</li>
+  <li>Item3</li>
+</ul>
+
+<table>
+  <tr>
+    <th>Head1</th><th>Head2</th>
+  </tr>
+  <tr>
+    <td>Item1</td><td>Item2</td>
+  </tr>
+</table>
+
+<a href="https://github.com/yuki-kimoto/giblog">Giblog</a>
+
