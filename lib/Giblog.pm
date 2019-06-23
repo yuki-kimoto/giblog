@@ -92,6 +92,8 @@ sub config { shift->{config} }
 
 Giblog - Web site and Blog builders you can manage with Git
 
+B<Giblog is in beta test before 1.0 release. Note that features is changed without warnings.>
+
 =begin html
 
 <p>
@@ -208,6 +210,7 @@ B<2. Create Website>
 
 If you want to create simple website, choice this command.
 Top page "templates/index.html" is created.
+List page "templates/list.html" is created, which is prepare to create blog entry pages easily for feature.
 
 CSS is responsive design and supports smart phone and provide basic site building process.
 
