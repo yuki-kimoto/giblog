@@ -84,7 +84,7 @@ lib/Giblog/Command/new_website/proto/templates/static/js/.gitkeep
 lib/Giblog/Command/new_website/proto/templates/static/test.cgi
 Makefile.PL
 MANIFEST			This list of files
-README.pod
+README.md
 README_DEVEL.txt
 script/giblog
 t/00-load.t
