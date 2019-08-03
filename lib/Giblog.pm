@@ -10,7 +10,7 @@ use Carp 'confess';
 use Pod::Usage 'pod2usage';
 use List::Util 'min';
 
-our $VERSION = '0.91';
+our $VERSION = '1.00';
 
 sub new {
   my $class = shift;
@@ -91,8 +91,6 @@ sub config { shift->{config} }
 =head1 NAME
 
 Giblog - Web site and Blog builders you can manage with Git
-
-B<Giblog is in beta test before 1.0 release. Note that features is changed without warnings.>
 
 =begin html
 
