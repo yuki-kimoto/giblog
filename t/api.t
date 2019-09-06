@@ -581,6 +581,18 @@ EOS
     my $content = $data->{content};
     is($content, '<div class="title"><a href="/">Perl Tutorial</a></div>');
   }
+  
+  # add_page_link - add page link - context_root
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $data = {};
+    $data->{file} = 'index.html';
+    $data->{content} = '<div class="title">Perl Tutorial</div>';
+    $api->add_page_link($data, {context_root => 'project'});
+    my $content = $data->{content};
+    is($content, '<div class="title"><a href="/project/index.html">Perl Tutorial</a></div>');
+  }
 
   # add_page_link - not found
   {

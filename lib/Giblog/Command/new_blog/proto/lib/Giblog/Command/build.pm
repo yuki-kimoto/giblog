@@ -85,6 +85,12 @@ sub create_index {
   
   # Config
   my $config = $api->config;
+
+  # Context Root
+  my $context_root =  $config->{context_root} || '';
+  if ($context_root && $context_root !~ m|^/|){
+    $context_root = '/' . $context_root;
+  }
   
   # Template files
   my @template_files = glob $api->rel_file('templates/blog/*');
@@ -115,7 +121,7 @@ sub create_index {
     $api->parse_giblog_syntax($data);
 
     # Add page link
-    $api->add_page_link_to_first_h_tag($data, {root => 'index.html'});
+    $api->add_page_link_to_first_h_tag($data, {root => 'index.html', context_root => $context_root});
     
     # Add day
     $data->{content} = <<"EOS";
@@ -138,7 +144,7 @@ EOS
   my $data = {content => $content};
   
   # Before days link
-  $data->{content} .= qq(\n<div class="before-days"><a href="/list.html">Before Days</a></div>);
+  $data->{content} .= qq(\n<div class="before-days"><a href="$context_root/list.html">Before Days</a></div>);
   
   # Title
   $data->{title} = $config->{site_title};
@@ -172,7 +178,13 @@ sub create_list {
   
   # Config
   my $config = $api->config;
-  
+
+  # Context Root
+  my $context_root =  $config->{context_root} || '';
+  if ($context_root && $context_root !~ m|^/|){
+    $context_root = '/' . $context_root;
+  }
+
   # Template files
   my @template_files = glob $api->rel_file('templates/blog/*');
   @template_files = reverse sort @template_files;
@@ -226,7 +238,7 @@ EOS
       # Add list
       $content .= <<"EOS";
   <li style="list-style:none">
-    $month/$mday <a href="/$file_entry">$title</a>
+    $month/$mday <a href="$context_root/$file_entry">$title</a>
   </li>
 EOS
     }
@@ -237,7 +249,7 @@ EOS
   }
   
   # Add page link
-  $api->add_page_link_to_first_h_tag($data);
+  $api->add_page_link_to_first_h_tag($data, {context_root => $context_root});
 
   # Title
   $data->{title} = "Entries - $config->{site_title}";

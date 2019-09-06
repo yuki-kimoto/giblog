@@ -15,7 +15,13 @@ sub run {
   
   # Read config
   my $config = $api->read_config;
-  
+
+  # Context Root
+  my $context_root =  $config->{context_root} || '';
+  if ($context_root && $context_root !~ m|^/|){
+    $context_root = '/' . $context_root;
+  }
+
   # Copy static files to public
   $api->copy_static_files_to_public;
 
@@ -45,7 +51,7 @@ sub run {
     }
 
     # Add page link
-    $api->add_page_link_to_first_h_tag($data, {root => 'index.html'});
+    $api->add_page_link_to_first_h_tag($data, {root => 'index.html', context_root => $context_root});
 
     # Parse description
     $api->parse_description_from_first_p_tag($data);
@@ -82,7 +88,13 @@ sub create_list {
   
   # Config
   my $config = $api->config;
-  
+
+  # Context Root
+  my $context_root =  $config->{context_root} || '';
+  if ($context_root && $context_root !~ m|^/|){
+    $context_root = '/' . $context_root;
+  }
+
   # Template files
   my @template_files = glob $api->rel_file('templates/blog/*');
   @template_files = reverse sort @template_files;
@@ -136,7 +148,7 @@ EOS
       # Add list
       $content .= <<"EOS";
   <li style="list-style:none">
-    $month/$mday <a href="/$file_entry">$title</a>
+    $month/$mday <a href="$context_root/$file_entry">$title</a>
   </li>
 EOS
     }
@@ -147,7 +159,7 @@ EOS
   }
   
   # Add page link
-  $api->add_page_link_to_first_h_tag($data);
+  $api->add_page_link_to_first_h_tag($data, {context_root => $context_root});
 
   # Title
   $data->{title} = "Entries - $config->{site_title}";
