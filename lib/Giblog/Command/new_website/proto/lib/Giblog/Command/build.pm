@@ -4,6 +4,7 @@ use base 'Giblog::Command';
 
 use strict;
 use warnings;
+use utf8;
 
 use File::Basename 'basename';
 
