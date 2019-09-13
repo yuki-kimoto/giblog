@@ -1,3 +1,6 @@
+1.01 2019/09/13
+  - Support base_path config to support sub-directory and github projects
+  - add utf8 pragma to Giblog::Command::new, Giblog::Command::new_website, Giblog::Command::new_blog
 1.00 2019/08/03
   - First major release!
     Let' enjoy Giblog!
