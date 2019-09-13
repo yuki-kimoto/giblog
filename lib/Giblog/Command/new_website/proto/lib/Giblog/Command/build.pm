@@ -17,11 +17,8 @@ sub run {
   # Read config
   my $config = $api->read_config;
 
-  # Context Root
+  # Base path
   my $base_path =  $config->{base_path} || '';
-  if ($base_path && $base_path !~ m|^/|){
-    $base_path = '/' . $base_path;
-  }
 
   # Copy static files to public
   $api->copy_static_files_to_public;
@@ -90,11 +87,8 @@ sub create_list {
   # Config
   my $config = $api->config;
 
-  # Context Root
+  # Base path
   my $base_path =  $config->{base_path} || '';
-  if ($base_path && $base_path !~ m|^/|){
-    $base_path = '/' . $base_path;
-  }
 
   # Template files
   my @template_files = glob $api->rel_file('templates/blog/*');

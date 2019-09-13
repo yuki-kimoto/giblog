@@ -87,11 +87,8 @@ sub create_index {
   # Config
   my $config = $api->config;
 
-  # Context Root
+  # Base path
   my $base_path =  $config->{base_path} || '';
-  if ($base_path && $base_path !~ m|^/|){
-    $base_path = '/' . $base_path;
-  }
   
   # Template files
   my @template_files = glob $api->rel_file('templates/blog/*');
@@ -180,11 +177,8 @@ sub create_list {
   # Config
   my $config = $api->config;
 
-  # Context Root
+  # Base path
   my $base_path =  $config->{base_path} || '';
-  if ($base_path && $base_path !~ m|^/|){
-    $base_path = '/' . $base_path;
-  }
 
   # Template files
   my @template_files = glob $api->rel_file('templates/blog/*');
