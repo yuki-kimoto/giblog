@@ -589,7 +589,7 @@ EOS
     my $data = {};
     $data->{file} = 'index.html';
     $data->{content} = '<div class="title">Perl Tutorial</div>';
-    $api->add_page_link($data, {context_root => 'project'});
+    $api->add_page_link($data, {context_root => '/project'});
     my $content = $data->{content};
     is($content, '<div class="title"><a href="/project/index.html">Perl Tutorial</a></div>');
   }
