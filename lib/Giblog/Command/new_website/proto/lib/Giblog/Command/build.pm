@@ -38,7 +38,7 @@ sub run {
 
     # Edit title
     my $site_title = $config->{site_title};
-    if ($data->{file} eq 'index.html') {
+    if ($data->{file} eq 'index.html' || !defined $data->{title}) {
       $data->{title} = $site_title;
     }
     else {

@@ -2,7 +2,7 @@
   - add utf8 pragma to Giblog/Command/new/proto/lib/Giblog/Command/build.pm
   - add utf8 pragma to Giblog/Command/new_blog/proto/lib/Giblog/Command/build.pm
   - add utf8 pragma to Giblog/Command/new_website/proto/lib/Giblog/Command/build.pm
-
+  - fix undef warnings when title is not got.
 1.00 2019/08/03
   - First major release!
     Let' enjoy Giblog!
