@@ -15,9 +15,9 @@ sub run {
   my $config = $api->read_config;
 
   # Context Root
-  my $context_root =  $config->{context_root} || '';
-  if ($context_root && $context_root !~ m|^/|){
-    $context_root = '/' . $context_root;
+  my $base_path =  $config->{base_path} || '';
+  if ($base_path && $base_path !~ m|^/|){
+    $base_path = '/' . $base_path;
   }
 
   # Copy static files to public
@@ -40,7 +40,7 @@ sub run {
     $api->parse_title_from_first_h_tag($data);
 
     # Add page link
-    $api->add_page_link_to_first_h_tag($data, {root => 'index.html', context_root => $context_root});
+    $api->add_page_link_to_first_h_tag($data, {root => 'index.html', base_path => $base_path});
 
     # Read common templates
     $api->read_common_templates($data);

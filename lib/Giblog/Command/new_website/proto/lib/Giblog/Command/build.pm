@@ -17,9 +17,9 @@ sub run {
   my $config = $api->read_config;
 
   # Context Root
-  my $context_root =  $config->{context_root} || '';
-  if ($context_root && $context_root !~ m|^/|){
-    $context_root = '/' . $context_root;
+  my $base_path =  $config->{base_path} || '';
+  if ($base_path && $base_path !~ m|^/|){
+    $base_path = '/' . $base_path;
   }
 
   # Copy static files to public
@@ -51,7 +51,7 @@ sub run {
     }
 
     # Add page link
-    $api->add_page_link_to_first_h_tag($data, {root => 'index.html', context_root => $context_root});
+    $api->add_page_link_to_first_h_tag($data, {root => 'index.html', base_path => $base_path});
 
     # Parse description
     $api->parse_description_from_first_p_tag($data);
@@ -90,9 +90,9 @@ sub create_list {
   my $config = $api->config;
 
   # Context Root
-  my $context_root =  $config->{context_root} || '';
-  if ($context_root && $context_root !~ m|^/|){
-    $context_root = '/' . $context_root;
+  my $base_path =  $config->{base_path} || '';
+  if ($base_path && $base_path !~ m|^/|){
+    $base_path = '/' . $base_path;
   }
 
   # Template files
@@ -148,7 +148,7 @@ EOS
       # Add list
       $content .= <<"EOS";
   <li style="list-style:none">
-    $month/$mday <a href="$context_root/$file_entry">$title</a>
+    $month/$mday <a href="$base_path/$file_entry">$title</a>
   </li>
 EOS
     }
@@ -159,7 +159,7 @@ EOS
   }
   
   # Add page link
-  $api->add_page_link_to_first_h_tag($data, {context_root => $context_root});
+  $api->add_page_link_to_first_h_tag($data, {base_path => $base_path});
 
   # Title
   $data->{title} = "Entries - $config->{site_title}";

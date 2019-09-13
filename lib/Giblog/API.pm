@@ -402,9 +402,9 @@ sub add_page_link {
   else {
     $path = "/$file";
   }
-  my $context_root = $opt->{context_root} || '';
+  my $base_path = $opt->{base_path} || '';
   
-  $content =~ s|class="title"[^>]*?>([^<]*?)<|class="title"><a href="$context_root$path">$1</a><|;
+  $content =~ s|class="title"[^>]*?>([^<]*?)<|class="title"><a href="$base_path$path">$1</a><|;
   
   $data->{'content'} = $content;
 }
@@ -434,9 +434,9 @@ sub add_page_link_to_first_h_tag {
     $path = "/$file";
   }
 
-  my $context_root = $opt->{context_root} || '';
+  my $base_path = $opt->{base_path} || '';
 
-  $content =~ s|(<\s*h[1-6]\b[^>]*?>)([^<]*?)<|$1<a href="$context_root$path">$2</a><|;
+  $content =~ s|(<\s*h[1-6]\b[^>]*?>)([^<]*?)<|$1<a href="$base_path$path">$2</a><|;
 
   $data->{'content'} = $content;
 }
