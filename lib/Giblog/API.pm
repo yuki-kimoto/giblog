@@ -375,8 +375,6 @@ sub add_base_path_to_content {
   my $base_path = $config->{base_path};
   if (defined $base_path) {
     
-    $base_path = quotemeta($base_path);
-    
     # Content
     my $content = $data->{content};
 
@@ -429,7 +427,6 @@ sub add_base_path_to_public_css_files {
   
   # Base path
   my $base_path = $config->{base_path};
-  $base_path = "/base";
   if (defined $base_path) {
     my $public_dir = $self->rel_file('public');
     

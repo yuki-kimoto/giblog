@@ -11,7 +11,7 @@ system($cmd) == 0
 # Read config file
 my $config_file = "$FindBin::Bin/giblog.conf";
 my $config;
-$config = do $config_file;
+$config = do $config_file
   or die "Can't read config file $config_file";
 
 use Mojolicious::Lite;
