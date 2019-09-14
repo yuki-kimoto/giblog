@@ -362,6 +362,78 @@ sub parse_title {
   }
 }
 
+sub add_base_path_to_content {
+  my ($self, $data) = @_;
+  
+  # Giblog
+  my $giblog = $self->giblog;
+  
+  # Config
+  my $config = $giblog->config;
+  
+  # Base path
+  my $base_path = $config->{base_path};
+  if (defined $base_path) {
+    
+    $base_path = quotemeta($base_path);
+    
+    # Content
+    my $content = $data->{content};
+
+    # Add base path
+    my @lines = split /\n/, $content;
+    my $pre_start;
+    $content = '';
+    my $bread_end;
+    for my $line (@lines) {
+      my $original_line = $line;
+      
+      # Pre end
+      if ($line =~ m|^</pre\b|) {
+        $pre_start = 0;
+      }
+      
+      # Don't add base path in pre tag
+      if ($pre_start) {
+        $content .= "$line\n";
+      }
+      # Add base path to absolute path
+      else {
+        # Add base path to href absolute path
+        $content =~ s/\bhref\s*=\s*"(\/[^"]*?)"/href="$base_path$1"/g;
+        
+        # Add base path to src absolute path
+        $content =~ s/\bsrc\s*=\s*"(\/[^"]*?)"/href="$base_path$1"/g;
+        
+        $content .= "$line\n";
+      }
+      
+      # Pre start
+      if ($original_line =~ m|^<pre\b|) {
+        $pre_start = 1
+      }
+    }
+    
+    $data->{content} = $content;
+  }
+}
+
+sub add_base_path_to_css {
+  my ($self, $data) = @_;
+  
+  my $config = $self->config;
+
+  my $content = $data->{content};
+  
+  if ($content =~ m|<\s*h[1-6]\b[^>]*?>([^<]*?)<|) {
+    my $title = $1;
+    $data->{title} = $title;
+  }
+  else {
+    $data->{title} = undef;
+  }
+}
+
 sub parse_title_from_first_h_tag {
   my ($self, $data) = @_;
   
