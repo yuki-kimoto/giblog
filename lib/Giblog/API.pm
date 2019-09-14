@@ -418,19 +418,53 @@ sub add_base_path_to_content {
   }
 }
 
-sub add_base_path_to_css {
-  my ($self, $data) = @_;
+sub add_base_path_to_public_css_files {
+  my ($self) = @_;
   
-  my $config = $self->config;
-
-  my $content = $data->{content};
+  # Giblog
+  my $giblog = $self->giblog;
   
-  if ($content =~ m|<\s*h[1-6]\b[^>]*?>([^<]*?)<|) {
-    my $title = $1;
-    $data->{title} = $title;
-  }
-  else {
-    $data->{title} = undef;
+  # Config
+  my $config = $giblog->config;
+  
+  # Base path
+  my $base_path = $config->{base_path};
+  $base_path = "/base";
+  if (defined $base_path) {
+    my $public_dir = $self->rel_file('public');
+    
+    # Add base path to css file
+    find(
+      {
+        wanted => sub {
+          my $public_file = $File::Find::name;
+          
+          # Skip directory
+          return if -d $public_file;
+          
+          # Skip not css file
+          return unless $public_file =~ /\.css$/;
+          
+          # Open read-write mode
+          open my $fh, "+<", $public_file
+            or confess "Can't open \"$public_file\": $!";
+          
+          # Get content
+          my $content = $self->slurp_file($public_file);
+          
+          # Add base path to href absolute path
+          $content =~ s/\burl\(\s*(\/[^\)]*?)\)/url($base_path$1)/g;
+          
+          print $fh $content
+            or confess "Can't write content to $public_file: $!";
+          
+          close $fh
+            or confess "Can't close file hanlde $public_file: $!";
+        },
+        no_chdir => 1,
+      },
+      $public_dir
+    );
   }
 }
 
