@@ -266,6 +266,9 @@ EOS
   
   # Build whole html
   $api->build_html($data);
+
+  # Add base path to content
+  $api->add_base_path_to_content($data);
   
   # Write content to public file
   my $public_file = $api->rel_file('public/list.html');
