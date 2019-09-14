@@ -19,7 +19,10 @@ sub run {
   
   # Copy static files to public
   $api->copy_static_files_to_public;
-
+  
+  # Add base path to public css files
+  $api->add_base_path_to_public_css_files;
+  
   # Get files in templates directory
   my $files = $api->get_templates_files;
   
@@ -65,6 +68,9 @@ sub run {
     
     # Build whole html
     $api->build_html($data);
+    
+    # Add base path to content
+    $api->add_base_path_to_content($data);
     
     # Write to public file
     $api->write_to_public_file($data);
