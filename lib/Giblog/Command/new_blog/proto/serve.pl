@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use utf8;
 use FindBin;
+use File::Spec;
 
 # Build
 my $cmd = 'giblog build';
@@ -19,11 +20,18 @@ use Mojolicious::Lite;
 # Remove base path before dispatch
 my $base_path = $config->{base_path};
 if (defined $base_path) {
+  
+  # Subdir depth
+  my @parts = File::Spec->splitdir($base_path);
+  my $subdir_depth = @parts - 1;
+  
   app->hook(before_dispatch => sub {
     my $self = shift;
     
     # Remove base path
-    shift @{$self->req->url->path->parts};
+    for (my $i = 0; $i < $subdir_depth; $i++) {
+      shift @{$self->req->url->path->parts};
+    }
   });
 }
 
