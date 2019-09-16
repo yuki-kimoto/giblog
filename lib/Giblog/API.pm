@@ -374,6 +374,7 @@ sub add_base_path_to_content {
   # Base path
   my $base_path = $config->{base_path};
   if (defined $base_path) {
+    $self->_check_base_path($base_path);
     
     # Content
     my $content = $data->{content};
@@ -428,6 +429,9 @@ sub add_base_path_to_public_css_files {
   # Base path
   my $base_path = $config->{base_path};
   if (defined $base_path) {
+    
+    $self->_check_base_path($base_path);
+    
     my $public_dir = $self->rel_file('public');
     
     # Add base path to css file
@@ -462,6 +466,18 @@ sub add_base_path_to_public_css_files {
       },
       $public_dir
     );
+  }
+}
+
+sub _check_base_path {
+  my ($self, $base_path) = @_;
+  
+  # Check base path
+  unless ($base_path =~ /^\//) {
+    confess "base_path must start /";
+  }
+  if ($base_path =~ /\/$/) {
+    confess "base_path must end not /";
   }
 }
 
