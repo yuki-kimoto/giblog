@@ -77,8 +77,10 @@
     max-width:960px;
     width:100%;
     font-size:30px;
-    padding:12px 10px 10px 13px;
+    padding:12px 10px 10px 73px;
     margin: 0 auto;
+    background:url(/images/giblog-logo.png) no-repeat 10px 10px;
+    background-size:50px;
   }
   h1 a, h1 a:visited {
     color:white;

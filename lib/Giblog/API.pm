@@ -454,7 +454,7 @@ sub add_base_path_to_public_css_files {
           my $content = $self->slurp_file($public_file);
           
           # Add base path to href absolute path
-          $content =~ s/\burl\(\s*(\/[^\)]*?)\)/url($base_path$1)/g;
+          $content =~ s/\burl\s*\(\s*(\/[^\)]*?)\)/url($base_path$1)/g;
           
           print $fh $content
             or confess "Can't write content to $public_file: $!";
