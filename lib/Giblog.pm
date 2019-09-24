@@ -9,6 +9,7 @@ use Giblog::API;
 use Carp 'confess';
 use Pod::Usage 'pod2usage';
 use List::Util 'min';
+use File::Spec;
 
 our $VERSION = '1.00';
 
@@ -87,6 +88,64 @@ sub run_command {
 
 sub home_dir { shift->{'home_dir'} }
 sub config { shift->{config} }
+
+sub build {
+  my ($class) = @_;
+  
+  # Build
+  my $cmd = 'giblog build';
+  system($cmd) == 0
+    or die "Can't execute $cmd: $!";
+}
+
+sub serve {
+  my ($class, $app) = @_;
+  
+  # Read config file
+  my $config_file = "$FindBin::Bin/giblog.conf";
+  my $config;
+  $config = do $config_file
+    or die "Can't read config file $config_file";
+
+  # Remove base path before dispatch
+  my $base_path = $config->{base_path};
+  if (defined $base_path) {
+    
+    # Subdir depth
+    my @parts = File::Spec->splitdir($base_path);
+    my $subdir_depth = @parts - 1;
+    
+    $app->hook(before_dispatch => sub {
+      my $c = shift;
+      
+      # Root is redirect
+      unless (@{$c->req->url->path->parts}) {
+        $c->stash(is_redirect => 1);
+      }
+      
+      # Remove base path
+      for (my $i = 0; $i < $subdir_depth; $i++) {
+        shift @{$c->req->url->path->parts};
+      }
+    });
+  }
+
+  my $r = $app->routes;
+
+  $r->get('/' => sub {
+    my $c = shift;
+    
+    my $is_redirect = $c->stash('is_redirect');
+    if ($is_redirect) {
+      $c->redirect_to($base_path);
+    }
+    else {
+      $c->reply->static('index.html');
+    }
+  });
+
+  $app->start;
+}
 
 =head1 NAME
 
