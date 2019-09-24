@@ -402,7 +402,7 @@ sub add_base_path_to_content {
         $line =~ s/\bhref\s*=\s*"(\/[^"]*?)"/href="$base_path$1"/g;
         
         # Add base path to src absolute path
-        $line =~ s/\bsrc\s*=\s*"(\/[^"]*?)"/href="$base_path$1"/g;
+        $line =~ s/\bsrc\s*=\s*"(\/[^"]*?)"/src="$base_path$1"/g;
         
         $content .= "$line\n";
       }
