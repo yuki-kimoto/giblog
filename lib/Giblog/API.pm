@@ -457,7 +457,7 @@ sub add_base_path_to_public_css_files {
           # Add base path to href absolute path
           $content =~ s/\burl\s*\(\s*(\/[^\)]*?)\)/url($base_path$1)/g;
           
-          print $fh $content
+          print $fh encode('UTF-8', $content)
             or confess "Can't write content to $public_file: $!";
           
           close $fh
