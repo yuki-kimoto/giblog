@@ -13,12 +13,10 @@
   
   /* header */
   .header {
-    max-width:1200px;
-    width:100%;
+    margin:0 auto;
     background:#fff;
     margin-bottom:15px;
     border-bottom:5px solid #D9D9D9;
-    padding-left:40px;
   }
   
   /* footer */
@@ -40,10 +38,10 @@
   
   /* main */
   .main {
-    max-width:1200px;
+    max-width:960px;
     width:100%;
-    margin: 0 auto 15px auto;
-    padding:0 28px;
+    margin: 0 auto;
+    padding:0 5px;
   }
   .main:after {
     content:"";
@@ -54,13 +52,12 @@
   /* content */
   .content {
     float:left;
-    width:calc(100% - 280px);
+    width:calc(100% - 280px - 30px);
   }
   
   /* entry */
   .entry {
     background:white;
-    padding:15px 25px;
     margin-bottom:10px;
   }
   .entry li {
@@ -72,7 +69,8 @@
   .side {
     float:left;
     width:280px;
-    padding-top:26px;
+    margin-left:30px;
+    padding-top:16px;
   }
   
   /* tags */
@@ -80,7 +78,7 @@
     max-width:1020px;
     width:100%;
     font-size:28px;
-    padding:16px 10px 18px 73px;
+    padding:19px 10px 15px 73px;
     background:url(/images/giblog-logo.png) no-repeat 10px 15px;
     background-size:48px;
   }
@@ -195,15 +193,6 @@
 
 /* Tablet and Smart phone */
 @media only screen and (max-width:960px) {
-  .main {
-    padding:0;
-  }
-  .entry {
-    padding:0 5px;
-  }
-  .header {
-    padding:0 5px;
-  }
   .content {
     float:none;
     width:97%;
