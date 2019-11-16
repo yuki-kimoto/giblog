@@ -436,7 +436,7 @@ Hello World!
 </div>
 
 <pre>
-my $foo = 1 > 3 && 2 < 5;
+my $foo = 1 > 3 && 1 > 3 && 2 < 5 && 2 < 5;
 </pre>
 <script>
   alert('aaa');
@@ -461,7 +461,7 @@ EOS
   OK
 </div>
 <pre>
-my $foo = 1 &gt; 3 && 2 &lt; 5;
+my $foo = 1 &gt; 3 &amp;&amp; 1 &gt; 3 &amp;&amp; 2 &lt; 5 &amp;&amp; 2 &lt; 5;
 </pre>
 <script>
   alert('aaa');

@@ -55,6 +55,7 @@ sub slurp {
     like($index_content, qr|<p>\s*How to use Giblog\.\s*</p>|);
     like($index_content, qr/&gt;/);
     like($index_content, qr/&lt;/);
+    like($index_content, qr/&amp;/);
     like($index_content, qr|<title>mysite😄</title>|);
     like($index_content, qr|<h1>\s*<a href="/">Giblog Web Site</a>\s*</h1>|);
     like($index_content, qr|<h2><a href="/">How to use Giblog😁</a></h2>|);

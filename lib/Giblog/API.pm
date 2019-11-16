@@ -316,6 +316,7 @@ sub parse_giblog_syntax {
     
     # Escape >, < in pre tag
     if ($pre_start) {
+      $line =~ s/&/&amp;/g;
       $line =~ s/>/&gt;/g;
       $line =~ s/</&lt;/g;
       $content .= "$line\n";
@@ -1014,7 +1015,7 @@ Add p tag to inline element starting from the beginning of line.
 
 Empty line is deleted.
 
-=item 2. Escape E<gt>, E<lt> in pre tag
+=item 2. Escape E<gt>, E<lt>, & in pre tag
 
 If pre tag starts at the beginning of the line and its end tag starts at the beginning of the line, execute HTML escapes ">" and "<" between them.
   
@@ -1025,7 +1026,7 @@ If pre tag starts at the beginning of the line and its end tag starts at the beg
 
   # Output
   <pre>
-  my $foo = 1 &gt; 3 && 2 &lt; 5;
+  my $foo = 1 &gt; 3 &amp;&amp; 2 &lt; 5;
   </pre>
 
 =back
