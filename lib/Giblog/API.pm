@@ -39,7 +39,7 @@ sub read_config {
   my $config_content = $self->slurp_file($config_file);
   
   $config = eval $config_content
-    or confess "Can't parse config file \"$config_file\"";
+    or confess "Can't parse config file \"$config_file\":$@$!";
     
   unless (ref $config eq 'HASH') {
     confess "\"$config_file\" must end with hash reference";

@@ -4,6 +4,7 @@
   - add utf8 pragma to Giblog/Command/new_website/proto/lib/Giblog/Command/build.pm
   - fix undef warnings when title is not got.
   - add "/list.html" page link to side bar
+  - improve Giblog::API::read_config error message
 1.00 2019/08/03
   - First major release!
     Let' enjoy Giblog!
