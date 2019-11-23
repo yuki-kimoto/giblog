@@ -1,5 +1,8 @@
 use strict;
 use warnings;
+use utf8;
+use Encode 'decode';
+
 use Test::More 'no_plan';
 
 use File::Path 'mkpath', 'rmtree';
@@ -15,6 +18,8 @@ sub slurp {
     or die "Can't open $file: $!";
   
   my $content = do { local $/; <$fh> };
+  
+  $content = decode('UTF-8', $content);
   
   return $content;
 }
