@@ -48,7 +48,7 @@ sub add_config_file {
 
 # proto/new_website
 {
-  # proto/new_website - new_website, add, build
+  # proto/new_website with base_path option
   {
     my $home_dir = "$test_dir/mysite_base_path";
     rmtree $home_dir;
@@ -103,10 +103,9 @@ sub add_config_file {
     like($blog_content, qr/meta/);
     like($index_content, qr|\Q<a href="https://github.com/yuki-kimoto/giblog">Giblog</a>|);
     
-    # CGI file
-    if ($^O eq 'linux') {
-      ok(-x "$home_dir/templates/static/test.cgi");
-      ok(-x "$home_dir/public/test.cgi");
-    }
+    # css/common.css
+    my $common_css_file = "$home_dir/public/css/common.css";
+    my $common_css_content = slurp($common_css_file);
+    like($common_css_content, qr|\b\Qurl(/subdir/images/giblog-logo.png|);
   }
 }
