@@ -5,6 +5,7 @@
   - fix undef warnings when title is not got.
   - add "/list.html" page link to side bar
   - improve Giblog::API::read_config error message
+  - add base_path option. you can deploy your web site of sub directry, for example "https://foo.com/subdir"; 
 1.00 2019/08/03
   - First major release!
     Let' enjoy Giblog!

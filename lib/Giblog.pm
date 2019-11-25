@@ -147,6 +147,8 @@ sub serve {
   $app->start;
 }
 
+=encoding utf8
+
 =head1 NAME
 
 Giblog - Web site and Blog builders you can manage with Git
@@ -243,6 +245,8 @@ Giblog have the following features.
 =item * You can serve your web site in local environment. Contents changes is detected and build automatically(need L<Mojolicious>).
 
 =item * Fast. Build 645 pages by 0.78 seconds in starndard linux environment.
+
+=item * Support Github Pages, both user and project page.
 
 =back
 
@@ -497,6 +501,52 @@ You see the following message.
    Server start
 
 If files in "templates" directory is changed, Web site is automatically rebuild.
+
+=head1 CONFIG FILE
+
+Giblog config file is "giblog.conf".
+
+This is Perl script and return config as hash reference.
+
+  use strict;
+  use warnings;
+  use utf8;
+
+  # giblog.conf
+  {
+    site_title => 'mysite😄',
+    site_url => 'http://somesite.example',
+  }
+
+=head2 site_title
+
+  site_title => 'mysite😄'
+
+Site title
+
+=head2 site_url
+
+  site_url => 'http://somesite.example'
+
+Site URL.
+
+=head2 base_path
+
+  base_path => '/subdir'
+
+Base path. Base path is used to deploy your site to sub directory.
+
+For example, Project page URL of Github Pages is
+
+  https://yuki-kimoto.github.io/giblog-theme1-public/
+
+You specify the following
+
+  base_path => '/giblog-theme1-public'
+
+Top character of base_path must be slash "/".
+
+HTML files is output into "public/giblog-theme1-public" directory.
 
 =head1 METHODS
 
