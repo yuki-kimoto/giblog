@@ -95,6 +95,7 @@ sub add_config_file {
     like($index_content, qr|\Q<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">|);
     like($index_content, qr|\Q<meta name="description" content="How to use Giblog.">|);
     like($index_content, qr|\Q<link rel="stylesheet" type="text/css" href="/subdir/css/common.css">|);
+    like($index_content, qr|\bsrc="/subdir/images/giblog-logo.png\b|);
     like($blog_content, qr/header/);
     like($blog_content, qr/footer/);
     like($blog_content, qr/top/);
