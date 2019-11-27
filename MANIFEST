@@ -52,6 +52,7 @@ lib/Giblog/Command/new_blog/proto/templates/common/top.html
 lib/Giblog/Command/new_blog/proto/templates/static/blog/.gitkeep
 lib/Giblog/Command/new_blog/proto/templates/static/css/common.css
 lib/Giblog/Command/new_blog/proto/templates/static/images/.gitkeep
+lib/Giblog/Command/new_blog/proto/templates/static/images/giblog-logo.png
 lib/Giblog/Command/new_blog/proto/templates/static/js/.gitkeep
 lib/Giblog/Command/new_blog/proto/templates/static/test.cgi
 lib/Giblog/Command/new_website.pm
@@ -80,6 +81,7 @@ lib/Giblog/Command/new_website/proto/templates/index.html
 lib/Giblog/Command/new_website/proto/templates/static/blog/.gitkeep
 lib/Giblog/Command/new_website/proto/templates/static/css/common.css
 lib/Giblog/Command/new_website/proto/templates/static/images/.gitkeep
+lib/Giblog/Command/new_website/proto/templates/static/images/giblog-logo.png
 lib/Giblog/Command/new_website/proto/templates/static/js/.gitkeep
 lib/Giblog/Command/new_website/proto/templates/static/test.cgi
 Makefile.PL
@@ -94,6 +96,7 @@ t/lib/Giblog/Command/test.pm
 t/manifest.t
 t/pod-coverage.t
 t/pod.t
+t/proto-base_path.t
 t/proto-new.t
 t/proto-new_blog.t
 t/proto-new_website.t
