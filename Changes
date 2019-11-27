@@ -1,4 +1,4 @@
-1.01 2019/09/13
+1.01 2019/11/27
   - add utf8 pragma to Giblog/Command/new/proto/lib/Giblog/Command/build.pm
   - add utf8 pragma to Giblog/Command/new_blog/proto/lib/Giblog/Command/build.pm
   - add utf8 pragma to Giblog/Command/new_website/proto/lib/Giblog/Command/build.pm
