@@ -43,7 +43,6 @@ lib/Giblog/Command/new_blog/proto/templates/blog/20190316121234.html
 lib/Giblog/Command/new_blog/proto/templates/blog/20190317121234.html
 lib/Giblog/Command/new_blog/proto/templates/blog/20190318121234.html
 lib/Giblog/Command/new_blog/proto/templates/blog/20190319121234.html
-lib/Giblog/Command/new_blog/proto/templates/blog/20190320121234.md
 lib/Giblog/Command/new_blog/proto/templates/common/bottom.html
 lib/Giblog/Command/new_blog/proto/templates/common/footer.html
 lib/Giblog/Command/new_blog/proto/templates/common/header.html
