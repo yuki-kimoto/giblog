@@ -14,14 +14,14 @@ my $test_dir = 't/tmp/command';
 
 sub slurp {
   my $file = shift;
-
+  
   open my $fh, '<', $file
     or die "Can't open $file: $!";
-
+  
   my $content = do { local $/; <$fh> };
 
   $content = decode('UTF-8', $content);
-
+  
   return $content;
 }
 
@@ -48,16 +48,16 @@ sub slurp {
 
     my @blog_files = reverse glob "$home_dir/public/blog/*";
     is(scalar @blog_files, 9);
-
+    
     # Added Blog
     my $added_blog_file = $blog_files[0];
     my $added_blog_file_base = basename $added_blog_file;
-
+    
     # Blog
     {
       my $blog_file = "$home_dir/public/blog/20190319121234.html";
       my $blog_content = slurp $blog_file;
-
+      
       like($blog_content, qr/header/);
       like($blog_content, qr/footer/);
       like($blog_content, qr/top/);
@@ -74,12 +74,12 @@ sub slurp {
       like($blog_content, qr|\Q<meta name="description" content="How to use Giblog.">|);
       like($blog_content, qr|\Q<link rel="stylesheet" type="text/css" href="/css/common.css">|);
     }
-
+    
     # Index
     {
       my $index_file = "$home_dir/public/index.html";
       my $index_content = slurp $index_file;
-
+      
       like($index_content, qr/header/);
       like($index_content, qr/footer/);
       like($index_content, qr/top/);
@@ -97,7 +97,7 @@ sub slurp {
       like($index_content, qr|\Q<meta name="description" content="Site description">|);
       like($index_content, qr|\Q<link rel="stylesheet" type="text/css" href="/css/common.css">|);
       like($index_content, qr|\Q<a href="https://github.com/yuki-kimoto/giblog">Giblog</a>|);
-
+      
       like($index_content, qr/Hello Giblog 7/);
       like($index_content, qr/Hello Giblog 6/);
       like($index_content, qr/Hello Giblog 5/);
@@ -122,10 +122,9 @@ sub slurp {
       like($list_content, qr|\Q<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">|);
       like($list_content, qr|\Q<meta name="description" content="Entries of mysite😄">|);
       like($list_content, qr|\Q<link rel="stylesheet" type="text/css" href="/css/common.css">|);
-
+      
       like($list_content, qr|\Q$added_blog_file_base|);
-      like($list_content, qr|3/20 <a href="/blog/20190320121234.html">How to use Giblog😁</a>|);
-      like($list_content, qr|3/19 <a href="/blog/20190319121234.html">Hello Giblog 8</a>|);
+      like($list_content, qr|3/19 <a href="/blog/20190319121234.html">How to use Giblog😁</a>|);
       like($list_content, qr|3/18 <a href="/blog/20190318121234.html">Hello Giblog 7</a>|);
       like($list_content, qr|3/17 <a href="/blog/20190317121234.html">Hello Giblog 6</a>|);
       like($list_content, qr|3/16 <a href="/blog/20190316121234.html">Hello Giblog 5</a>|);
@@ -141,3 +140,4 @@ sub slurp {
     }
   }
 }
+
