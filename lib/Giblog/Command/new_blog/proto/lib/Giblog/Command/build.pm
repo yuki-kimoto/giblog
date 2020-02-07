@@ -233,6 +233,9 @@ EOS
         $title = 'No title';
       }
 
+      # Convert file syntax .md to .html
+      $file_entry =~ s/\.md$/\.html/;
+
       # Add list
       $content .= <<"EOS";
   <li style="list-style:none">
