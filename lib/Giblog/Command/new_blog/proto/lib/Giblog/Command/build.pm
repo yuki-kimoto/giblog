@@ -233,8 +233,8 @@ EOS
         $title = 'No title';
       }
 
-      # Convert file syntax .md to .html
-      $file_entry =~ s/\.md$/\.html/;
+      # Convert all file syntax to .html
+      $file_entry =~ s/\.[^\.]+$/\.html/;
 
       # Add list
       $content .= <<"EOS";
