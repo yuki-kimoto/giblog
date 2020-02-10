@@ -140,6 +140,9 @@ EOS
         $title = 'No title';
       }
 
+      # Convert all file syntax to .html
+      $file_entry =~ s/\.[^\.]+$/\.html/;
+
       # Add list
       $content .= <<"EOS";
   <li style="list-style:none">
