@@ -592,6 +592,8 @@ Get home directory.
 
 Yuki Kimoto, C<< <kimoto.yuki at gmail.com> >>
 
+=head1 CONTRIBUTORS
+
 =head1 LICENSE AND COPYRIGHT
 
 Copyright 2018-2019 Yuki Kimoto.
