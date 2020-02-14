@@ -594,6 +594,8 @@ Yuki Kimoto, C<< <kimoto.yuki at gmail.com> >>
 
 =head1 CONTRIBUTORS
 
+Yasuaki Omokawa, C<< <omokawa at senk-inc.co.jp> >>
+
 =head1 LICENSE AND COPYRIGHT
 
 Copyright 2018-2019 Yuki Kimoto.
