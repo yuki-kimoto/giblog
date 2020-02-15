@@ -15,11 +15,11 @@ our $VERSION = '1.01';
 
 sub new {
   my $class = shift;
-  
+
   my $self = {
     @_
   };
-  
+
   return bless $self, $class;
 }
 
@@ -43,7 +43,7 @@ sub _unindent {
 
 sub run_command {
   my ($class, @argv) = @_;
-  
+
   # Command line option
   local @ARGV = @argv;
   my $getopt_option_save = Getopt::Long::Configure(qw(default no_auto_abbrev no_ignore_case));
@@ -52,20 +52,20 @@ sub run_command {
     "H|home=s" => \my $home_dir,
   );
   Getopt::Long::Configure($getopt_option_save);
-  
+
   # Command name
   my $command_name = shift @ARGV;
-  
+
   # Show help
   die _extract_usage if $help || !$command_name;
-  
+
   # Giblog
   my $giblog = Giblog->new(home_dir => $home_dir);
-  
+
   # API
   my $api = Giblog::API->new(giblog => $giblog);
-  
-  # Add "lib" in home directory to include path 
+
+  # Add "lib" in home directory to include path
   local @INC = @INC;
   if (defined $home_dir) {
     unshift @INC, "$home_dir/lib";
@@ -73,7 +73,7 @@ sub run_command {
   else {
     unshift @INC, "lib";
   }
-  
+
   # Command is implemented in command
   my $command_class = "Giblog::Command::$command_name";
   eval "use $command_class;";
@@ -81,7 +81,7 @@ sub run_command {
     confess "Can't load command $command_class:\n$!\n$@";
   }
   my $command = $command_class->new(api => $api);
-  
+
   @argv = @ARGV;
   $command->run(@argv);
 }
@@ -91,7 +91,7 @@ sub config { shift->{config} }
 
 sub build {
   my ($class) = @_;
-  
+
   # Build
   my $cmd = 'giblog build';
   system($cmd) == 0
@@ -100,7 +100,7 @@ sub build {
 
 sub serve {
   my ($class, $app) = @_;
-  
+
   # Read config file
   my $config_file = "$FindBin::Bin/giblog.conf";
   my $config;
@@ -110,19 +110,19 @@ sub serve {
   # Remove base path before dispatch
   my $base_path = $config->{base_path};
   if (defined $base_path) {
-    
+
     # Subdir depth
     my @parts = File::Spec->splitdir($base_path);
     my $subdir_depth = @parts - 1;
-    
+
     $app->hook(before_dispatch => sub {
       my $c = shift;
-      
+
       # Root is redirect
       unless (@{$c->req->url->path->parts}) {
         $c->stash(is_redirect => 1);
       }
-      
+
       # Remove base path
       for (my $i = 0; $i < $subdir_depth; $i++) {
         shift @{$c->req->url->path->parts};
@@ -134,7 +134,7 @@ sub serve {
 
   $r->get('/' => sub {
     my $c = shift;
-    
+
     my $is_redirect = $c->stash('is_redirect');
     if ($is_redirect) {
       $c->redirect_to($base_path);
@@ -184,7 +184,7 @@ All created files is B<static files>, so you can manage them using B<git>.
 You can B<customize your website by Perl>.
 
 =head1 SYNOPSYS
-  
+
   # New empty web site
   giblog new mysite
 
@@ -193,22 +193,22 @@ You can B<customize your website by Perl>.
 
   # New blog
   giblog new_blog mysite
-  
+
   # Change directory
   cd mysite
-  
+
   # Add new entry
   giblog add
 
   # Build web site
   giblog build
-  
+
   # Check web site in local environment(need Mojolicious)
   morbo serve.pl
 
   # Add new entry with home directory
   giblog add --home /home/kimoto/mysite
-  
+
   # Build web site with home directory
   giblog build --home /home/kimoto/mysite
 
@@ -294,7 +294,7 @@ You need to change directory to "mysite" before run "add" command if you are in 
   cd mysite
 
 "add" command add entry page.
-  
+
   giblog add
 
 Created file name is, for example,
@@ -350,7 +350,7 @@ Files in "templates/static" directory is only copied to public files by build pr
 =head2 Customize header or footer, side bar, top of content, bottom of content
 
 You can customize header, footer, side bar, top of content, bottom of content.
-  
+
   ------------------------
   Header
   ------------------------
@@ -382,7 +382,7 @@ You can customize HTML header.
       <!-- HTML header -->
     </head>
     <body>
-    
+
     </body>
   </html>
 
@@ -418,23 +418,23 @@ build process is writen in "lib/Giblog/Command/build.pm".
 
   sub run {
     my ($self, @args) = @_;
-    
+
     # API
     my $api = $self->api;
-    
+
     # Read config
     my $config = $api->read_config;
-    
+
     # Copy static files to public
     $api->copy_static_files_to_public;
 
     # Get files in templates directory
     my $files = $api->get_templates_files;
-    
+
     for my $file (@$files) {
       # Data
       my $data = {file => $file};
-      
+
       # Get content from file in templates directory
       $api->get_content($data);
 
@@ -461,7 +461,7 @@ build process is writen in "lib/Giblog/Command/build.pm".
 
       # Read common templates
       $api->read_common_templates($data);
-      
+
       # Add meta title
       $api->add_meta_title($data);
 
@@ -470,17 +470,17 @@ build process is writen in "lib/Giblog/Command/build.pm".
 
       # Build entry html
       $api->build_entry($data);
-      
+
       # Build whole html
       $api->build_html($data);
-      
+
       # Write to public file
       $api->write_to_public_file($data);
     }
-    
+
     # Create index page
     $self->create_index;
-    
+
     # Create list page
     $self->create_list;
   }
@@ -593,6 +593,8 @@ Get home directory.
 Yuki Kimoto, C<< <kimoto.yuki at gmail.com> >>
 
 =head1 CONTRIBUTORS
+
+Yasuaki Omokawa, C<< <omokawa at senk-inc.co.jp> >>
 
 =head1 LICENSE AND COPYRIGHT
 
