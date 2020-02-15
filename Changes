@@ -1,3 +1,5 @@
+1.0101 2019/2/15
+  - Extension of public output file become always .html
 1.01 2019/11/27
   - add utf8 pragma to Giblog/Command/new/proto/lib/Giblog/Command/build.pm
   - add utf8 pragma to Giblog/Command/new_blog/proto/lib/Giblog/Command/build.pm
