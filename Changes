@@ -1,6 +1,8 @@
-1.0101 2019/2/15
+1.02 2019-07-27
+  - fix parse_description_from_first_p_tag bug that this method can't remove tag if new lines is contained.
+1.0101 2019-02-15
   - Extension of public output file become always .html
-1.01 2019/11/27
+1.01 2019-11-27
   - add utf8 pragma to Giblog/Command/new/proto/lib/Giblog/Command/build.pm
   - add utf8 pragma to Giblog/Command/new_blog/proto/lib/Giblog/Command/build.pm
   - add utf8 pragma to Giblog/Command/new_website/proto/lib/Giblog/Command/build.pm
@@ -9,16 +11,16 @@
   - improve Giblog::API::read_config error message
   - add base_path option. you can deploy your web site of sub directry, for example "https://foo.com/subdir";
   - improve new_website and new_blog default design. 
-1.00 2019/08/03
+1.00 2019-08-03
   - First major release!
     Let' enjoy Giblog!
-0.91 2019/06/24
+0.91 2019-06-24
   - add list page to new_website
-0.90 2019/05/15
+0.90 2019-05-15
   - add css table default design to new_blog and new_website prototype
   - add css setting "white-space:pre-wrap" to new_blog and new_website prototype
   - remove tab in common.css
-0.76 2019/04/17
+0.76 2019-04-17
   - title tag is edited in new_blog, new_website
     # Edit title
     my $site_title = $config->{site_title};
@@ -29,34 +31,34 @@
       $data->{title} = "$data->{title} - $site_title";
     }
   
-0.75 2019/03/29
+0.75 2019-03-29
   - Remove script tag from inline element of parse_giblog_syntax
-0.74 2019/03/29
+0.74 2019-03-29
   - Keep cgi permission when file is copied from proto directory to public directory.
   - Keep cgi permission when file is copied from static directory to public directory.
-0.73 2019/03/26
+0.73 2019-03-26
   - add .gitignore files which contains public to new, new_blog, new_website prototype
-0.72 2019/03/23
+0.72 2019-03-23
   - static file place is changed from public to templates/static
-0.71 2019/03/23
+0.71 2019-03-23
   - rename -h option to -H
   - add command help
-0.70 2019/03/21
+0.70 2019-03-21
   - add Giblog::API::build_entry method
   - add Giblog::API::build_html method
   - remove Giblog::API::wrap method
   - fix windows file permission bugs.
   - improve new_hp, new_blog prototype
   - rename new_hp command to new_website
-0.51 2019/03/19
+0.51 2019-03-19
   - remove -I, --include option
   - add "lib" in home directory to include path before running command
   - remove new_zemi command
   - improve new_hp prototype
-0.50 2019/03/15
+0.50 2019-03-15
   - rename giblog-dir option to home
   - add tutorial
-0.02 2019/03/14
+0.02 2019-03-14
   - Change several apis
-0.01 2019/03/7
+0.01 2019-03-07
   - First release
