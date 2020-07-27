@@ -705,6 +705,27 @@ EOS
     
     ok(!defined $description);
   }
+
+  # parse_description_from_first_p_tag - contains tag and new line new line
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $input = <<"EOS";
+<p>
+  Perl Tutorial2 is <a href="">site</a> for <b>beginners\n</b> of Perl 
+</p>
+<p>
+  Foo, Bar
+</p>
+EOS
+    
+    my $data = {content => $input};
+    $api->parse_description_from_first_p_tag($data);
+    my $description = $data->{description};
+    
+    is($description, "Perl Tutorial2 is site for beginners of Perl");
+  }
+
 }
 
 # parse_keywords

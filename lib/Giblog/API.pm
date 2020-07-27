@@ -589,12 +589,16 @@ sub parse_description_from_first_p_tag {
   # Create description from first p tag
   if ($content =~ m|<\s?p\b[^>]*?>(.*?)<\s?/\s?p\s?>|s) {
     my $description = $1;
+    
     # remove tag
-    $description =~ s/<.*?>//g;
+    $description =~ s/<[^<]*?>//g;
     
     # trim space
     $description =~ s/^\s+//;
     $description =~ s/\s+$//;
+
+    # remove new lines
+    $description =~ s/\n//g;
     
     $data->{'description'} = $description;
   }
