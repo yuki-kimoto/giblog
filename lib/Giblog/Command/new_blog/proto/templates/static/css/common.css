@@ -166,10 +166,10 @@
   .before-days {
     text-align:center;
   }
-  .side-list {
+  .side_list {
     box-shadow: 0 0 3px rgba(0,0,0,.1);
   }
-  .side-list-title {
+  .side_list_title {
     background:#009D82;
     color:white;
     font-weight:bold;
@@ -178,10 +178,10 @@
     border:1px solid #E5E5E5;
     border-bottom:none;
   }
-  .side-list ul {
+  .side_list ul {
     border:1px solid #ccc;
   }
-  .side-list li {
+  .side_list li {
     list-style:none;
     background:white;
     border-bottom:1px solid #E5E5E5;
