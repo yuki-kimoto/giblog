@@ -14,6 +14,7 @@
     remove box-shadow style.
     header bottom boder width become 1px.
     side bar title block has a boder same color as background.
+    side bar has bottom margin
     
 1.02 2019-07-27
   - fix parse_description_from_first_p_tag bug that this method can't remove tag if new lines is contained.
