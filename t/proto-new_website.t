@@ -64,7 +64,7 @@ sub slurp {
     like($index_content, qr|<title>mysite😄</title>|);
     like($index_content, qr|<h1>\s*<a href="/">Giblog Web Site</a>\s*</h1>|);
     like($index_content, qr|<h2><a href="/">How to use Giblog😁</a></h2>|);
-    like($index_content, qr|\Qside-list|);
+    like($index_content, qr|\Qside_list|);
     like($index_content, qr|\Q<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">|);
     like($index_content, qr|\Q<meta name="description" content="How to use Giblog.">|);
     like($index_content, qr|\Q<link rel="stylesheet" type="text/css" href="/css/common.css">|);
