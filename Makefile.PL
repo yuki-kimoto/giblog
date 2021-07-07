@@ -19,8 +19,7 @@ WriteMakefile(
     },
     EXE_FILES => ['script/giblog'],
     PREREQ_PM => {
-        #'ABC'              => '1.6',
-        #'Foo::Bar::Module' => '5.0401',
+      Mojolicious => '9.19'
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES => 'Giblog-* t/tmp' },

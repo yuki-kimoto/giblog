@@ -491,16 +491,26 @@ If you need to know Giblog API, see L<Giblog::API>.
 
 =head2 Serve web site
 
-If you have L<Mojolicious>, you can serve web site in local environment.
+You can serve web site by C<serve> command.
 
-   morbo serve.pl
+   # Serve web site
+   giblog serve
 
 You see the following message.
 
-   Server available at http://127.0.0.1:3000
-   Server start
+   Web application available at http://127.0.0.1:3000
 
-If files in "templates" directory is changed, Web site is automatically rebuild.
+This command is same as the following code. L<morbo> command of L<Mojolicious> start up C<serve.pl>.
+
+   # Same as the following
+   morbo -w giblog.conf -w lib -w templates serve.pl
+
+If C<giblog.conf>, files in C<templates> or C<lib> directory is changed, Web site is automatically rebuild.
+
+If you use before Giblog 2.0, you can serve a web site by the following way.
+
+   # Old style before Giblog 2.0
+   morbo serve.pl
 
 =head1 CONFIG FILE
 
