@@ -269,7 +269,7 @@ mkpath $test_dir;
     );
     
     my $readme_content = $api->slurp_file("$home_dir/README");
-    like($readme_content, qr|Giblog/Command/new/proto|);
+    like($readme_content, qr|Title|);
   }
 
   # create_website_from_proto - exception - module not loaded

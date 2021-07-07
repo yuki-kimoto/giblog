@@ -43,8 +43,8 @@ Giblog is command line tool.
   # Build web site
   giblog build
   
-  # Serve web site(need Mojolicious)
-  morbo serve.pl
+  # Serve web site
+  giblog serve
 
   # Add new entry with home directory
   giblog add --home /home/kimoto/mysite

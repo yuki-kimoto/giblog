@@ -63,7 +63,7 @@ sub slurp {
     );
     
     my $readme_content = slurp "$home_dir/README";
-    like($readme_content, qr|Giblog/Command/new/proto|);
+    like($readme_content, qr|Title|);
   }
 
   # new_website command
@@ -88,7 +88,7 @@ sub slurp {
     );
     
     my $readme_content = slurp "$home_dir/README";
-    like($readme_content, qr|Giblog/Command/new_website/proto|);
+    like($readme_content, qr|Title|);
   }
 
   # new_blog command
@@ -113,7 +113,7 @@ sub slurp {
     );
     
     my $readme_content = slurp "$home_dir/README";
-    like($readme_content, qr|Giblog/Command/new_blog/proto|);
+    like($readme_content, qr|Title|);
   }
 }
 
