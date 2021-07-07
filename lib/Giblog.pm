@@ -203,8 +203,8 @@ You can B<customize your website by Perl>.
   # Build web site
   giblog build
 
-  # Check web site in local environment(need Mojolicious)
-  morbo serve.pl
+  # Serve a web site
+  giblog serve
 
   # Add new entry with home directory
   giblog add --home /home/kimoto/mysite
