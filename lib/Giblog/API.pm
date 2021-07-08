@@ -102,7 +102,7 @@ sub create_website_from_proto {
   my ($self, $home_dir, $module_name) = @_;
   
   unless (defined $home_dir) {
-    confess "Home directory must be specifed\n";
+    confess "Home directory must be specified\n";
   }
   
   if (-f $home_dir) {
@@ -157,6 +157,16 @@ sub create_website_from_proto {
     },
     $proto_dir
   );
+  
+  # git init repository directory
+  my @git_init_cmd_rep = ('git', 'init', $home_dir);
+  system(@git_init_cmd_rep) == 0
+    or confess "Can't execute command : @git_init_cmd_rep: $!";
+  
+  # git init public directory
+  my @git_init_cmd_public = ('git', 'init', "$home_dir/public");
+  system(@git_init_cmd_public) == 0
+    or confess "Can't execute command : @git_init_cmd_public: $!";
 }
 
 sub rel_file {
@@ -900,15 +910,22 @@ If module name is "Giblog::Command::new_foo" and the loading path is "lib/Giblog
 
 Module must be loaded before calling "create_website_from_proto". otherwise exception occur.
 
-If home directory is not specific, exception occur.
+The web site directry is initialized by git and C<public> direcotry is also initialized by git.
 
-If home directory already exists, exception occur.
+  git init foo
+  git init foo/public 
+  
+If home directory is not specific, a exception occurs.
 
-If creating directory fail, exception occur.
+If home directory already exists, a exception occurs.
 
-If proto directory corresponding to module name is not specific, exception occur.
+If creating directory fail, a exception occurs.
 
-If proto direcotry corresponding to module name is not found, exception occur.
+If proto directory corresponding to module name is not specific, a exception occurs.
+
+If proto direcotry corresponding to module name is not found, a exception occurs.
+
+If git command is not found, a exception occurs.
 
 =head2 copy_static_files_to_public
 

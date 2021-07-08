@@ -73,6 +73,10 @@ sub slurp {
       ok(-x "$home_dir/templates/static/test.cgi");
       ok(-x "$home_dir/public/test.cgi");
     }
+    
+    # Check git directory
+    ok(-d "$home_dir/.git");
+    ok(-d "$home_dir/public/.git");
   }
 }
 
