@@ -598,6 +598,14 @@ Get Giblog config.
 
 Get home directory.
 
+=head1 FAQ
+
+=head2 Dose Giblog support Windows?
+
+Giblog does'nt support Native Windows(Strawberry Perl, or Active Perl) because Giblog depends on Git and Mojolicious.
+
+If you use Giblog in Windows, you can use WSL2.
+
 =head1 AUTHOR
 
 Yuki Kimoto, C<< <kimoto.yuki at gmail.com> >>
