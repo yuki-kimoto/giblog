@@ -9,7 +9,7 @@ use Mojolicious;
 use Carp 'confess';
 
 sub run {
-  my ($self, @argv) = @_;
+  my ($self) = @_;
   
   my $command = 'morbo -w giblog.conf -w lib -w templates serve.pl';
   

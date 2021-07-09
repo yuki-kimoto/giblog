@@ -10,7 +10,13 @@ use Time::Piece 'localtime';
 use Carp 'confess';
 
 sub run {
-  my ($self, $remote_rep, $branch) = @_;
+  my ($self) = @_;
+
+  my $api = $self->api;
+  
+  my $argv = $api->argv;
+  
+  my ($remote_rep, $branch) = @$argv;
   
   unless (defined $remote_rep) {
     confess 'Must be specify remote repository name';

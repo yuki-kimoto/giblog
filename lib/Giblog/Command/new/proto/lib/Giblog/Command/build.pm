@@ -7,7 +7,7 @@ use warnings;
 use utf8;
 
 sub run {
-  my ($self, @args) = @_;
+  my ($self) = @_;
   
   # API
   my $api = $self->api;
