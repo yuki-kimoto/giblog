@@ -1,15 +1,24 @@
-use 5.008007;
+use 5.010001;
 use strict;
 use warnings;
 use ExtUtils::MakeMaker;
 
 # Giblog need git command
-my $git_help = 'git --help';
-my $ret = system($git_help);
+{
+  my $git_help = 'git --help';
+  my $ret = system($git_help);
+  if ($ret != 0) {
+    warn "Giblog need git command\n";
+    die "OS unsupported\n";
+  }
+}
 
-if ($ret != 0) {
-  warn "Giblog need git command\n";
-  die "OS unsupported\n";
+# Giblog don't support Windows
+{
+  if ($^O eq 'Win32') {
+    warn "Giblog does'nt support Windows\n";
+    die "OS unsupported\n";
+  }
 }
 
 WriteMakefile(

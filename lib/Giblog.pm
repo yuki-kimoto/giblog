@@ -512,6 +512,19 @@ If you use before Giblog 2.0, you can serve a web site by the following way.
    # Old style before Giblog 2.0
    morbo serve.pl
 
+=head2 Publish web site
+
+You can publish the web site by C<publish> command.
+
+   # Publish the web site
+   giblog publish origin main
+
+This command is same as the following.
+
+  git -C public add .
+  git -C public commit -m "Published at YY-mm-dd HH:MM:SS"
+  git -C public push origin main
+
 =head1 CONFIG FILE
 
 Giblog config file is "giblog.conf".

@@ -1,4 +1,4 @@
-2.0 2021-07-07
+2.0 2021-07-09
   - add serve command
     
     giblog serve
@@ -17,7 +17,11 @@
     side bar has bottom margin
   - Giblog depend on git command.
   - new, new_website, new_blog initlaize the directory and the public directry by "git init"
-  
+  - Giblog need Perl 5.10.1+ because I want to use Time::Piece.
+  - Giblog doesn't support Windows because Giblog depends on Git and Mojolicious.
+  - add publish command
+    giblog publish origin main
+    this need Git 1.8.5+ because -C option is used.
 1.02 2019-07-27
   - fix parse_description_from_first_p_tag bug that this method can't remove tag if new lines is contained.
 1.0101 2019-02-15

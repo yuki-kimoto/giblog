@@ -46,6 +46,9 @@ Giblog is command line tool.
   # Serve web site
   giblog serve
 
+  # Publish web site
+  giblog publish origin main
+
   # Add new entry with home directory
   giblog add --home /home/kimoto/mysite
   
@@ -58,7 +61,7 @@ Giblog is command line tool.
 Giblog have the following features.
 
 * Build Website and Blog.
-* Linux, Mac OS, Windows Support. (In Windows, recommend installation of msys2)
+* Linux, Mac OS Support. In Windows, need WSL2 or msys2.
 * Responsive web site support. Default CSS is setup for PC and Smart phone.
 * Header, Hooter and Side bar support
 * You can customize Top and Bottom section of content.
