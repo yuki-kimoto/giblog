@@ -1470,3 +1470,5 @@ B<INPUT:>
 
   $data->{content}
   $data->{file}
+
+If the original content of the file is same as the new content of the file is same, this method don't write to public file. This means file time stamp is not be updated.
