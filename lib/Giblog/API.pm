@@ -773,8 +773,23 @@ sub write_to_public_file {
   my $public_dir = dirname $public_file;
   mkpath $public_dir;
   
+  # Need update public file
+  my $is_need_update_public_file;
+  if (!-f $public_file) {
+    $is_need_update_public_file = 1;
+  }
+  else {
+    # Get original content
+    my $original_content = $self->slurp_file($public_file);
+    unless ($content eq $original_content) {
+      $is_need_update_public_file = 1;
+    }
+  }
+  
   # Write to public file
-  $self->write_to_file($public_file, $content);
+  if ($is_need_update_public_file) {
+    $self->write_to_file($public_file, $content);
+  }
 }
 
 1;

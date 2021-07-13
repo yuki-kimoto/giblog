@@ -4,6 +4,7 @@ use Test::More 'no_plan';
 
 use File::Path 'mkpath', 'rmtree';
 use Cwd 'getcwd';
+use Time::HiRes 'sleep';
 
 my $giblog_dir = '../../../..';
 my $test_dir = 't/tmp/command';
@@ -40,11 +41,11 @@ sub slurp {
         or die "Can't execute command $build_cmd:$!";
     }
     
-    my $index_file = "$home_dir/public/index.html";
+    my $public_index_file = "$home_dir/public/index.html";
     my @blog_files = glob "$home_dir/public/blog/*";
     is(scalar @blog_files, 1);
     
-    my $index_content = slurp $index_file;
+    my $index_content = slurp $public_index_file;
     my $blog_content = slurp $blog_files[0];
     
     like($index_content, qr/header/);
@@ -77,6 +78,38 @@ sub slurp {
     # Check git directory
     ok(-d "$home_dir/.git");
     ok(-d "$home_dir/public/.git");
+    
+    # Rebuild - no change
+    {
+      # Original time
+      my $original_index_time = -M $public_index_file;
+      
+      my $build_cmd = "$^X -Mblib blib/script/giblog build -H $home_dir";
+      system($build_cmd) == 0
+        or die "Can't execute command $build_cmd:$!";
+        
+      my $current_index_time = -M $public_index_file;
+      is($original_index_time, $current_index_time);
+    }
+
+    # Rebuild - have change
+    {
+      # Original time
+      my $original_index_time = -M $public_index_file;
+      open my $public_index_fh, '>', $public_index_file
+        or die "Can't open file $public_index_file: $!";
+      print $public_index_fh "AAAA";
+      close $public_index_fh;
+      
+      sleep 2;
+      
+      my $build_cmd = "$^X -Mblib blib/script/giblog build -H $home_dir";
+      system($build_cmd) == 0
+        or die "Can't execute command $build_cmd:$!";
+        
+      my $current_index_time = -M $public_index_file;
+      isnt($original_index_time, $current_index_time);
+    }
   }
 }
 
