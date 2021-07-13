@@ -22,9 +22,6 @@
   - add publish command
     giblog publish origin main
     this need Git 1.8.5+ because -C option is used.
-  - save command arguments to app->argv because api want to use command argument always.
-    this is not backword compatible, however this is needed for "giblog build --force" option
-    
 1.02 2019-07-27
   - fix parse_description_from_first_p_tag bug that this method can't remove tag if new lines is contained.
 1.0101 2019-02-15

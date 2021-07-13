@@ -9,7 +9,7 @@ use utf8;
 use File::Basename 'basename';
 
 sub run {
-  my ($self) = @_;
+  my ($self, @args) = @_;
 
   # API
   my $api = $self->api;

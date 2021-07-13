@@ -41,8 +41,6 @@ sub _unindent {
   return $str;
 }
 
-sub argv { shift->{argv} }
-
 sub run_command {
   my ($class, @argv) = @_;
 
@@ -85,9 +83,7 @@ sub run_command {
   my $command = $command_class->new(api => $api);
 
   @argv = @ARGV;
-  $api->{argv} = [@argv];
-  
-  $command->run;
+  $command->run(@argv);
 }
 
 sub home_dir { shift->{'home_dir'} }

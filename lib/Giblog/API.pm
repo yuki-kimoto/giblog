@@ -17,8 +17,6 @@ sub new {
   return bless $self, $class;
 }
 
-sub argv { shift->{argv} }
-
 sub giblog { shift->{giblog} }
 
 sub config { shift->giblog->config }
@@ -854,12 +852,6 @@ After calling "read_config", You can also get config by C<config> method.
   $api->clear_config;
 
 Clear config. Set undef to config.
-
-=haed2 argv
-
-  my $argv = $api->argv;
-
-Get command line arguments after C<giblog COMMAND>.
 
 =head2 create_dir
 

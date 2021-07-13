@@ -6,14 +6,12 @@ use strict;
 use warnings;
 
 sub run {
-  my ($self) = @_;
+  my ($self, @argv) = @_;
+  
+  my $website_name = shift @argv;
 
   my $api = $self->api;
   
-  my $argv = $api->argv;
-  
-  my $website_name = shift @$argv;
-
   my $module_name = ref $self;
   
   $api->create_website_from_proto($website_name, $module_name);
