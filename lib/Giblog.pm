@@ -1,6 +1,5 @@
 package Giblog;
 
-use 5.008007;
 use strict;
 use warnings;
 

@@ -18,7 +18,7 @@
     side bar has bottom margin
   - Giblog depend on git command.
   - new, new_website, new_blog initlaize the directory and the public directry by "git init"
-  - Giblog need Perl 5.10.1+ because I want to use Time::Piece.
+  - Giblog need Perl 5.16+ because I want to use Time::Piece and Mojolicious latest release.
   - Giblog doesn't support Windows because Giblog depends on Git and Mojolicious.
   - add publish command
     giblog publish origin main
