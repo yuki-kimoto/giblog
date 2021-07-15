@@ -58,8 +58,8 @@ implements the following new ones.
 
 Publish your website by specifing remote repository name and branch name.
 
-This is the same as the following command(the repository name is origin and the branch name is main).
+This is the same as the following command. In this example, the repository name is origin and the branch name is main. YY-mm-dd HH:MM:SS is current date and time.
 
   git --git-dir=public/.git add --all
-  git --git-dir=public/.git commit -m "Published at YY-mm-dd HH:MM:SS"
+  git --git-dir=public/.git commit -m "Published by Giblog at YY-mm-dd HH:MM:SS"
   git --git-dir=public/.git push origin main
