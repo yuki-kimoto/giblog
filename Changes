@@ -1,4 +1,5 @@
-2.0 2021-07-09
+1.03_01 2021-07-09
+  - This relase is (2.0 beta release)
   - add serve command
     
     giblog serve
@@ -23,7 +24,7 @@
     giblog publish origin main
     this need Git 1.8.5+ because -C option is used.
   - public file is generated only if the public file don't exists or the original content of the public file is different from the new one.
-  
+
 1.02 2019-07-27
   - fix parse_description_from_first_p_tag bug that this method can't remove tag if new lines is contained.
 1.0101 2019-02-15
