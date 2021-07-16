@@ -177,39 +177,42 @@ Giblog - Web site and Blog builders you can manage with Git
 
 =head1 DESCRIPTION
 
-Giblog is B<Website and Blog builder> written by Perl.
-You can create B<your website and blog> easily.
-All created files is B<static files>, so you can manage them using B<git>.
-You can B<customize your website by Perl>.
+Giblog is a utility to create your web site or blog.
+You can create your web site or blog using C<giblog> command.
+All created files is static files, so you can manage them using B<git>.
+You can freely customize your website by editting the C<build> command.
 
 =head1 SYNOPSYS
-
+  
   # New empty web site
-  giblog new mysite
+  $ giblog new mysite
 
   # New web site
-  giblog new_website mysite
+  $ giblog new_website mysite
 
   # New blog
-  giblog new_blog mysite
+  $ giblog new_blog mysite
 
   # Change directory
-  cd mysite
+  $ cd mysite
 
   # Add new entry
-  giblog add
+  $ giblog add
 
   # Build web site
-  giblog build
-
+  $ giblog build
+  
   # Serve a web site
-  giblog serve
+  $ giblog serve
+
+  # Publish web site
+  $ giblog publish origin main
 
   # Add new entry with home directory
-  giblog add --home /home/kimoto/mysite
+  $ giblog add --home /home/kimoto/mysite
 
   # Build web site with home directory
-  giblog build --home /home/kimoto/mysite
+  $ giblog build --home /home/kimoto/mysite
 
 =head1 FEATURES
 
@@ -628,7 +631,7 @@ Yasuaki Omokawa, C<< <omokawa at senk-inc.co.jp> >>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2018-2019 Yuki Kimoto.
+Copyright 2018-2021 Yuki Kimoto.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the the Artistic License (2.0). You may obtain a
