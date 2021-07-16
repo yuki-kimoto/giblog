@@ -523,9 +523,9 @@ You can publish the web site by C<publish> command.
 
 This is the same as the following command. In this example, the repository name is origin and the branch name is main. YY-mm-dd HH:MM:SS is current date and time.
 
-  git --git-dir=public/.git add --all
-  git --git-dir=public/.git commit -m "Published by Giblog at YY-mm-dd HH:MM:SS"
-  git --git-dir=public/.git push origin main
+  git -C public add --all
+  git -C public commit -m "Published by Giblog at YY-mm-dd HH:MM:SS"
+  git -C public push origin main
 
 =head1 CONFIG FILE
 
