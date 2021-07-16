@@ -621,6 +621,20 @@ Giblog does'nt support Native Windows(Strawberry Perl, or Active Perl) because G
 
 If you use Giblog in Windows, you can use WSL2.
 
+=head2 What is the lowest version of Perl supported by Giblog?
+
+Since Giblog depends on L<Mojolicious>, it is the lowest version of Perl required by Mojolicious. Current is Perl 5.16+.
+
+=head2 What is the minimum version of Git required by Giblog?
+
+This is Git 1.8.5+.
+
+=head2 What are the precautions when upgrading from Giblog 1 to Giblog 2?
+
+From Giblog 2.0 the lowest version of Perl depends on Mojolicious, so use the newest Perl possible.
+
+Git 1.8.5+ is needed.
+
 =head1 Giblog Official Site
 
 L<Giblog Official Site|https://jp.giblog.net/>
