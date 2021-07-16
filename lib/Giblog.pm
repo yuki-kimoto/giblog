@@ -621,6 +621,10 @@ Giblog does'nt support Native Windows(Strawberry Perl, or Active Perl) because G
 
 If you use Giblog in Windows, you can use WSL2.
 
+=head1 Giblog Official Site
+
+L<Giblog Official Site|https://jp.giblog.net/>
+
 =head1 AUTHOR
 
 Yuki Kimoto, C<< <kimoto.yuki at gmail.com> >>
