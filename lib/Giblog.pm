@@ -613,6 +613,32 @@ Get Giblog config.
 
 Get home directory.
 
+=head1 DOCUMENT
+
+=over 2
+
+=item * L<Giblog>
+
+=item * L<Giblog::API>
+
+=item * L<Giblog::Command>
+
+=item * L<Giblog::Command::new>
+
+=item * L<Giblog::Command::new_website>
+
+=item * L<Giblog::Command::new_blog>
+
+=item * L<Giblog::Command::add>
+
+=item * L<Giblog::Command::build>
+
+=item * L<Giblog::Command::serve>
+
+=item * L<Giblog::Command::publish>
+
+=back
+
 =head1 FAQ
 
 =head2 Dose Giblog support Windows?
