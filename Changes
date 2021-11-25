@@ -1,3 +1,6 @@
+3.0 2021-11-25
+  - Dropped IE support in default CSS.
+
 2.0 2021-07-19
   - add serve command
     
