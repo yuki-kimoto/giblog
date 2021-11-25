@@ -38,7 +38,7 @@
   
   /* main */
   .main {
-    max-width:960px;
+    max-width:1030px;
     width:100%;
     margin: 0 auto;
     padding:0 5px;
@@ -52,7 +52,7 @@
   /* content */
   .content {
     float:left;
-    width:calc(100% - 280px - 30px);
+    width:calc(100% - 320px - 30px);
   }
   
   /* entry */
@@ -68,14 +68,14 @@
   /* side */
   .side {
     float:left;
-    width:280px;
+    width:320px;
     margin-left:30px;
     padding-top:16px;
   }
   
   /* tags */
   h1 {
-    max-width:1020px;
+    max-width:1030px;
     width:100%;
     font-size:28px;
     padding:19px 10px 15px 73px;
@@ -191,7 +191,7 @@
   }
 
 /* Tablet and Smart phone */
-@media only screen and (max-width:960px) {
+@media only screen and (max-width:1030px) {
   .content {
     float:none;
     width:97%;
