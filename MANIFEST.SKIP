@@ -36,3 +36,4 @@ SPVM-.*
 .idea/.*
 ^mysite
 ^t/tmp
+^tmp

@@ -95,7 +95,7 @@ sub add_config_file {
     like($index_content, qr|\Q<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">|);
     like($index_content, qr|\Q<meta name="description" content="How to use Giblog.">|);
     like($index_content, qr|\Q<link rel="stylesheet" type="text/css" href="/subdir/css/common.css">|);
-    like($index_content, qr|\bsrc="/subdir/images/giblog-logo.png\b|);
+    like($index_content, qr|\bsrc="/subdir/images/logo.png\b|);
     like($blog_content, qr/header/);
     like($blog_content, qr/footer/);
     like($blog_content, qr/top/);
@@ -106,6 +106,6 @@ sub add_config_file {
     # css/common.css
     my $common_css_file = "$home_dir/public/css/common.css";
     my $common_css_content = slurp($common_css_file);
-    like($common_css_content, qr|\b\Qurl(/subdir/images/giblog-logo.png|);
+    like($common_css_content, qr|\b\Qurl(/subdir/images/logo.png|);
   }
 }
