@@ -63,3 +63,9 @@ This is the same as the following command. In this example, the repository name 
   git -C public add --all
   git -C public commit -m "Published by Giblog at YY-mm-dd HH:MM:SS"
   git -C public push origin main
+
+When you deploy this on the production environment, you can use the following command.
+  
+  # Deployment on production environment
+  git fetch
+  git reset --hard origin/main
