@@ -42,16 +42,12 @@
     width:100%;
     margin: 0 auto;
     padding:0 5px;
+    display:flex;
+    flex-wrap:wrap;
   }
-  .main:after {
-    content:"";
-    display:block;
-    clear:both;
-  }
-  
+
   /* content */
   .content {
-    float:left;
     width:calc(100% - 320px - 30px);
   }
   
@@ -67,7 +63,6 @@
   
   /* side */
   .side {
-    float:left;
     width:320px;
     margin-left:30px;
     padding-top:16px;
@@ -193,13 +188,11 @@
 /* Tablet and Smart phone */
 @media only screen and (max-width:1030px) {
   .content {
-    float:none;
     width:97%;
     margin:0 auto;
     margin-bottom:15px;
   }
   .side {
-    float:none;
     width:97%;
     margin:0 auto;
   }
