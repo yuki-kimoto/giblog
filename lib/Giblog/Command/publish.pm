@@ -29,7 +29,7 @@ sub run {
   if(system(@git_commit_command) == -1) {
     confess "Fail giblog publish command. Command is @git_commit_command : $?";
   }
-  my @git_push_command = ('git', '-C', 'public', 'push', $remote_rep, $branch);
+  my @git_push_command = ('git', '-C', 'public', 'push', '-f', $remote_rep, $branch);
   if (system(@git_push_command) == -1) {
     confess "Fail giblog publish command. Command is @git_push_command : $?";
   }
@@ -62,7 +62,7 @@ This is the same as the following command. In this example, the repository name 
 
   git -C public add --all
   git -C public commit -m "Published by Giblog at YY-mm-dd HH:MM:SS"
-  git -C public push origin main
+  git -C public push -f origin main
 
 When you deploy this on the production environment, you can use the following command.
   

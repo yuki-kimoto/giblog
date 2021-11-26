@@ -6,7 +6,17 @@
     use flex layout instead of float layout.
     use CSS properties(CSS variables) for theme colors and add a variables.css file.
     h3 boder-top color become the theme color.
-    
+  - giblog publish command become push fource
+    Before
+      git -C public add --all
+      git -C public commit -m "Published by Giblog at YY-mm-dd HH:MM:SS"
+      git -C public push origin main
+    After
+      git -C public add --all
+      git -C public commit -m "Published by Giblog at YY-mm-dd HH:MM:SS"
+      git -C public push -f origin main
+    This is because other managers can publish web sites easily.
+  
 2.0 2021-07-19
   - add serve command
     
