@@ -299,7 +299,7 @@ sub get_content {
   $data->{content} = $content;
 }
 
-my $inline_elements_re = qr/^<(span|em|strong|abbr|acronym|dfn|q|cite|sup|sub|code|var|kbd|samp|bdo|font|big|small|b|i|s|strike|u|tt|a|label|object|applet|iframe|button|textarea|select|basefont|img|br|input|map)\b/;
+my $inline_elements_re = qr/^<(span|em|strong|abbr|acronym|dfn|q|cite|sup|sub|code|var|kbd|samp|bdo|font|big|small|b|i|s|strike|u|tt|a|label|object|applet|iframe|button|textarea|select|basefont|img|br|input|map)\b/i;
 
 sub parse_giblog_syntax {
   my ($self, $data) = @_;
@@ -320,7 +320,7 @@ sub parse_giblog_syntax {
     my $original_line = $line;
     
     # Pre end
-    if ($line =~ m|^</pre\b|) {
+    if ($line =~ m|^</pre\b|i) {
       $pre_start = 0;
     }
     
@@ -349,7 +349,7 @@ sub parse_giblog_syntax {
     }
 
     # Pre start
-    if ($original_line =~ m|^<pre\b|) {
+    if ($original_line =~ m|^<pre\b|i) {
       $pre_start = 1
     }
   }
@@ -364,7 +364,7 @@ sub parse_title {
 
   my $content = $data->{content};
   
-  if ($content =~ m|class="title"[^>]*?>([^<]*?)<|) {
+  if ($content =~ m|class\s*=\s*"title"[^>]*?>([^<]*?)<|) {
     my $title = $1;
     $data->{title} = $title;
   }
@@ -399,7 +399,7 @@ sub add_base_path_to_content {
       my $original_line = $line;
       
       # Pre end
-      if ($line =~ m|^</pre\b|) {
+      if ($line =~ m|^</pre\b|i) {
         $pre_start = 0;
       }
       
@@ -419,7 +419,7 @@ sub add_base_path_to_content {
       }
       
       # Pre start
-      if ($original_line =~ m|^<pre\b|) {
+      if ($original_line =~ m|^<pre\b|i) {
         $pre_start = 1
       }
     }
@@ -499,7 +499,7 @@ sub parse_title_from_first_h_tag {
 
   my $content = $data->{content};
   
-  if ($content =~ m|<\s*h[1-6]\b[^>]*?>([^<]*?)<|) {
+  if ($content =~ m|<\s*h[1-6]\b[^>]*?>([^<]*?)<|i) {
     my $title = $1;
     $data->{title} = $title;
   }
@@ -563,7 +563,7 @@ sub add_page_link_to_first_h_tag {
     $path = "/$file";
   }
   
-  $content =~ s|(<\s*h[1-6]\b[^>]*?>)([^<]*?)<|$1<a href="$path">$2</a><|;
+  $content =~ s|(<\s*h[1-6]\b[^>]*?>)([^<]*?)<|$1<a href="$path">$2</a><|i;
 
   $data->{'content'} = $content;
 }
@@ -597,7 +597,7 @@ sub parse_description_from_first_p_tag {
   my $content = $data->{content};
   
   # Create description from first p tag
-  if ($content =~ m|<\s?p\b[^>]*?>(.*?)<\s?/\s?p\s?>|s) {
+  if ($content =~ m|<\s?p\b[^>]*?>(.*?)<\s?/\s?p\s?>|si) {
     my $description = $1;
     
     # remove tag
