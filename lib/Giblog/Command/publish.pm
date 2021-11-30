@@ -11,7 +11,12 @@ use Carp 'confess';
 
 sub run {
   my ($self, $remote_rep, $branch) = @_;
-  
+
+  my $api = $self->api;
+
+  my $home_dir = $api->home_dir;
+  my $public_dir = "$home_dir/public";
+
   unless (defined $remote_rep) {
     confess 'Must be specify remote repository name';
   }
@@ -20,16 +25,16 @@ sub run {
     confess 'Must be specify branch name';
   }
   
-  my @git_add_command = qw(git -C public add --all);
+  my @git_add_command = ('git', '-C', $public_dir, 'add', '--all');
   if (system(@git_add_command) == -1) {
     confess "Fail giblog publish command. Command is @git_add_command: $?";
   }
   my $now_tp = Time::Piece::localtime;
-  my @git_commit_command = ('git', '-C', 'public', 'commit', '-m', '"Published by Giblog at ' . $now_tp->strftime('%Y-%m-%d %H:%M:%S') . '"');
+  my @git_commit_command = ('git', '-C', $public_dir, 'commit', '-m', '"Published by Giblog at ' . $now_tp->strftime('%Y-%m-%d %H:%M:%S') . '"');
   if(system(@git_commit_command) == -1) {
     confess "Fail giblog publish command. Command is @git_commit_command : $?";
   }
-  my @git_push_command = ('git', '-C', 'public', 'push', '-f', $remote_rep, $branch);
+  my @git_push_command = ('git', '-C', $public_dir, 'push', '-f', $remote_rep, $branch);
   if (system(@git_push_command) == -1) {
     confess "Fail giblog publish command. Command is @git_push_command : $?";
   }
