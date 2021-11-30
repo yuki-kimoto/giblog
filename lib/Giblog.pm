@@ -48,7 +48,7 @@ sub run_command {
   my $getopt_option_save = Getopt::Long::Configure(qw(default no_auto_abbrev no_ignore_case));
   GetOptions(
     "h|help" => \my $help,
-    "H|home=s" => \my $home_dir,
+    "H|C|home=s" => \my $home_dir,
   );
   Getopt::Long::Configure($getopt_option_save);
 

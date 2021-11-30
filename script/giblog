@@ -22,11 +22,12 @@ giblog - giblog command
     giblog new_blog mysite
     giblog add
     giblog build
+    giblog -C /home/kimoto/mysite add
     giblog -H /home/kimoto/mysite add
     giblog --home /home/kimoto/mysite build
 
   Options:
-    -H, --home <directory>         Home directory
+    -C, -H, --home <directory>     Home directory
     -h, --help                     Show this message
 
 =head1 DESCRIPTION

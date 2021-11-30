@@ -46,6 +46,12 @@ sub slurp {
         or die "Can't execute command $build_cmd:$!";
     }
 
+    {
+      my $build_cmd = "$^X -Mblib blib/script/giblog build -C $home_dir";
+      system($build_cmd) == 0
+        or die "Can't execute command $build_cmd:$!";
+    }
+
     my @blog_files = reverse glob "$home_dir/public/blog/*";
     is(scalar @blog_files, 9);
     
