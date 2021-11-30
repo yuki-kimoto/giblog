@@ -47,6 +47,11 @@ sub slurp {
     
     my $index_content = slurp $public_index_file;
     my $blog_content = slurp $blog_files[0];
+
+    my $static_css_file = "$home_dir/templates/static/css/common.css";
+    ok(-f $static_css_file);
+    my $public_css_file = "$home_dir/public/css/common.css";
+    ok(-f $public_css_file);
     
     like($index_content, qr/header/);
     like($index_content, qr/footer/);
@@ -79,17 +84,29 @@ sub slurp {
     ok(-d "$home_dir/.git");
     ok(-d "$home_dir/public/.git");
     
+    # Static files are the same modified time as public files
+    is(-M $static_css_file, -M $public_css_file);
+    
     # Rebuild - no change
     {
-      # Original time
-      my $original_index_time = -M $public_index_file;
-      
-      my $build_cmd = "$^X -Mblib blib/script/giblog build -H $home_dir";
-      system($build_cmd) == 0
-        or die "Can't execute command $build_cmd:$!";
+      # File time and size - template files and static files
+      {
+        # Original time
+        my $original_index_time = -M $public_index_file;
+
+        my $static_css_file_time = -M $static_css_file;
+        my $public_css_file_time_original = -M $public_css_file;
         
-      my $current_index_time = -M $public_index_file;
-      is($original_index_time, $current_index_time);
+        my $build_cmd = "$^X -Mblib blib/script/giblog build -H $home_dir";
+        system($build_cmd) == 0
+          or die "Can't execute command $build_cmd:$!";
+          
+        my $current_index_time = -M $public_index_file;
+        is($original_index_time, $current_index_time);
+
+        # Static files are the same modified time as public files
+        is(-M $static_css_file, -M $public_css_file);
+      }
     }
 
     # Rebuild - have change
@@ -100,7 +117,14 @@ sub slurp {
         or die "Can't open file $public_index_file: $!";
       print $public_index_fh "AAAA";
       close $public_index_fh;
-      
+
+
+      open my $static_css_file_fh, '>', $static_css_file
+        or die "Can't open file $static_css_file: $!";
+      print $static_css_file_fh "h1 { }";
+      close $static_css_file_fh;
+      my $static_css_file_time = -M $static_css_file;
+
       sleep 2;
       
       my $build_cmd = "$^X -Mblib blib/script/giblog build -H $home_dir";
@@ -109,6 +133,9 @@ sub slurp {
         
       my $current_index_time = -M $public_index_file;
       isnt($original_index_time, $current_index_time);
+
+      # Static files are the same modified time as public files
+      is(-M $static_css_file, -M $public_css_file);
     }
   }
 }

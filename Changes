@@ -17,6 +17,7 @@
       git -C public push -f origin main
     This is because other managers can publish web sites certainly.
   - fix upper case tag can't be parsed correctly as Giblog syntax.
+  - The modified time of static files are copied to the modified time of public files
   
 2.0 2021-07-19
   - add serve command

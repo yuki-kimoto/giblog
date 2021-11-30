@@ -234,13 +234,37 @@ sub copy_static_files_to_public {
     my $static_file = $self->rel_file("templates/static/$static_rel_file");
     my $public_file = $self->rel_file("public/$static_rel_file");
     
-    next unless -f $static_file;
+    # Check if the file is needed to be copied
+    my $do_copy;
+    # Don't copy directries. Copy only normal files.
+    if (-f $static_file) {
+      if (-f $public_file) {
+        # Don't copy files if file is latest
+        if (-s $static_file == -s $public_file && -M $static_file == -M $public_file) {
+          $do_copy = 0;
+        }
+        else {
+          $do_copy = 1;
+        }
+      }
+      else {
+        $do_copy = 1;
+      }
+    }
+    else {
+      $do_copy = 0;
+    }
+    next unless $do_copy;
 
     my $public_dir = dirname $public_file;
     mkpath $public_dir;
     
     copy $static_file, $public_file
       or confess "Can't copy $static_file to $public_file: $!";
+    
+    my $static_file_last_updated_time = (stat($static_file))[9];
+    utime $static_file_last_updated_time, $static_file_last_updated_time, $public_file;
+    
     my @stat = stat $static_file;
     my $permission = substr((sprintf "%03o", $stat[2]), -3);
     chmod oct($permission), $public_file
