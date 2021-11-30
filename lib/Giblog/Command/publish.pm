@@ -15,6 +15,7 @@ sub run {
   my $api = $self->api;
 
   my $home_dir = $api->home_dir;
+  $home_dir //= '.';
   my $public_dir = "$home_dir/public";
 
   unless (defined $remote_rep) {
