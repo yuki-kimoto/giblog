@@ -14,9 +14,7 @@ sub run {
 
   my $api = $self->api;
 
-  my $home_dir = $api->home_dir;
-  $home_dir //= '.';
-  my $public_dir = "$home_dir/public";
+  my $public_dir = $api->rel_file('public');
 
   unless (defined $remote_rep) {
     confess 'Must be specify remote repository name';
