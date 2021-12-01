@@ -45,7 +45,7 @@ sub run_command {
 
   # Command line option
   local @ARGV = @argv;
-  my $getopt_option_save = Getopt::Long::Configure(qw(default no_auto_abbrev no_ignore_case));
+  my $getopt_option_save = Getopt::Long::Configure(qw(default no_auto_abbrev no_ignore_case pass_through));
   GetOptions(
     "h|help" => \my $help,
     "H|C|home=s" => \my $home_dir,
