@@ -260,6 +260,7 @@ mkpath $test_dir;
       \@files, 
       [
         "$home_dir/README",
+        "$home_dir/deploy.pl",
         "$home_dir/giblog.conf",
         "$home_dir/lib",
         "$home_dir/public",

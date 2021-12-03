@@ -48,6 +48,7 @@ sub slurp {
     my $index_content = slurp $public_index_file;
     my $blog_content = slurp $blog_files[0];
 
+    
     my $static_css_file = "$home_dir/templates/static/css/common.css";
     ok(-f $static_css_file);
     my $public_css_file = "$home_dir/public/css/common.css";

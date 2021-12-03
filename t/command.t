@@ -54,6 +54,7 @@ sub slurp {
       \@files, 
       [
         "$home_dir/README",
+        "$home_dir/deploy.pl",
         "$home_dir/giblog.conf",
         "$home_dir/lib",
         "$home_dir/public",
@@ -79,6 +80,7 @@ sub slurp {
       \@files, 
       [
         "$home_dir/README",
+        "$home_dir/deploy.pl",
         "$home_dir/giblog.conf",
         "$home_dir/lib",
         "$home_dir/public",
@@ -104,6 +106,7 @@ sub slurp {
       \@files, 
       [
         "$home_dir/README",
+        "$home_dir/deploy.pl",
         "$home_dir/giblog.conf",
         "$home_dir/lib",
         "$home_dir/public",
@@ -271,6 +274,26 @@ sub slurp {
     like($blog_content, qr/top/);
     like($blog_content, qr/bottom/);
     like($blog_content, qr/meta/);
+  }
+}
+
+
+# deploy
+{
+  # deploy
+  {
+    my $home_dir = "$test_dir/mysite_new";
+    rmtree $home_dir;
+    my $new_cmd = "$^X -Mblib blib/script/giblog new $home_dir";
+    system($new_cmd) == 0
+      or die "Can't execute command $new_cmd:$!";
+    {
+      my $deploy_cmd = "$^X -Mblib blib/script/giblog -H $home_dir deploy foo bar";
+      my $output = `$deploy_cmd`;
+      like($output, qr/deploy\.pl/);
+      like($output, qr/\bfoo\b/);
+      like($output, qr/\bbar\b/);
+    }
   }
 }
 

@@ -21,6 +21,7 @@
   - add -C to the option of giblog command. This is alias for -H and --home option.
   - enable -C option of giblog publish command
   - add giblog save command
+  - Add "giblog deploy" command and add "deploy.pl" program in the home directory.
 2.0 2021-07-19
   - add serve command
     

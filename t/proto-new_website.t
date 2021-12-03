@@ -44,7 +44,7 @@ sub slurp {
       system($build_cmd) == 0
         or die "Can't execute command $build_cmd:$!";
     }
-    
+
     my $index_file = "$home_dir/public/index.html";
     my @blog_files = glob "$home_dir/public/blog/*";
     is(scalar @blog_files, 9);
