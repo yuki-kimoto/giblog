@@ -73,8 +73,8 @@ sub slurp {
       like($blog_content, qr/&gt;/);
       like($blog_content, qr/&lt;/);
       like($blog_content, qr/&amp;/);
-      like($blog_content, qr|<title>How to use Giblog😁 - mysite😄</title>|);
-      like($blog_content, qr|<h2><a href="/blog/20190319121234.html">How to use Giblog😁</a></h2>|);
+      like($blog_content, qr|<title>How to use Giblogうえ - mysiteあい</title>|);
+      like($blog_content, qr|<h2><a href="/blog/20190319121234.html">How to use Giblogうえ</a></h2>|);
       like($blog_content, qr|\Qside_list|);
       like($blog_content, qr|\Q<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">|);
       like($blog_content, qr|\Q<meta name="description" content="How to use Giblog.">|);
@@ -95,9 +95,9 @@ sub slurp {
       like($index_content, qr/&gt;/);
       like($index_content, qr/&lt;/);
       like($index_content, qr/&amp;/);
-      like($index_content, qr|<title>mysite😄</title>|);
+      like($index_content, qr|<title>mysiteあい</title>|);
       like($index_content, qr|<h1>\s*<a href="/">Giblog Web Site</a>\s*</h1>|);
-      like($index_content, qr|<h2><a href="/blog/20190319121234.html">How to use Giblog😁</a></h2>|);
+      like($index_content, qr|<h2><a href="/blog/20190319121234.html">How to use Giblogうえ</a></h2>|);
       like($index_content, qr|\Qside_list|);
       like($index_content, qr|\Q<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">|);
       like($index_content, qr|\Q<meta name="description" content="Site description">|);
@@ -122,15 +122,15 @@ sub slurp {
       like($list_content, qr/top/);
       like($list_content, qr/bottom/);
       like($list_content, qr/meta/);
-      like($list_content, qr|<title>Entries - mysite😄</title>|);
+      like($list_content, qr|<title>Entries - mysiteあい</title>|);
       like($list_content, qr|<h2><a href="/list.html">Entries</a></h2>|);
       like($list_content, qr|\Qside_list|);
       like($list_content, qr|\Q<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">|);
-      like($list_content, qr|\Q<meta name="description" content="Entries of mysite😄">|);
+      like($list_content, qr|\Q<meta name="description" content="Entries of mysiteあい">|);
       like($list_content, qr|\Q<link rel="stylesheet" type="text/css" href="/css/common.css">|);
       
       like($list_content, qr|\Q$added_blog_file_base|);
-      like($list_content, qr|3/19 <a href="/blog/20190319121234.html">How to use Giblog😁</a>|);
+      like($list_content, qr|3/19 <a href="/blog/20190319121234.html">How to use Giblogうえ</a>|);
       like($list_content, qr|3/18 <a href="/blog/20190318121234.html">Hello Giblog 7</a>|);
       like($list_content, qr|3/17 <a href="/blog/20190317121234.html">Hello Giblog 6</a>|);
       like($list_content, qr|3/16 <a href="/blog/20190316121234.html">Hello Giblog 5</a>|);
