@@ -79,6 +79,7 @@ sub slurp {
       like($blog_content, qr|\Q<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">|);
       like($blog_content, qr|\Q<meta name="description" content="How to use Giblog.">|);
       like($blog_content, qr|\Q<link rel="stylesheet" type="text/css" href="/css/common.css">|);
+      like($blog_content, qr|<p>Giblog Test Variable</p><p>Giblog Test Variable</p>|);
     }
     
     # Index

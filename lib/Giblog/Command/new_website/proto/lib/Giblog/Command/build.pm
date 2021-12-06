@@ -69,6 +69,9 @@ sub run {
     # Build whole html
     $api->build_html($data);
 
+    # Replace Giblog variables
+    $api->replace_vars($data);
+    
     # Add base path to content
     $api->add_base_path_to_content($data);
 

@@ -25,6 +25,7 @@
   - add add_content_after_first_h_tag method to Giblog::API
   - add add_content_after_first_p_tag method to Giblog::API
   - add replace_vars method to Giblog::API
+  - add the call of replace_vars method in proto templates in new, new_website, new_blog commands.
 2.0 2021-07-19
   - add serve command
     

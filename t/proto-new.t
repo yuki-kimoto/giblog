@@ -68,6 +68,8 @@ sub slurp {
     like($index_content, qr/&lt;/);
     like($index_content, qr|<title>Title</title>|);
     like($index_content, qr|<h2><a href="/">Title</a></h2>|);
+    
+    like($index_content, qr|<p>Giblog Test Variable</p><p>Giblog Test Variable</p>|);
 
     like($blog_content, qr/header/);
     like($blog_content, qr/footer/);
