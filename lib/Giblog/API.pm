@@ -638,6 +638,26 @@ sub add_content_after_first_h_tag {
   $data->{content} =~ s|</h([1-6])>|</h$1>\n$added_content|i;
 }
 
+sub replace_vars {
+  my ($self, $data, $opt) = @_;
+  
+  $opt ||= {};
+
+  my $vars = $self->get_vars;
+  if ($vars) {
+    my @var_names = keys %$vars;
+    for my $var_name (@var_names) {
+      unless ($var_name =~ /^\$\w+/a) {
+        confess "Variable name \"$var_name\" must be valid variable name";
+      }
+      
+      my $value = $vars->{$var_name};
+      
+      $data->{content} =~ s/\<\%\= *\Q$var_name\E *\%\>/$value/g;
+    }
+  }
+}
+
 sub parse_description {
   my ($self, $data) = @_;
   
@@ -941,7 +961,7 @@ B<Examples:>
   # Get a Giblog variable
   my $vars = $api->get_vars;
   my $giblog_test_variable = $vars->{'$giblog_test_variable'};
-  
+
 =head2 home_dir
 
   my $home_dir = $api->home_dir;
@@ -1398,6 +1418,51 @@ Content is changed to
   <h2>Perl Tutorial</h2>
   <div>Added Contents</div>
   <h3>Perl Tutorial</h3>
+
+=head2 replace_vars
+
+  $api->replace_vars($data);
+
+Replace a Giblog variables in the content with the values of C<vars> options that are defined in C<giblog.conf>.
+  
+  # giblog.conf
+  use strict;
+  use warnings;
+  use utf8;
+
+  {
+    site_title => 'mysite・',
+    site_url => 'http://somesite.example',
+    # Variables
+    vars => {
+      '$giblog_test_variable' => 'Giblog Test Variable',
+    },
+  }
+
+B<INPUT:>
+
+  $data->{content}
+
+B<OUTPUT:>
+
+  $data->{content}
+
+$data->{content} is the current content.
+
+B<Example:>
+  
+  # Replace a Giblog variables
+  $data->{content} = <<'EOS';
+  <p><%= $giblog_test_variable %></p>
+  <p><%= $giblog_test_variable %></p>
+  EOS
+  $api->replace_vars($data);
+  my $content = $data->{content};
+
+Content is changed to
+
+  <p>Giblog Test Variable</p>
+  <p>Giblog Test Variable</p>
 
 =head2 parse_description
 
