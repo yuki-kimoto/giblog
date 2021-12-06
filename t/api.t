@@ -1082,7 +1082,7 @@ EOS
     my $data = {};
     $data->{content} = '<p><%= $giblog_test_variable %></p><p><%=  $giblog_test_variable  %></p>';
     $giblog->{config} = {};
-    $api->config->{vars}{'$giblog_test_variable'} = 'Foo';
+    $api->config->{vars}{giblog_test_variable} = 'Foo';
     $api->replace_vars($data);
     my $content = $data->{content};
     is($content, "<p>Foo</p><p>Foo</p>");

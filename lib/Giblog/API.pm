@@ -647,13 +647,13 @@ sub replace_vars {
   if ($vars) {
     my @var_names = keys %$vars;
     for my $var_name (@var_names) {
-      unless ($var_name =~ /^\$\w+/a) {
+      unless ($var_name =~ /^[a-zA-Z]\w*/a) {
         confess "Variable name \"$var_name\" must be valid variable name";
       }
       
       my $value = $vars->{$var_name};
       
-      $data->{content} =~ s/\<\%\= *\Q$var_name\E *\%\>/$value/g;
+      $data->{content} =~ s/\<\%\= *\$\Q$var_name\E *\%\>/$value/g;
     }
   }
 }
