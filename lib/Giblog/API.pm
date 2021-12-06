@@ -592,6 +592,40 @@ sub add_page_link_to_first_h_tag {
   $data->{'content'} = $content;
 }
 
+sub add_content_after_first_p_tag {
+  my ($self, $data, $opt) = @_;
+  
+  $opt ||= {};
+  
+  my $content = $data->{content};
+  
+  my $added_content = $opt->{content};
+  
+  unless (defined $added_content) {
+    confess "\"content\" option is needed";
+  }
+  
+  # Add contents after first h1-6 tag
+  $data->{content} =~ s|</p>|</p>\n$added_content\n|i;
+}
+
+sub add_content_after_first_h_tag {
+  my ($self, $data, $opt) = @_;
+  
+  $opt ||= {};
+  
+  my $content = $data->{content};
+  
+  my $added_content = $opt->{content};
+  
+  unless (defined $added_content) {
+    confess "\"content\" option is needed";
+  }
+  
+  # Add contents after first h1-6 tag
+  $data->{content} =~ s|</h([1-6])>|</h$1>\n$added_content\n|i;
+}
+
 sub parse_description {
   my ($self, $data) = @_;
   
@@ -1244,6 +1278,74 @@ B<Example: root>
 Content is changed to
 
   <h1><a href="/">Perl Tutorial</a></h1>
+
+=head2 add_content_after_first_p_tag
+
+  $api->add_content_after_first_p_tag($data, $opt);
+
+Add contents after the first C<p> tag.
+
+B<INPUT:>
+
+  $data->{content}
+  $opt->{content}
+
+B<OUTPUT:>
+
+  $data->{content}
+
+$data->{content} is the current content. $opt->{content} is the added content.
+
+B<Example:>
+  
+  # Add contents after the first p tag.
+  $data->{content} = <<'EOS';
+  <h2>Perl Tutorial</h2>
+  <p>
+    This is a description.
+  </p>
+  EOS
+  $api->add_content_after_first_p_tag($data, {content => '<div>Added Contents</div>');
+  my $content = $data->{content};
+
+Content is changed to
+
+  <h2>Perl Tutorial</h2>
+  <p>
+    This is descriptions.
+  </p>
+  <div>Added Contents</div>
+
+=head2 add_content_after_first_h_tag
+
+  $api->add_content_after_first_h_tag($data, $opt);
+
+Add contents after the first C<h1>, C<h2>, C<h3>, C<h4>, C<h5>, C<h6> tag.
+
+B<INPUT:>
+
+  $data->{content}
+  $opt->{content}
+
+B<OUTPUT:>
+
+  $data->{content}
+
+$data->{content} is the current content. $opt->{content} is the added content.
+
+B<Example:>
+  
+  # Add contents after the first p tag.
+  $data->{content} = <<'EOS';
+  <h2>Perl Tutorial</h2>
+  EOS
+  $api->add_content_after_first_h_tag($data, {content => '<div>Added Contents</div>');
+  my $content = $data->{content};
+
+Content is changed to
+
+  <h2>Perl Tutorial</h2>
+  <div>Added Contents</div>
 
 =head2 parse_description
 

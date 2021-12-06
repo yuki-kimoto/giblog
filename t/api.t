@@ -635,6 +635,76 @@ EOS
   }
 }
 
+# add_content_after_first_h_tag
+{
+  # add_content_after_first_h_tag - h1
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $data = {};
+    $data->{content} = '<h2>Perl Tutorial</h2>';
+    $api->add_content_after_first_h_tag($data, {content => '<div>Added contents</div>'});
+    my $content = $data->{content};
+    is($content, "<h2>Perl Tutorial</h2>\n<div>Added contents</div>\n");
+  }
+
+  # add_content_after_first_h_tag - h2
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $data = {};
+    $data->{content} = '<h2>Perl Tutorial</h2>';
+    $api->add_content_after_first_h_tag($data, {content => '<div>Added contents</div>'});
+    my $content = $data->{content};
+    is($content, "<h2>Perl Tutorial</h2>\n<div>Added contents</div>\n");
+  }
+
+  # add_content_after_first_h_tag - h3
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $data = {};
+    $data->{content} = '<h2>Perl Tutorial</h2>';
+    $api->add_content_after_first_h_tag($data, {content => '<div>Added contents</div>'});
+    my $content = $data->{content};
+    is($content, "<h2>Perl Tutorial</h2>\n<div>Added contents</div>\n");
+  }
+
+  # add_content_after_first_h_tag - h4
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $data = {};
+    $data->{content} = '<h2>Perl Tutorial</h2>';
+    $api->add_content_after_first_h_tag($data, {content => '<div>Added contents</div>'});
+    my $content = $data->{content};
+    is($content, "<h2>Perl Tutorial</h2>\n<div>Added contents</div>\n");
+  }
+
+  # add_content_after_first_h_tag - h5
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $data = {};
+    $data->{content} = '<h2>Perl Tutorial</h2>';
+    $api->add_content_after_first_h_tag($data, {content => '<div>Added contents</div>'});
+    my $content = $data->{content};
+    is($content, "<h2>Perl Tutorial</h2>\n<div>Added contents</div>\n");
+  }
+
+  # add_content_after_first_h_tag - h6
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $data = {};
+    $data->{content} = '<h2>Perl Tutorial</h2>';
+    $api->add_content_after_first_h_tag($data, {content => '<div>Added contents</div>'});
+    my $content = $data->{content};
+    is($content, "<h2>Perl Tutorial</h2>\n<div>Added contents</div>\n");
+  }
+}
+
+
 # parse_description
 {
   # parse_description - parse description
