@@ -21,6 +21,18 @@ sub giblog { shift->{giblog} }
 
 sub config { shift->giblog->config }
 
+sub get_vars {
+  my ($self) = @_;
+
+  my $config = $self->giblog->config;
+  
+  return unless defined $config;
+  
+  my $vars = $config->{vars};
+  
+  return $vars;
+}
+
 sub home_dir { shift->giblog->home_dir };
 
 sub read_config {
@@ -898,6 +910,38 @@ Config is loaded by C<read_config> method.
 
 If config is not loaded, this method return undef.
 
+=head2 get_vars
+
+  my $vars = $api->get_vars;
+
+Get a Giblog variables that are defined in C<giblog.conf>. This is hash reference.
+  
+  # giblog.conf
+  use strict;
+  use warnings;
+  use utf8;
+
+  {
+    site_title => 'mysite・',
+    site_url => 'http://somesite.example',
+    # Variables
+    vars => {
+      '$giblog_test_variable' => 'Giblog Test Variable',
+    },
+  }
+
+Before using this method, C<read_config> method must be called.
+
+If config is not loaded, this method return undef.
+
+If C<vars> option is not defined, this method return undef.
+
+B<Examples:>
+  
+  # Get a Giblog variable
+  my $vars = $api->get_vars;
+  my $giblog_test_variable = $vars->{'$giblog_test_variable'};
+  
 =head2 home_dir
 
   my $home_dir = $api->home_dir;
