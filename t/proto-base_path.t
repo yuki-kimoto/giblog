@@ -34,7 +34,7 @@ sub add_config_file {
   
   $content = decode('UTF-8', $content);
   
-  $content =~ s/}/$value}/;
+  $content =~ s/\}(\s*)$/$value\n}$1/s;
   
   close $in_fh;
   
