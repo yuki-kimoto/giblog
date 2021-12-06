@@ -642,10 +642,10 @@ EOS
     my $giblog = Giblog->new;
     my $api = Giblog::API->new(giblog => $giblog);
     my $data = {};
-    $data->{content} = '<h2>Perl Tutorial</h2>';
+    $data->{content} = "<h1>Perl Tutorial</h1>\n<h2>Foo</h2>\n";
     $api->add_content_after_first_h_tag($data, {content => '<div>Added contents</div>'});
     my $content = $data->{content};
-    is($content, "<h2>Perl Tutorial</h2>\n<div>Added contents</div>\n");
+    is($content, "<h1>Perl Tutorial</h1>\n<div>Added contents</div>\n<h2>Foo</h2>\n");
   }
 
   # add_content_after_first_h_tag - h2
@@ -653,7 +653,7 @@ EOS
     my $giblog = Giblog->new;
     my $api = Giblog::API->new(giblog => $giblog);
     my $data = {};
-    $data->{content} = '<h2>Perl Tutorial</h2>';
+    $data->{content} = "<h2>Perl Tutorial</h2>\n";
     $api->add_content_after_first_h_tag($data, {content => '<div>Added contents</div>'});
     my $content = $data->{content};
     is($content, "<h2>Perl Tutorial</h2>\n<div>Added contents</div>\n");
@@ -664,10 +664,10 @@ EOS
     my $giblog = Giblog->new;
     my $api = Giblog::API->new(giblog => $giblog);
     my $data = {};
-    $data->{content} = '<h2>Perl Tutorial</h2>';
+    $data->{content} = "<h3>Perl Tutorial</h3>\n";
     $api->add_content_after_first_h_tag($data, {content => '<div>Added contents</div>'});
     my $content = $data->{content};
-    is($content, "<h2>Perl Tutorial</h2>\n<div>Added contents</div>\n");
+    is($content, "<h3>Perl Tutorial</h3>\n<div>Added contents</div>\n");
   }
 
   # add_content_after_first_h_tag - h4
@@ -675,10 +675,10 @@ EOS
     my $giblog = Giblog->new;
     my $api = Giblog::API->new(giblog => $giblog);
     my $data = {};
-    $data->{content} = '<h2>Perl Tutorial</h2>';
+    $data->{content} = "<h4>Perl Tutorial</h4>\n";
     $api->add_content_after_first_h_tag($data, {content => '<div>Added contents</div>'});
     my $content = $data->{content};
-    is($content, "<h2>Perl Tutorial</h2>\n<div>Added contents</div>\n");
+    is($content, "<h4>Perl Tutorial</h4>\n<div>Added contents</div>\n");
   }
 
   # add_content_after_first_h_tag - h5
@@ -686,10 +686,10 @@ EOS
     my $giblog = Giblog->new;
     my $api = Giblog::API->new(giblog => $giblog);
     my $data = {};
-    $data->{content} = '<h2>Perl Tutorial</h2>';
+    $data->{content} = "<h5>Perl Tutorial</h5>\n";
     $api->add_content_after_first_h_tag($data, {content => '<div>Added contents</div>'});
     my $content = $data->{content};
-    is($content, "<h2>Perl Tutorial</h2>\n<div>Added contents</div>\n");
+    is($content, "<h5>Perl Tutorial</h5>\n<div>Added contents</div>\n");
   }
 
   # add_content_after_first_h_tag - h6
@@ -697,13 +697,26 @@ EOS
     my $giblog = Giblog->new;
     my $api = Giblog::API->new(giblog => $giblog);
     my $data = {};
-    $data->{content} = '<h2>Perl Tutorial</h2>';
+    $data->{content} = "<h6>Perl Tutorial</h6>\n";
     $api->add_content_after_first_h_tag($data, {content => '<div>Added contents</div>'});
     my $content = $data->{content};
-    is($content, "<h2>Perl Tutorial</h2>\n<div>Added contents</div>\n");
+    is($content, "<h6>Perl Tutorial</h6>\n<div>Added contents</div>\n");
   }
 }
 
+# add_content_after_first_p_tag
+{
+  # add_content_after_first_p_tag - h1
+  {
+    my $giblog = Giblog->new;
+    my $api = Giblog::API->new(giblog => $giblog);
+    my $data = {};
+    $data->{content} = "<h2>Perl Tutorial</h2>\n<p>Foo</p>\n<p>Bar</p>\n";
+    $api->add_content_after_first_p_tag($data, {content => '<div>Added contents</div>'});
+    my $content = $data->{content};
+    is($content, "<h2>Perl Tutorial</h2>\n<p>Foo</p>\n<div>Added contents</div>\n<p>Bar</p>\n");
+  }
+}
 
 # parse_description
 {

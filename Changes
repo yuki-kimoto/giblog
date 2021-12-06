@@ -22,6 +22,8 @@
   - enable -C option of giblog publish command
   - add giblog save command
   - Add "giblog deploy" command and add "deploy.pl" program in the home directory.
+  - add add_content_after_first_h_tag method to Giblog::API
+  - add add_content_after_first_p_tag method to Giblog::API
 2.0 2021-07-19
   - add serve command
     

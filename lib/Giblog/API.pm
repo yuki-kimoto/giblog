@@ -606,7 +606,7 @@ sub add_content_after_first_p_tag {
   }
   
   # Add contents after first h1-6 tag
-  $data->{content} =~ s|</p>|</p>\n$added_content\n|i;
+  $data->{content} =~ s|</p>|</p>\n$added_content|i;
 }
 
 sub add_content_after_first_h_tag {
@@ -623,7 +623,7 @@ sub add_content_after_first_h_tag {
   }
   
   # Add contents after first h1-6 tag
-  $data->{content} =~ s|</h([1-6])>|</h$1>\n$added_content\n|i;
+  $data->{content} =~ s|</h([1-6])>|</h$1>\n$added_content|i;
 }
 
 sub parse_description {
@@ -1302,19 +1302,25 @@ B<Example:>
   $data->{content} = <<'EOS';
   <h2>Perl Tutorial</h2>
   <p>
-    This is a description.
+    Foo
+  </p>
+  <p>
+    Bar
   </p>
   EOS
-  $api->add_content_after_first_p_tag($data, {content => '<div>Added Contents</div>');
+  $api->add_content_after_first_p_tag($data, {content => "<div>Added Contents</div>");
   my $content = $data->{content};
 
 Content is changed to
 
   <h2>Perl Tutorial</h2>
   <p>
-    This is descriptions.
+    Foo
   </p>
   <div>Added Contents</div>
+  <p>
+    Bar
+  </p>
 
 =head2 add_content_after_first_h_tag
 
@@ -1338,14 +1344,16 @@ B<Example:>
   # Add contents after the first p tag.
   $data->{content} = <<'EOS';
   <h2>Perl Tutorial</h2>
+  <h3>Perl Tutorial</h3>
   EOS
-  $api->add_content_after_first_h_tag($data, {content => '<div>Added Contents</div>');
+  $api->add_content_after_first_h_tag($data, {content => "<div>Added Contents</div>");
   my $content = $data->{content};
 
 Content is changed to
 
   <h2>Perl Tutorial</h2>
   <div>Added Contents</div>
+  <h3>Perl Tutorial</h3>
 
 =head2 parse_description
 
