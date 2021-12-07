@@ -35,6 +35,10 @@ Giblog::Command::deploy - Deployment Command
 
 L<Giblog::Command::deploy> is a command to deploy web sites.
 
+=head1 USAGE
+
+  giblog deploy
+
 =head1 METHODS
 
 L<Giblog::Command::deploy> inherits all methods from L<Giblog::Command> and

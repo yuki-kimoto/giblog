@@ -13,12 +13,14 @@ use Carp 'confess';
 sub run {
   my ($self, @argv) = @_;
   
-  my $execute_build_command;
+  my $has_build_option;
+  my $has_deploy_option;
   {
     local @ARGV = @argv;
     my $getopt_option_all = Getopt::Long::Configure(qw(default no_auto_abbrev no_ignore_case));
     GetOptions(
-      'build' => \$execute_build_command,
+      'build' => \$has_build_option,
+      'deploy' => \$has_deploy_option,
     );
     Getopt::Long::Configure($getopt_option_all);
     @argv = @ARGV;
@@ -38,7 +40,7 @@ sub run {
     confess 'Must be specify branch name';
   }
   
-  if ($execute_build_command) {
+  if ($has_build_option) {
     my @giblog_build_command = ('giblog', '-C', $home_dir, 'build');
     if (system(@giblog_build_command) == -1) {
       confess "Fail giblog publish command with --build option. Command is @giblog_build_command: $?";
@@ -57,6 +59,13 @@ sub run {
   my @git_push_command = ('git', '-C', $public_dir, 'push', '-f', $remote_rep, $branch);
   if (system(@git_push_command) == -1) {
     confess "Fail giblog publish command. Command is @git_push_command : $?";
+  }
+
+  if ($has_deploy_option) {
+    my @giblog_deploy_command = ('giblog', '-C', $home_dir, 'deploy');
+    if (system(@giblog_deploy_command) == -1) {
+      confess "Fail giblog publish command with --deploy option. Command is @giblog_deploy_command: $?";
+    }
   }
 }
 
@@ -103,3 +112,5 @@ When you deploy this on the production environment, you can use the following co
   git reset --hard origin/main
 
 If C<--build> option is specified, "giblog build" is executed before publishing.
+
+If C<--deploy> option is specified, "giblog deploy" is executed after publishing.
