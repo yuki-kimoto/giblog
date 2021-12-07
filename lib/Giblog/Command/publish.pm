@@ -6,14 +6,28 @@ use strict;
 use warnings;
 use Mojolicious;
 use Time::Piece 'localtime';
+use Getopt::Long 'GetOptions';
 
 use Carp 'confess';
 
 sub run {
-  my ($self, $remote_rep, $branch) = @_;
-
+  my ($self, @argv) = @_;
+  
+  my $execute_build_command;
+  {
+    local @ARGV = @argv;
+    my $getopt_option_all = Getopt::Long::Configure(qw(default no_auto_abbrev no_ignore_case));
+    GetOptions(
+      'build' => \$execute_build_command,
+    );
+    Getopt::Long::Configure($getopt_option_all);
+    @argv = @ARGV;
+  }
+  my ($remote_rep, $branch) = @argv;
+  
   my $api = $self->api;
 
+  my $home_dir = $api->rel_file('.');
   my $public_dir = $api->rel_file('public');
 
   unless (defined $remote_rep) {
@@ -22,6 +36,13 @@ sub run {
 
   unless (defined $branch) {
     confess 'Must be specify branch name';
+  }
+  
+  if ($execute_build_command) {
+    my @giblog_build_command = ('giblog', '-C', $home_dir, 'build');
+    if (system(@giblog_build_command) == -1) {
+      confess "Fail giblog publish command with --build option. Command is @giblog_build_command: $?";
+    }
   }
   
   my @git_add_command = ('git', '-C', $public_dir, 'add', '--all');
@@ -51,6 +72,12 @@ Giblog::Command::publish - Website publish command
 
 L<Giblog::Command::publish> is website publish command.
 
+=head1 USAGE
+
+  giblog publish REMOTE_REPOSITORY BRANCH
+  
+  giblog publish --build REMOTE_REPOSITORY BRANCH
+
 =head1 METHODS
 
 L<Giblog::Command::publish> inherits all methods from L<Giblog::Command> and
@@ -59,6 +86,7 @@ implements the following new ones.
 =head2 run
 
   $command->run($remote_repository, $branch);
+  $command->run('--build', $remote_repository, $branch);
 
 Publish your website by specifing remote repository name and branch name.
 
@@ -73,3 +101,5 @@ When you deploy this on the production environment, you can use the following co
   # Deployment on production environment
   git fetch
   git reset --hard origin/main
+
+If C<--build> option is specified, "giblog build" is executed before publishing.
