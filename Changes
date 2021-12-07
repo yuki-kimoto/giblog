@@ -28,6 +28,7 @@
   - add the call of replace_vars method in proto templates in new, new_website, new_blog commands.
   - add --build option to "giblog publish" command
   - add --deploy option to "giblog publish" command
+  - add --deploy option to "giblog all" command
 2.0 2021-07-19
   - add serve command
     

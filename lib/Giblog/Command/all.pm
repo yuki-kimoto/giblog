@@ -14,11 +14,13 @@ sub run {
   my ($self, @argv) = @_;
   
   my $message;
+  my $has_deploy_option;
   {
     local @ARGV = @argv;
     my $getopt_option_all = Getopt::Long::Configure(qw(default no_auto_abbrev no_ignore_case));
     GetOptions(
       'm=s' => \$message,
+      'deploy' => \$has_deploy_option,
     );
     Getopt::Long::Configure($getopt_option_all);
     @argv = @ARGV;
@@ -53,6 +55,13 @@ sub run {
   if (system(@giblog_publish_command) == -1) {
     confess "Fail giblog all command. Command is @giblog_publish_command : $?";
   }
+
+  if ($has_deploy_option) {
+    my @giblog_deploy_command = ('giblog', '-C', $home_dir, 'deploy');
+    if (system(@giblog_deploy_command) == -1) {
+      confess "Fail giblog all command with --deploy option. Command is @giblog_deploy_command: $?";
+    }
+  }
 }
 
 1;
@@ -70,6 +79,8 @@ L<Giblog::Command::all> is all command to execute "giblog build", "giblog save",
 =head1 USAGE
 
   giblog all -m COMMIT_COMMENT REMOTE_REPOSITORY BRANCH
+
+  giblog all -m COMMIT_COMMENT --deploy REMOTE_REPOSITORY BRANCH
   
 =head1 METHODS
 
@@ -79,6 +90,7 @@ implements the following new ones.
 =head2 run
 
   $command->run('-m', $message, $remote_repository, $branch);
+  $command->run('-m', $message, '--deploy', $remote_repository, $branch);
 
 all command executes the following git commands(giblog build, giblog save, giblog publish).
 
@@ -87,3 +99,5 @@ This is the same as the following command. In this example, the commit message i
   giblog build
   giblog save -m "Hello" origin main
   giblog publish origin main
+
+If C<--deploy> option is specified, "giblog deploy" is executed after executing "giblog all" command.
