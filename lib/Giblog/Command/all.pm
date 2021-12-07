@@ -67,6 +67,10 @@ Giblog::Command::all - all command
 
 L<Giblog::Command::all> is all command to execute "giblog build", "giblog save", and "giblog publish".
 
+=head1 USAGE
+
+  giblog all -m COMMIT_COMMENT REMOTE_REPOSITORY BRANCH
+  
 =head1 METHODS
 
 L<Giblog::Command::all> inherits all methods from L<Giblog::Command> and
