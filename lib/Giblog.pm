@@ -623,19 +623,23 @@ Get home directory.
 
 =item * L<Giblog::Command>
 
-=item * L<Giblog::Command::new>
-
-=item * L<Giblog::Command::new_website>
-
-=item * L<Giblog::Command::new_blog>
-
 =item * L<Giblog::Command::add>
 
 =item * L<Giblog::Command::build>
 
-=item * L<Giblog::Command::serve>
+=item * L<Giblog::Command::deploy>
+
+=item * L<Giblog::Command::new>
+
+=item * L<Giblog::Command::new_blog>
+
+=item * L<Giblog::Command::new_website>
 
 =item * L<Giblog::Command::publish>
+
+=item * L<Giblog::Command::save>
+
+=item * L<Giblog::Command::serve>
 
 =back
 
