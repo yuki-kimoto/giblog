@@ -10,7 +10,7 @@ use Pod::Usage 'pod2usage';
 use List::Util 'min';
 use File::Spec;
 
-our $VERSION = '2.01_01';
+our $VERSION = '2.01_02';
 
 sub new {
   my $class = shift;
@@ -150,7 +150,7 @@ sub serve {
 
 =head1 NAME
 
-Giblog - Web site and Blog builders you can manage with Git
+Giblog - Create Websites and Blogs that can be managed with Git
 
 =begin html
 
@@ -177,10 +177,10 @@ Giblog - Web site and Blog builders you can manage with Git
 
 =head1 DESCRIPTION
 
-Giblog is a utility to create your web site or blog.
-You can create your web site or blog using C<giblog> command.
-All created files is static files, so you can manage them using B<git>.
-You can freely customize your website by editting the C<build> command.
+Giblog is a utility to create websites or blogs.
+You can create websites or blogs using C<giblog> command.
+All created files is static files. You can manage them using B<git>.
+You can customize websites using C<Perl>.
 
 =head1 SYNOPSYS
   
@@ -199,20 +199,29 @@ You can freely customize your website by editting the C<build> command.
   # Add new entry
   $ giblog add
 
+  # Add new entry with home directory
+  $ giblog add -C /home/perlclub/mysite
+
   # Build web site
   $ giblog build
   
+  # Build web site with home directory
+  $ giblog build -C /home/perlclub/mysite
+
   # Serve a web site
   $ giblog serve
+
+  # Save a web site
+  $ giblog save -m "Commit Messages" origin main
 
   # Publish web site
   $ giblog publish origin main
 
-  # Add new entry with home directory
-  $ giblog add --home /home/kimoto/mysite
-
-  # Build web site with home directory
-  $ giblog build --home /home/kimoto/mysite
+  # Deploy a web site
+  $ giblog deploy
+  
+  # Do "giblog build", "giblog save", "giblog publish", "giblog deploy" at once
+  $ giblog all -m "Commit Messages" origin main
 
 =head1 FEATURES
 
