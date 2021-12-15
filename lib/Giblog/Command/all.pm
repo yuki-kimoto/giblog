@@ -106,6 +106,7 @@ This is the same as the following command. In this example, the commit message i
   giblog build
   giblog save -m "Hello" origin main
   giblog publish origin main
+  giblog deploy
 
 If C<--no-build> option is specified, "giblog build" is not executed.
 

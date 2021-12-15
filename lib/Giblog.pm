@@ -184,10 +184,10 @@ You can customize websites using C<Perl>.
 
 =head1 SYNOPSYS
   
-  # New empty web site
+  # New empty website
   $ giblog new mysite
 
-  # New web site
+  # New website
   $ giblog new_website mysite
 
   # New blog
@@ -202,22 +202,22 @@ You can customize websites using C<Perl>.
   # Add new entry with home directory
   $ giblog add -C /home/perlclub/mysite
 
-  # Build web site
+  # Build website
   $ giblog build
   
-  # Build web site with home directory
+  # Build website with home directory
   $ giblog build -C /home/perlclub/mysite
 
-  # Serve a web site
+  # Serve a website
   $ giblog serve
 
-  # Save a web site
+  # Save a website
   $ giblog save -m "Commit Messages" origin main
 
-  # Publish web site
+  # Publish website
   $ giblog publish origin main
 
-  # Deploy a web site
+  # Deploy a website
   $ giblog deploy
   
   # Do "giblog build", "giblog save", "giblog publish", "giblog deploy" at once
@@ -229,19 +229,19 @@ Giblog have the following features.
 
 =over 4
 
-=item * Build Website and Blog.
+=item * Build websites and blogs.
 
-=item * Git mangement. All created files is Static. you can manage files by git.
+=item * All created files is static files. You can manage files using git.
 
-=item * Linux, macOS, Windows Support. (In Windows, recommend installation of msys2)
+=item * Linux, macOS, Windows Support. (Windows needs msys2 or WSL2)
 
-=item * Provide default CSS for Smart phone site.
+=item * CSS supports smart phone.
 
-=item * Header, Hooter and Side bar support
+=item * Header, hooter and side bar support
 
-=item * You can customize Top and Bottom section of content.
+=item * Customize top and bottom section of content.
 
-=item * You can customize HTML head.
+=item * Customize HTML head.
 
 =item * Automatical Line break. p tag is automatically added.
 
@@ -251,9 +251,9 @@ Giblog have the following features.
 
 =item * Description meta tag is automatically added from first p tag.
 
-=item * You can customize your web site by Perl.
+=item * You can customize your website by Perl.
 
-=item * You can serve your web site in local environment. Contents changes is detected and build automatically(need L<Mojolicious>).
+=item * You can serve your website in local environment. Contents changes is detected and build automatically(need L<Mojolicious>).
 
 =item * Fast. Build 645 pages by 0.78 seconds in starndard linux environment.
 
@@ -263,11 +263,11 @@ Giblog have the following features.
 
 =head1 TUTORIAL
 
-=head2 Create web site
+=head2 Create website
 
 B<1. Create Empty website>
 
-"new" command create empty website. "mysite" is a name of your web site.
+"new" command create empty website. "mysite" is a name of your website.
 
   giblog new mysite
 
@@ -276,7 +276,7 @@ Templates and CSS is empty and provide minimal site building process.
 
 B<2. Create Website>
 
-"new_website" command create simple website.  "mysite" is a name of your web site.
+"new_website" command create simple website.  "mysite" is a name of your website.
 
   giblog new_website mysite
 
@@ -288,7 +288,7 @@ CSS is responsive design and supports smart phone and provide basic site buildin
 
 B<3. Create Blog>
 
-"new_blog" command create empty website.  "mysite" is a name of your web site.
+"new_blog" command create empty website.  "mysite" is a name of your website.
 
   giblog new_blog mysite
 
@@ -322,7 +322,7 @@ To write new entry, You open it, write h2 head and content.
 
 Other parts wrapping content like Header and footer is automatically added in building process.
 
-=head2 Add content page
+=head2 Add a content page
 
 If you want to create content page, put file into "templates" directory.
 
@@ -401,23 +401,23 @@ If you want to edit HTML header, you edit the following file.
 
   templates/common/meta.html
 
-=head2 Build web site
+=head2 Build a website
 
-You need to change directory to "mysite" before run "build" command if you are in other directory.
-
-  cd mysite
-
-"build" command build web site.
+Build a website using L<giblog build|Giblog::Command::build> command.
 
   giblog build
 
-What is build process?
+You need to change the directory created by L<giblog new|Giblog::Command::new>, L<giblog new_website|Giblog::Command::new_website>, or L<giblog new_blog|Giblog::Command::new_blog> before executing "giblog build" command.
 
-build process is writen in "lib/Giblog/Command/build.pm".
+L<giblog build|Giblog::Command::build> command execute C<run> method of C<Giblog::Command::build> module.
 
-"build" command only execute "run" method in "Giblog::Command::build.pm" .
+C<Giblog::Command::build> module exists in C<lib/Giblog/Command/build.pm>.
 
-  # "lib/Giblog/Command/build.pm" in web site created by "new_blog" command
+C<Giblog::Command::build> module is automatically created.
+
+See C<Giblog::Command::build> module.
+
+  # "lib/Giblog/Command/build.pm" in website created by "new_blog" command
   package Giblog::Command::build;
 
   use base 'Giblog::Command';
@@ -442,6 +442,9 @@ build process is writen in "lib/Giblog/Command/build.pm".
     # Get files in templates directory
     my $files = $api->get_templates_files;
 
+    # Add base path to public css files
+    $api->add_base_path_to_public_css_files;
+
     for my $file (@$files) {
       # Data
       my $data = {file => $file};
@@ -457,7 +460,7 @@ build process is writen in "lib/Giblog/Command/build.pm".
 
       # Edit title
       my $site_title = $config->{site_title};
-      if ($data->{file} eq 'index.html') {
+      if ($data->{file} eq 'index.html' || !defined $data->{title}) {
         $data->{title} = $site_title;
       }
       else {
@@ -485,6 +488,12 @@ build process is writen in "lib/Giblog/Command/build.pm".
       # Build whole html
       $api->build_html($data);
 
+      # Replace Giblog variables
+      $api->replace_vars($data);
+      
+      # Add base path to content
+      $api->add_base_path_to_content($data);
+
       # Write to public file
       $api->write_to_public_file($data);
     }
@@ -496,45 +505,111 @@ build process is writen in "lib/Giblog/Command/build.pm".
     $self->create_list;
   }
 
-You can customize build process if you need.
+You can customize build process using L<Giblog::API> and any Perl programs.
 
-If you need to know Giblog API, see L<Giblog::API>.
+L<Giblog::API> is a usuful APIs to customize websites.
 
-=head2 Serve web site
+=head2 Serve a Website
 
-You can serve web site by C<serve> command.
+You can serve a website by L<giblog serve|Giblog::Command::serve> command.
 
-   # Serve web site
+   # Serve website
    giblog serve
 
 You see the following message.
 
    Web application available at http://127.0.0.1:3000
 
-This command is same as the following code. L<morbo> command of L<Mojolicious> start up C<serve.pl>.
+L<giblog serve|Giblog::Command::serve> means the following command. L<morbo> is a command to serve a L<Mojolicious> app in development mode.
 
    # Same as the following
    morbo -w giblog.conf -w lib -w templates serve.pl
 
-If C<giblog.conf>, files in C<templates> or C<lib> directory is changed, Web site is automatically rebuild.
+If C<giblog.conf>, files in C<templates> or C<lib> directories are changed, the website is automatically rebuild.
 
-If you use before Giblog 2.0, you can serve a web site by the following way.
+B<Giblog 1.0:>
 
-   # Old style before Giblog 2.0
-   morbo serve.pl
+If you use Giblog 1, you can serve your website by the following way.
 
-=head2 Publish web site
+   # Giblog 1.0
+   morbo -w giblog.conf -w lib -w templates serve.pl
 
-You can publish the web site by C<publish> command.
+=head2 Save Websites
 
-   # Publish the web site
+Save Websites using L<giblog save|Giblog::Command::save>.
+
+  giblog save -m "Commit Messages" origin main
+
+L<giblog save|Giblog::Command::save> means the following git commands.
+
+  git add --all
+  git commit -m "Commit Messages"
+  git push origin main
+
+=head2 Publish Websites
+
+Publish the website using L<giblog publish|Giblog::Command::publish> command.
+
+   # Publish the website
    giblog publish origin main
 
 This is the same as the following command. In this example, the repository name is origin and the branch name is main. YY-mm-dd HH:MM:SS is current date and time.
 
   git -C public add --all
   git -C public commit -m "Published by Giblog at YY-mm-dd HH:MM:SS"
-  git -C public push origin main
+  git -C public push -f origin main
+
+=head2 Deploy Websites
+
+Deploy websites using L<giblog deploy|Giblog::Command::deploy>.
+  
+  # Deploy websites
+  giblog deploy
+
+L<giblog save|Giblog::Command::save> means the following command.
+
+  perl deploy.pl
+
+You can write any program for the deployment in C<deploy.pl>.
+
+  use strict;
+  use warnings;
+
+  my @args = @ARGV;
+
+  my $deploy_cmd = q(ssh prod_perl_club_sites 'git -C ~/www/en_perlzemi-public fetch && git -C ~/www/en_perlzemi-public reset --hard origin/master');
+
+  system($deploy_cmd) == 0
+    or die "Can't execute deploy command: $deploy_cmd:$!";
+
+=head2 Do All
+
+Do all Publish the website using L<giblog build|Giblog::Command::build>, L<giblog save|Giblog::Command::save>, L<giblog publish|Giblog::Command::publish>, L<giblog deploy|Giblog::Command::deploy> command.
+
+  giblog all -m "Commit Messages" origin main
+
+This means the following commands
+
+  giblog build
+  giblog save -m "Hello" origin main
+  giblog publish origin main
+  giblog deploy
+
+If C<--no-build> option is specified, "giblog build" is not executed.
+
+  giblog all --no-build -m "Commit Messages" origin main
+
+If C<--no-save> option is specified, "giblog save" is not executed.
+
+  giblog all --no-save -m "Commit Messages" origin main
+
+If C<--no-publish> option is specified, "giblog publish" is not executed.
+
+  giblog all --no-publish -m "Commit Messages" origin main
+
+If C<--no-deploy> option is specified, "giblog deploy" is not executed.
+
+  giblog all --no-deploy -m "Commit Messages" origin main
 
 =head1 CONFIG FILE
 
