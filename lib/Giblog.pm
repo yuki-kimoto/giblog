@@ -161,7 +161,7 @@ Giblog - Create Websites and Blogs that can be managed with Git
   <a href="https://new-website-example.giblog.net/"><img src="https://github.com/yuki-kimoto/giblog/raw/master/images/giblog-website.png"></a>
 </p>
 <p>
-  <a href="https://new-website-example.giblog.net/">Website Example</a>
+  <a href="https://new-website-example.giblog.net/">A Website Example</a>
 </p>
 <p>
   <b>Blog</b>
@@ -170,7 +170,7 @@ Giblog - Create Websites and Blogs that can be managed with Git
   <a href="https://new-blog-example.giblog.net/"><img src="https://github.com/yuki-kimoto/giblog/raw/master/images/giblog-blog.png"></a>
 </p>
 <p>
-  <a href="https://new-blog-example.giblog.net/">Blog Example</a>
+  <a href="https://new-blog-example.giblog.net/">A Blog Example</a>
 </p>
 
 =end html
@@ -263,20 +263,20 @@ Giblog have the following features.
 
 =head1 TUTORIAL
 
-=head2 Create website
+=head2 Create Websites
 
-B<1. Create Empty website>
+=head3 Create a Empty website
 
-"new" command create empty website. "mysite" is a name of your website.
+L<giblog new|Giblog::Command::new> command create empty website. "mysite" is a name of your website.
 
   giblog new mysite
 
 If you want to create empty site, choice this command.
 Templates and CSS is empty and provide minimal site building process.
 
-B<2. Create Website>
+=head3 Create a Website
 
-"new_website" command create simple website.  "mysite" is a name of your website.
+L<giblog new_website|Giblog::Command::new_website> command create simple website.  "mysite" is a name of your website.
 
   giblog new_website mysite
 
@@ -286,9 +286,9 @@ List page "templates/list.html" is created, which is prepare to create blog entr
 
 CSS is responsive design and supports smart phone and provide basic site building process.
 
-B<3. Create Blog>
+=head3 Create a Blog
 
-"new_blog" command create empty website.  "mysite" is a name of your website.
+L<giblog new_blog|Giblog::Command::new_blog> command create empty website.  "mysite" is a name of your website.
 
   giblog new_blog mysite
 
@@ -298,15 +298,13 @@ List page "templates/list.html" is created, which show all entries links.
 
 CSS is responsive design and supports smart phone and provide basic blog building process.
 
-=head2 Add blog entry page
+=head2 Add a Blog Page
 
-You need to change directory to "mysite" before run "add" command if you are in other directory.
-
-  cd mysite
-
-"add" command add entry page.
+L<giblog add|Giblog::Command::add> command add entry page.
 
   giblog add
+
+You need to change the directory created by L<giblog new|Giblog::Command::new>, L<giblog new_website|Giblog::Command::new_website>, or L<giblog new_blog|Giblog::Command::new_blog> before
 
 Created file name is, for example,
 
@@ -322,7 +320,7 @@ To write new entry, You open it, write h2 head and content.
 
 Other parts wrapping content like Header and footer is automatically added in building process.
 
-=head2 Add a content page
+=head2 Add a Content Page
 
 If you want to create content page, put file into "templates" directory.
 
@@ -348,7 +346,7 @@ Don't push content page files into these directories.
   templates/static
   templates/common
 
-=head2 Add static page
+=head2 Add Satic files
 
 If you want to add static files like css, images, JavaScript, You put these file into "templates/static" directory.
 
@@ -358,7 +356,7 @@ Files in "templates/static" directory is only copied to public files by build pr
   templates/static/images/logo.png
   templates/static/css/more.css
 
-=head2 Customize header or footer, side bar, top of content, bottom of content
+=head2 Customize Header or Footer, Side bar, Top of Content, Bottom of Content
 
 You can customize header, footer, side bar, top of content, bottom of content.
 
@@ -384,7 +382,7 @@ If you want to edit these section, you edit these files.
   templates/common/bottom.html     Bottom of content
   templates/common/footer.html     Footer
 
-=head2 Customize HTML header
+=head2 Customize HTML Header
 
 You can customize HTML header.
 
@@ -401,7 +399,74 @@ If you want to edit HTML header, you edit the following file.
 
   templates/common/meta.html
 
-=head2 Build a website
+=head2 Giblog Variables
+
+Explains Giblog variables.
+
+=head3 Define Giblog Variables
+
+You can define Giblog variable in C<giblog.conf>.
+
+  # giblog.conf
+  use strict;
+  use warnings;
+  use utf8;
+
+  {
+    site_title => 'mysite',
+    site_url => 'http://somesite.example',
+    
+    # Variables
+    vars => {
+      giblog_test_variable => 'Giblog Test Variable',
+    },
+  }
+
+C<vars> defines Giblog variables in C<giblog.conf>.
+
+=head3 Use Giblog Variables
+
+Use Giblog variables in templtes files.
+
+  <%= $GIBLOG_VARIABLE_NAME %>
+
+B<Examples:>
+
+C<giblog.conf>
+
+  # giblog.conf
+  use strict;
+  use warnings;
+  use utf8;
+
+  {
+    site_title => 'mysite',
+    site_url => 'http://somesite.example',
+    
+    # Variables
+    vars => {
+      giblog_test_variable => 'Giblog Test Variable',
+      google_analytics_id => 'G-EIFHDUGHF45',
+    },
+  }
+
+C<templates/common/meta.html>
+ 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+  <link rel="shortcut icon" href="/images/logo.png">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=<%= $google_analytics_id %>"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '<%= $google_analytics_id %>');
+  </script>
+
+=head2 Build a Website
 
 Build a website using L<giblog build|Giblog::Command::build> command.
 
@@ -534,7 +599,7 @@ If you use Giblog 1, you can serve your website by the following way.
    # Giblog 1.0
    morbo -w giblog.conf -w lib -w templates serve.pl
 
-=head2 Save Websites
+=head2 Save a Website
 
 Save Websites using L<giblog save|Giblog::Command::save>.
 
@@ -546,7 +611,7 @@ L<giblog save|Giblog::Command::save> means the following git commands.
   git commit -m "Commit Messages"
   git push origin main
 
-=head2 Publish Websites
+=head2 Publish a Website
 
 Publish the website using L<giblog publish|Giblog::Command::publish> command.
 
@@ -559,7 +624,7 @@ This is the same as the following command. In this example, the repository name 
   git -C public commit -m "Published by Giblog at YY-mm-dd HH:MM:SS"
   git -C public push -f origin main
 
-=head2 Deploy Websites
+=head2 Deploy a Website
 
 Deploy websites using L<giblog deploy|Giblog::Command::deploy>.
   
@@ -577,12 +642,12 @@ You can write any program for the deployment in C<deploy.pl>.
 
   my @args = @ARGV;
 
-  my $deploy_cmd = q(ssh prod_perl_club_sites 'git -C ~/www/en_perlzemi-public fetch && git -C ~/www/en_perlzemi-public reset --hard origin/master');
+  my $deploy_cmd = q(ssh prod_perl_club_sites 'git -C ~/www/en_perlzemi-public fetch && git -C ~/www/en_perlzemi-public reset --hard origin/main');
 
   system($deploy_cmd) == 0
     or die "Can't execute deploy command: $deploy_cmd:$!";
 
-=head2 Do All
+=head2 Execute All Commands at Once
 
 Do all Publish the website using L<giblog build|Giblog::Command::build>, L<giblog save|Giblog::Command::save>, L<giblog publish|Giblog::Command::publish>, L<giblog deploy|Giblog::Command::deploy> command.
 
