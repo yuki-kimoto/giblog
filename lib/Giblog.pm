@@ -10,7 +10,7 @@ use Pod::Usage 'pod2usage';
 use List::Util 'min';
 use File::Spec;
 
-our $VERSION = '2.01_02';
+our $VERSION = '3.00';
 
 sub new {
   my $class = shift;
