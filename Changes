@@ -1,4 +1,4 @@
-3.0 2021-12-06
+3.0 2022-02-01
   - Dropped IE support in default CSS.
   - Improve default CSS designs of new_website and new_blog command
     side width become 320px. This is for Google Adsence banner size.
